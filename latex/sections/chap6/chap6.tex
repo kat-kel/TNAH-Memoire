@@ -1,0 +1,197 @@
+\documentclass[class=article, crop=false]{standalone}
+\usepackage[subpreambles=true]{standalone}
+\usepackage{fontspec}
+\usepackage{hyperref}
+\usepackage{import}
+\usepackage{blindtext}
+
+% !TEX TS-program = xelatex
+
+%Example of code
+\usepackage{listings}
+\usepackage{color}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{cyan}{rgb}{0.0,0.6,0.6}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinelanguage{XML}{
+  backgroundcolor=\color{backcolour},  
+  basicstyle=\ttfamily\footnotesize,
+  morestring=[s]{"}{"},
+  moredelim=[s][\color{black}]{>}{<},
+  morecomment=[s]{!--}{--},
+  commentstyle=\color{codegreen},
+  moredelim=[s][\color{red}]{\ }{=},
+  stringstyle=\color{blue},
+  identifierstyle=\color{cyan},
+  numberstyle=\tiny\color{codegray},
+  breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+%Code listing style named "json"
+\lstdefinestyle{json}{
+  backgroundcolor=\color{backcolour}, 
+  basicstyle=\ttfamily\footnotesize,
+  commentstyle=\color{codegreen},
+  numberstyle=\tiny\color{codegray},
+  basicstyle=\ttfamily\footnotesize,
+  breakatwhitespace=false,         
+  breaklines=true,                 
+  captionpos=b,                    
+  keepspaces=true,                 
+  numbers=left,                    
+  numbersep=5pt,                  
+  showspaces=false,                
+  showstringspaces=false,
+  showtabs=false,                  
+  tabsize=2
+}
+
+\begin{document}
+
+\section{Uniquement l'essentiel}
+
+\subsection{Documents de divers types et de plusieurs époques}
+
+Expliquer le défi de modéliser un \texttt{<teiHeader>} qui est à la fois assez généralisé pour convenir aux divers documents et assez précisé pour servir aux utilisateurs et à la recherche.
+
+\subsection{Exemples des métadonnées souhaitées}
+
+Donner un exemple des métadonnées d'un imprimé (cf.\,fig.~\ref{fig:metadata-print}) :
+
+\begin{figure}[ht]
+\centering
+\begin{lstlisting}[language=XML]
+<sourceDesc>
+	<biblStruct>
+		<monogr>
+			<author xml:id="author">
+				<persName>
+					<surname>Balzac</surname> <!-- auteur -->
+					<forename>Honoré</forename>
+				</persName>
+			</author>
+			<title>The Wild Ass's Skin</title> <!-- titre -->
+			<editor role="translator">Ellen Marriage</editor>
+			<editor role="preface">George Saintsbury</editor>
+			<pubPlace key="FR">Paris</pubPlace>
+			<imprint>
+				<pubPlace>London</pubPlace> <!-- lieu de publication -->
+				<publisher>Dent</publisher> <!-- éditeur -->
+				<date when="1906">1906</date> <!-- date de publication -->
+			</imprint>
+		</mongr>
+	</biblStruct>
+\end{lstlisting}
+\caption{Exemple des métadonnées d'un imprimé encodées en TEI}
+\centering
+(emprunté de \texttt{teibyexample.org} -- à changer)
+\label{fig:metadata-print}
+\end{figure}
+
+Et donner un exemple d'un incunable (cf.\,fig.~\ref{fig:metadata-incunable})  :
+
+\begin{figure}[ht]
+\centering
+\begin{lstlisting}[language=XML]
+<sourceDesc>
+	<msDesc>
+		<msContents>
+			<biblStruct>
+				<monogr>
+					<author xml:id="author">
+						<persName>
+							<surname>Tory</surname> <!-- auteur -->
+							<forename>Geoffroy</forename>
+						<persName>
+					</author>
+					<title>Champ fleury</title> <!-- titre -->
+					<imprint>
+						<pubPlace>Paris</pubPlace> <!-- lieu de publication / lieu d'apparition -->
+						<publisher>
+							<persName>
+								<surname>Gourmont</surname> <!-- éditeur -->
+								<forename>Gilles de</forename>
+							</persName>
+						</publisher>
+					</imprint>
+				</mongr>
+			</biblStruct>			
+\end{lstlisting}
+\caption{Exemple des métadonnées d'un incunable encodées en TEI}
+\centering
+(emprunté du cours TEI de J-B Camps 2015 -- à changer)
+\label{fig:metadata-incunable}
+\end{figure}
+
+Expliquer comment l'objectif du projet \textit{Gallic(orpor)a} de traiter des documents d'une diachronie longue pose un défi à la récupération et encodage généralisée des métadonnées.
+
+\section{Où se trouvent les métadonnées des sources de Gallica}
+
+Présenter les deux sources de métadonnées ciblées par l'application \texttt{alto2tei}.
+
+\subsection{L'IIIF Image API}
+
+L'API du manifest IIIF contient des données rudimentaires sur le document. Elles sont envoyées dans un format JSON. Donner un exemple (cf.\,fig.~\ref{fig:metadata-yaml}) :
+
+\begin{figure}[ht]
+\centering
+\lstset{style=json}
+\begin{lstlisting}[language=Python]
+{"Metadata":
+		{
+		"Label": "Title",
+		"Value": "The Wild Ass's Skin", # titre
+		
+		"Label": "Creator",
+		"Value": "Honoré Balzac" # auteur
+		}
+}
+\end{lstlisting}
+\caption{Exemple des métadonnées envoyées par l'API IIIF}
+\label{fig:metadata-yaml}
+\end{figure}
+
+\subsection{L'API SRU de la BnF}
+
+L'API du catalogue général de la BnF contient des données bien précises sur le document. Elles sont envoyées dans un format XML-Unimarc. Donner un exemple (cf.\,fig.~\ref{fig:metadata-unimarc}).
+
+\begin{figure}[ht]
+\centering
+\begin{lstlisting}[language=XML]
+	<mxc:datafield tag="200" ind1="1" ind2=" ">
+		<mxc:subfield code="a">The Wild Ass's Skin</mxc:subfield> <!-- titre -->
+		<mxc:subfield code="b">Texte imprimé</mxc:subfield>
+	</mxc:datafield>
+	<mxc:datafield tag="210" ind1=" " ind2=" ">
+		<mxc:subfield code="a">Londres</mxc:subfield> <!-- lieu de publication -->
+		<mxc:subfield code="c">Dent</mxc:subfield> <!-- éditeur -->
+		<mxc:subfield code="d">1906</mxc:subfield> <!-- date de publication -->
+	</mxc:datafield>
+[...]
+	<mxc:datafield tag="700" ind1=" " ind2="|">
+		<mxc:subfield code="a">Balzac</mxc:subfield> <!-- auteur -->
+		<mxc:subfield code="b">Honoré</mxc:subfield>
+	</mxc:datafield>
+\end{lstlisting}
+\caption{Exemple des métadonnées envoyées par l'API SRU de la BnF}
+\label{fig:metadata-unimarc}
+\end{figure}
+
+\section{Une solution}
+
+Présenter les métadonnées du document qu'on a déterminé d'être essentielle / assez généralisées parmi les divers types de document.
+
+\end{document}
+\documentclass[../main.tex]{subfiles}

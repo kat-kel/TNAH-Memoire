@@ -1,0 +1,22 @@
+\documentclass[class=article, crop=false]{standalone}
+\usepackage[subpreambles=true]{standalone}
+\usepackage{import}
+\usepackage{blindtext}
+\begin{document}
+
+
+\section{Les données d'entraînement HTR}
+
+J'ai généré des données d'entraînement sur eScriptorium en suivant les mêmes conseils donnés aux vacataires chargés à segmenter et transcrire les images d'un document selon les normes de \textit{SegmOnto}. Je me suis familiarisée avec leur travail et la création du corpus d'or qui serviraient à l'entraînement du modèle HTR. J'ai aussi surveillé la discussion entre les vacataires et les chefs du projet, afin de poser et de répondre aux questions généralisées. Grâce à ces tâches, je comprends mieux le défi d'harmoniser la création d'un corpus d'or par en groupe.
+
+\section{Les données d'entraînement TAL}
+
+Certains vacataires ont travaillé sur les textes extraits des transcriptions que les autres vacataires ont faites sur eScriptorium, et ils ont créé des données textuelles qui serviraient à l'entraînement des modèles TAL. Afin de les aider dans la création de ce deuxième corpus d'or, j'ai créé un workflow automatisé sur les dépôts GitHub du projet qui extrait automatiquement les lignes de texte des fichiers ALTO et divise le texte en segments selon les signes de ponctuation. La création d'un workflow sur GitHub m'ai appris comment le faire plus tard pour l'application \texttt{alto2tei}.
+
+\section{La fin du pipeline : TEI Publisher}
+
+J'ai assisté à un atelier sur le logiciel TEI Publisher afin de mieux comprendre les objectifs downstream de l'application \texttt{alto2tei}.
+
+
+\end{document}
+\documentclass[../main.tex]{subfiles}

@@ -1,0 +1,30 @@
+\documentclass[class=article, crop=false]{standalone}
+\usepackage[subpreambles=true]{standalone}
+\usepackage{import}
+\usepackage{blindtext}
+\begin{document}
+
+
+\section{XML-ALTO}
+
+\subsection{Qu'est-ce qu'est le format ALTO ?}
+
+Décrire la création, le suivi, et l'objectif du format XML ALTO : enregistrer les infos sur la structure d'une image segmentée. 
+
+\subsection{La structure des fichiers XML-ALTO}
+
+Montrer la structure des données d'un fichier ALTO dans les deux formats qui sortent de Kraken : (1) ligne de texte encodé dans la balise \texttt{<TextLine>}, qui sort de Kraken via l'interface d'eScriptorium, et (2) ligne de texte encodé au niveau du glyph, qui sort directement de la ligne de commande de Kraken.
+
+\section{XMl-TEI}
+
+\subsection{Qu'est-ce qu'est la TEI ?}
+
+Décrire la création, le suivi, et l'objectif de la TEI.
+
+\subsection{Les éléments de base de la TEI}
+
+Expliquer qu'il y a deux éléments essentiels de la racine, le \texttt{<teiHeader>} et le \texttt{<body>}. Ensuite expliquer l'utilité de l'élément facultatif \texttt{<sourceDoc>} et expliquer pourquoi il convient bien aux données de structure d'un fichier ALTO. 
+
+
+\end{document}
+\documentclass[../main.tex]{subfiles}

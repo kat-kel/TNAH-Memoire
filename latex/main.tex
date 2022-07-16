@@ -1,15 +1,22 @@
 % document vide aux normes de l'école pour le mémoire
 
 % PREAMBULE
+% !TEX TS-program = xelatex
+% !TEX spellcheck = French
 
 %package obligatoire : type de document
 \documentclass[a4paper,12pt,twoside]{book}
+
+% multi-file
+\usepackage{blindtext}
+\usepackage{subfiles}
 
 % encodage
 \usepackage{fontspec}
 
 % le package hyperref avec des options, si en local
 \usepackage[pdfusetitle, pdfsubject ={Mémoire TNAH}, pdfkeywords={les mots-clés}]{hyperref}
+\usepackage{hyperref}
 
 %il faut mettre au moins une langue
 \usepackage[french]{babel}
@@ -29,12 +36,10 @@
 \newglossaryentry{schema}
 {
 	name=ALTO,
-	description={Un schéma XML qui précise la mise en page ainsi que le contenu d'une resource textuelle, tel qu'un bouquin.}
-	
+	description={Un schéma XML qui précise la mise en page ainsi que le contenu d'une ressource textuelle, tel qu'un bouquin.}
 	name=TEI,
 	description={Un schéma XML qui résume des règles et des normes d'encodage qui ont pour but de rendre une source textuelle lisible aux machines}
 }
-
 \newacronym{htr}{HTR}{Handwritten Text Recognition}
 \newacronym{ocr}{OCR}{Optical Character Recognition}
 \newacronym{alto}{ALTO}{Analyzed Layout and Text Object}
@@ -52,14 +57,71 @@
 
 %si index, package pour index + makeindex
 
-% + toutes la liste des packages nécessaires à votre document (si images, tableaux, schémas, etc.)
+% flowchart
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows}
+\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=red!30]
+\tikzstyle{arrow} = [thick,->,>=stealth]
 
-% on pourra aussi utiliser la commande mise dans l'exemple de correction du TP1 pour enlever les titres courant qui traînent sur les pages
+% Exemples de code
+\usepackage{listings}
+\usepackage{color}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{cyan}{rgb}{0.0,0.6,0.6}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
 
-\author{Kelly Christensen - M2 TNAH}
-\title{Titre du mémoire}
+\lstdefinelanguage{XML}{
+  backgroundcolor=\color{backcolour},  
+  basicstyle=\ttfamily\footnotesize,
+  morestring=[s]{"}{"},
+  morecomment=[s]{?}{?},
+  morecomment=[s]{!--}{--},
+  commentstyle=\color{codegreen},
+  moredelim=[s][\color{black}]{>}{<},
+  moredelim=[s][\color{red}]{\ }{=},
+  stringstyle=\color{blue},
+  identifierstyle=\color{codegray},
+  numberstyle=\tiny\color{codegray},
+  breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
 
-% DOCUMENT
+% Code listing style "json"
+\lstdefinestyle{json}{
+  backgroundcolor=\color{backcolour}, 
+  basicstyle=\ttfamily\footnotesize,
+  commentstyle=\color{codegreen},
+  numberstyle=\tiny\color{codegray},
+  basicstyle=\ttfamily\footnotesize,
+  breakatwhitespace=false,         
+  breaklines=true,                 
+  captionpos=b,                    
+  keepspaces=true,                 
+  numbers=left,                    
+  numbersep=5pt,                  
+  showspaces=false,                
+  showstringspaces=false,
+  showtabs=false,                  
+  tabsize=2
+}
+
+% images
+\usepackage{graphicx}
+
+\author{Kelly Christensen}
+\title{Modélisation des transcriptions ALTO avec la TEI}
+
+%%% DOCUMENT %%%
 \begin{document}
 	\begin{titlepage}
 		\begin{center}
@@ -118,186 +180,74 @@
 	\thispagestyle{empty}	
 	\cleardoublepage
 	
+	%%% FRONT MATTER %%%
 	\frontmatter
+	
 	\chapter{Résumé}
-	\medskip
-
-Quand des modèles \acrshort{ocr} (\textit{Optical Character Recognition}) et \acrshort{htr} (\textit{Handwriting Text Recognition}) extraient les données d'une ressource textuelle numérisée, les informations relatives à la structure physique de l'image risquent de se perdre. Un schéma \acrshort{xml} standardisé qui s'appelle \acrshort{alto} (\textit{Analyzed Layout and Text Object}) a été créé afin de conserver et structurer ces données non-textuelles et géometriques en les tenant en relation avec le contenu textuel. La plupart des modèles \acrshort{ocr} et \acrshort{htr} compte sur ce schéma. Cependant \acrshort{alto} ne convient pas bien à l'édition numérique ni aux traitements automatique du langage. Les éditeurs et les chercheurs en lettres attendent un schéma \acrshort{xml} plus courant dans le monde des humanités numériques : la \acrshort{tei} (\textit{Text Encoding Initiative}). Il faut donc un mapping pour transformer un fichier \acrshort{alto} en fichier \acrshort{tei} sans perdre aucune donnée lors du processus. Cette transformation automatisée permet à conserver les données particulières au schéma \acrshort{alto}, telles que celles sur la segmentation et sur la structure physique du document numérisé, ainsi qu'à exploiter le contenu textuel de la ressource textuelle. La flexibilité de la \acrshort{tei} et son usage très répandu rendent le schéma idéal pour mieux valoriser les données produites par les modèles \acrshort{ocr} et \acrshort{htr}.\\
-
-Dans le cadre du stage pour obtenir le diplôme de Master 2 \og Technologies numériques appliquées à l'histoire \fg{}, ce mémoire porte sur la modélisation de la transformation de \acrshort{alto} en \acrshort{tei}. Cette modélisation a été réalisée dans le cadre du projet \textit{Gallic(orpor)a}, financé par la \acrshort{bnf} (Bibliothèque nationale de France) lors d'un stage qui a eu lieu au sein du laboratoire \acrshort{almanach} (Automatic Language Modelling and Analysis \& Computational Humanities) entre avril et juillet 2022.\\
-	
-	\textbf{Mots-clés~:} HTR, OCR, ALTO, TEI, TAL, édition numérique.
-	
-	\textbf{Informations bibliographiques~:} Kelly Christensen, \textit{Modélisation des transcriptions ALTO avec la TEI. En complétant le pipeline du projet} Gallic(orpor)a, mémoire de master \og{}Technologies numériques appliquées à l'histoire\fg{}, dir. [Noms des directeurs], École nationale des chartes, 2022.
+	\subfile{sections/abstract/abstract.tex}
 	
 	\chapter{Remerciements}
-	
 	\lettrine{M}es remerciements vont tout d'abord à\dots
 	
 	%bibliographie ici
 	%\printbibliography
 	
 	\chapter{Introduction}
-	
-L'introduction parlera du traitement en masse des ressources textuelles et le besoin de l'automatiser à l'échelle.\\
-
-Des institutions patrimoniales génèrent plus en plus d'images numérisées de leurs fonds. Il faut maintenant un pipeline généralisé qui peut transformer une image en une édition numérique structurée pouvant servir à l'étude littéraire, historique, et linguisitique. Le projet \textit{Gallic(orpor)a} vise à construire un tel pipeline.\\
-
-\textit{Peut-être je parlerai dans l'introduction de ce que j'ai fait par rapport au projet ?}\\
-
-Je m'occupais d'une partie de ce pipeline. Ma modélisation en \acrshort{tei} des fichiers \acrshort{alto} sert à faire la connection entre les transcriptions automatisées des images et les données structurées pour l'édition numérique.
+	\subfile{sections/intro/introduction.tex}
 	
 	\thispagestyle{empty}
 	\cleardoublepage
 	
+	%%% MAIN MATTER %%%
 	\mainmatter
 	
-	% là, le corps du mémoire, généralement TROIS parties
-	\part{Le contexte du projet}
+	%%% PARTIE I. %%%
+	\part{Présentation du projet}
 	
-	\chapter{Traitement automatique des ressources textuelles}
+	\chapter{Qu'est-ce que l'HTR ?}
+	\subfile{sections/chap1/chap1.tex}
 	
-	\section{Guildelines \textit{SegmOnto}}
-	
-	Parler des guidelines \textit{SegmOnto} (J.-B. Camps) qui ont été pris pour standardiser la classification des regions et des lignes de texte du corpus.
-	
-	\section{Entraînement des modèles HTR}
-	
-	Parler de la génération du corpus d'or pour entraîner les modèles sur les guidelines \textit{SegmOnto}, et comment les modèles \acrshort{htr} fonctionnent.
-	
-	\chapter{Le pipeline de \textit{Gallic(orpor)a}}
-	
-	\section{Extraction de texte}
-	
-	Parler de l'application des modèles entraînés pour extraire des données et la sortie produite.
-	
-	\section{Transformation d'ALTO en TEI}
-	
-	Parler rapidement de la transformation en \acrshort{tei} des fichiers \acrshort{alto}. Rapidement parce qu'il est le sujet du mémoire.
-	
-	\section{Annotation du texte}
-	
-	Parler rapidement de l'application des outils du traitement automatique du langage au contenu textuel extrait et structuré dans le fichier \acrshort{tei}. Rapidement parce qu'il est l'autre sujet (moins important parce que j'aurai moins de temps pour y travailler) du mémoire.
-	
-	\section{Exportation diversifiée}
-	
-	Parler de la transformation du document \acrshort{tei} en divers formats, tel que \acrshort{rdf}, IIIF et, à la suite d'une reconversion, \acrshort{alto}. Ce dernier sert à entraîner de nouveau des modèles.
-	
-	\chapter{Projet \textit{Gallic(orpor)a}}
-	
-	\textit{Est-ce que je devrais commencer avec une présentation du projet et le pipeline (contraire à ce que j'ai fait ci-dessus), ou devrais-je commencer avec une explication du traitement automatique des resources textuelles : les modèles HTR et les normes de classification des regions/lignes de texte ?}
-	
-	\section{Présentaiton des institutions}
-	
-	\subsection{BnF DataLab}
-	
-	\subsection{Inria}
-	
-	\subsection{École nationale des chartes et Université de Genève}
-	
-	\section{Présentation du projet}
-	
-	\textit{Ici je reproduirais ce que j'ai envisagé dans le chapitre précédent,} \og{} Le pipeline de \textit{Gallic(orpor)a} \fg{}
-	
-	\subsection{Extraction de texte}
-		
-	\subsection{Transformation d'ALTO en TEI}
-		
-	\subsection{Annotation du texte}
-		
-	\subsection{Exportation diversifiée}
-	
-	
-	\part{D'une transcription ALTO en édition TEI}
+	\chapter{Au commencement, il y avait les \textit{guidelines SegmOnto}}
+	\subfile{sections/chap2/chap2.tex}
 
-	\chapter{Structure des données}
+	\chapter{Le rêve du projet \textit{Gallic(orpor)a}}
+	\subfile{sections/chap3/chap3.tex}
 	
-	\section{ALTO}
 	
-	Parler du schéma \acrshort{alto}, ses origines, son utilisation, ses avantages, ses desavantages.
-	
-	\section{TEI}
-	
-	Parler du schéma \acrshort{tei}, ses origines, son utilisation, ses avantages, ses desavantages.
-	
-	\chapter{Mapping}
-	
-	\section{Métadonnées du document numérisé}
-	
-	\subsection{Le \texttt{<teiHeader>}}
-	
-	Parler du \texttt{<teiHeader>} et son utilisation.
-	
-	\subsection{Extraction des métadonnées}
-	
-	Parler de l'extraction des données de l'IIIF Image API et de l'API SRU (Search/Retrieval via URL) Catalogue général de la \acrshort{bnf}.
-	
-	\subsection{Exploitation des métadonnées}
-	
-	Parler du mapping des données sortant des API (JSON de l'API IIIF et XML Unimarc de l'API SRU) dans le \texttt{<teiHeader>}.
-	
-	\section{Transcription de l'image}
-	
-	\subsection{Le \texttt{<sourceDoc>}}
-	
-	Parler du \texttt{<sourceDoc>}, son utilisation et pourquoi il marche bien pour gérér les données textuelles et graphiques du fichier \acrshort{alto}.
-	
-	\subsection{Extraction des données du fichier ALTO}
-	
-	Parler de l'extraction des données du fichier ALTO en python.
-	
-	\subsection{Exploitation des données du fichier ALTO}
-	
-	Parler du mapping des données des éléments du fichier \acrshort{alto} vers les éléments \acrshort{tei}, spécifiquement le \texttt{<sourceDoc>}.
-	
-	\chapter{Annotation du texte}
-	
-	Exploitation des données déjà mappées et structurées dans le document préliminaire \acrshort{tei}.
-	
-	\section{Une transcription hierarchisée}
-	
-	\subsection{Le \texttt{<body>}}
-	
-	Parler du \texttt{<body>} et son utilisation : analyse linguistique ou littéraire. Conserver le texte ainsi qu'il est dans la source originale, pas de correction.
-	
-	\subsection{Extraction du texte du \texttt{<sourceDoc>}}
-	
-	Parler de l'extraction et manipulation du texte avec le script python, y compris le mapping des éléments du \texttt{<sourceDoc>} et la classifcation des guideliens \textit{SegmOnto} vers les éléments du \texttt{<body>}. Par exemple, une ligne de texte classifée \textit{HeadingLine} sera balisée dans l'élément \acrshort{tei} \texttt{<hi rend="HeadingLine">}.
-	
-	\section{Le texte normalisé}
-	
-	\subsection{Le \texttt{<standOff>}}
-	
-	Parler du \texttt{<standOff>} et son utilisation.
-	
-	\subsection{Le traitement automatique du langage}
-	
-	Parler du TAL et les modèles à utiliser pour lemmatiser, normaliser, et reconnaître des entités nommées le texte segmenté.\\
-	
-\textit{Je ne sais pas si je devrais mettre avant cette sous-section une explication de la segmentation que je devrais faire en python afin de passer le texte aux modèles de lemmatisation, etc. Ou s'il n'est pas aussi importante pour mériter une sous-section}
+	%%% PARTIE II. %%%
+	\part{Exposition de la préparation et du travail d'analyse}
 
+	\chapter{Un pipeline visant à tout rassembler}
+	\subfile{sections/chap4/chap4.tex}
+	
+	\chapter{L'analyse des structures des données XML}
+	\subfile{sections/chap5/chap5.tex}
+	
+	\chapter{À la recherche des métadonnées}
+	\subfile{sections/chap6/chap6.tex}
+	
 
-	\part{Après le projet}
+	%%% PARTIE III. %%%
+	\part{Mise en opérationnelle du projet}
 	
-	\chapter{Critique}
+	\chapter{La génération du \texttt{<teiHeader>}}
+	\subfile{sections/chap7/chap7.tex}
 	
-	Critiquer ce que j'ai fait / les stratégies du projet \textit{Gallic(orpor)a.}. Parler des autres pistes / projets similaires.
+	\chapter{La modélisation de la \texttt{<sourceDoc>}}
+	\subfile{sections/chap8/chap8.tex}
 	
-	\chapter{Autres utilisations}
-	
-	Parler des autres utilisation de la modélisation en TEI que j'ai faite.
+	\chapter{Les données textuelles produites}
+	\subfile{sections/chap9/chap9.tex}
 	
 	\chapter*{Conclusion}
-	
-	La conclusion : résumer...
+	\subfile{sections/conclusion/conclusion.tex}
 	
 	\addcontentsline{toc}{chapter}{Conclusion}
 	
 	%les annexes
 	\appendix
 	\chapter{Données}
-	
-	\textit{Est-ce qu'il faut mettre dans un appendice des données ?}
+	\subfile{sections/data/data.tex}
 	
 	\backmatter
 
@@ -308,10 +258,10 @@ Je m'occupais d'une partie de ce pipeline. Ma modélisation en \acrshort{tei} de
 	\printglossaries
 
 % si figures
-%	\listoffigures
+	\listoffigures
 
 %si tables
-%	\listoftables
+	\listoftables
 
 	\tableofcontents
 	

@@ -1,0 +1,38 @@
+\documentclass[class=article, crop=false]{standalone}
+\usepackage[subpreambles=true]{standalone}
+\usepackage{import}
+\usepackage{blindtext}
+\begin{document}
+
+\section{L'objectif de l'HTR}
+	
+Décrire les enjeux de la reconnaissance automatiques des caractères de texte sur une image. Donner des exemples de cette tâche avec une petite figure qui montre le processus.
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}[node distance=10cm]
+\node (start) [startstop] {Pixels sur une image};
+\node (stop) [startstop, right of=start] {L'unicode des caractères};
+\draw [arrow] (start) --node {OCR} (stop);
+\end{tikzpicture}
+\caption{figure}
+\end{figure}
+
+\section{L'histoire et l'évolution de la technologie}
+
+Décrire l'évolution de cette technologie, en commençant avec l'OCR.
+	
+\section{Les deux approches actuelles}
+	
+Expliquer qu'il y a actuellement deux approches : OCR et HTR.
+
+\subsection{L'OCR}
+
+Expliquer comment cette technologie plus ancienne compte sur les polices des caractères et a besoin des technologies de traitement automatique des langues.
+
+\subsection{L'HTR}
+
+Expliquer comment l'HTR réussit à s'entraîner sur les courbes des caractères écrits et peut donc compléter ses tâches sans besoin d'un modèle TAL derrière. (Au moins, c'est actuellement ce que j'ai compris des explications d'Ariane Pinche) Justifie pourquoi l'HTR a été privilégié dans le projet Gallic(orpor)a, même pour les imprimés.
+
+\end{document}
+\documentclass[../main.tex]{subfiles}
