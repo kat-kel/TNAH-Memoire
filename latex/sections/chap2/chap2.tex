@@ -3,41 +3,37 @@
 \usepackage{import}
 \usepackage{blindtext}
 \usepackage{csquotes}
-\usepackage[
-	backend=biber, 
-	sorting=nyt, 
-	style=enc,
-	maxbibnames=10]
-	{biblatex}
-\addbibresource{../../../bib.bib}
+\usepackage{biblatex}
+\addbibresource{../../ref.bib}
+\usepackage{url}
 \begin{document}
 	
 \section{La problématique}
 
-Un manuscrit a besoin d'un 
+...
 
 \section{Les solutions proposées}
 
-Plusieurs projets avaient proposé des solutions au manque de cohérence dans la manière par laquelle la communauté scientifique caractérise les composants d'un texte numérisé. Hors de la France, les vocabulaires codicologiques ont été élaborés notamment en anglais pour les manuscrits médiévaux. Un exemple important est la base de données DigiPal (Digital Resource and Database of Palaeography, Manuscripts and Diplomatic), qui n'est plus mis à jour mais qui a été développé au sein du département des humanités numériques à King's College London (citation). L'un de ses auteurs, Peter Stokes, travaille actuellement en France et continue dans la même veine en collaborant avec des chercheurs français sur le projet \textit{SegmOnto} (citation). Avant la création des \textit{guidelines} de \textit{SegmOnto}, le développement des vocabulaires codicologiques en France était toujours basé sur le modèle de Denis Muzerelle et son \textit{Vocabulaire codicologique}, que nous expliquons prochainement.
+Plusieurs projets avaient proposé des solutions au manque de cohérence dans la manière par laquelle la communauté scientifique caractérise les composants d'un texte numérisé. Hors de la France, les vocabulaires codicologiques ont été élaborés notamment en anglais pour les manuscrits médiévaux. Un exemple important est la base de données DigiPal (Digital Resource and Database of Palaeography, Manuscripts and Diplomatic), qui n'est plus mis à jour mais qui a été développé au sein du département des humanités numériques à King's College London. ~\cite{noauthor_digipal_2011} L'un de ses auteurs, Peter Stokes, travaille actuellement en France et continue dans la même veine en collaborant avec des chercheurs français sur le projet \textit{SegmOnto}.~\cite{gabay_segmonto_2021} Avant la création des \textit{guidelines} de \textit{SegmOnto}, le développement des vocabulaires codicologiques en France était toujours basé sur le modèle de Denis Muzerelle et son \textit{Vocabulaire codicologique}, que nous expliquons prochainement.
 
 \subsection{Le Vocabulaire international de la codicologie}
 
-En 1985, Denis Muzerelle a conçu un vocabulaire codicologique qui avait pour but de fournir des médiévistes avec des termes uniformes pouvant décrire les aspects d'un manuscrit. Depuis l'apparition de son vocabulaire en français, des autres chercheurs sont venus pour adapter les termes de Muzerelle en d'autres langues. Marilena Maniaci a publié une version du \textit{Vocabulaire codicologique} pour l'italien en 1997 (citation). Pilar Ostos, Luisa Pardo, et Elena Rodríguez en ont créé un pour l'espagnol l'année suivante (citation). Parfois appelé le \textit{Vocabulaire international de la codicologie}, l'édition multilingue du \textit{Vocabulaire codicologique} que Muzerelle a commencé en 1985 était maintenue jusqu'à l'édition d'une version 1.1. en 2002-2003 (citation).
+En 1985, Denis Muzerelle a conçu un vocabulaire codicologique qui avait pour but de fournir des médiévistes avec des termes uniformes pouvant décrire les aspects d'un manuscrit.~\cite{muzerelle_vocabulaire_1985} Depuis l'apparition de son vocabulaire en français, des autres chercheurs sont venus pour adapter les termes de Muzerelle en d'autres langues. Marilena Maniaci a publié une version du \textit{Vocabulaire codicologique} pour l'italien en 1996.~\cite{maniaci_terminologia_1996} Pilar Ostos, Luisa Pardo, et Elena Rodríguez en ont créé un pour l'espagnol l'année suivante.~\cite{ostos_vocabulario_1997} Parfois appelé le \textit{Vocabulaire international de la codicologie}, l'édition multilingue du \textit{Vocabulaire codicologique} que Muzerelle a commencé en 1985 était maintenue jusqu'à l'édition d'une version 1.1. en 2002-2003.~(besoin de citation)
 
 \subsection{La Codicologia}
 
-Aujourd'hui, la paléographie et l'étude des manuscrits peuvent profiter de l'application web \textit{Codicologia} qui réunit le \textit{Vocabulaire codicologique} ainsi que deux autres bases de données similaires: le projet multilingue \textit{Lexicon} et le \textit{Glossaire codicologique arabe}. Ses trois bases de données spécialisent dans divers écritures. Comme précisé avant, le \textit{Vocabulaire codicologique} fournit une liste de termes en français, italien, espagnol, et anglais. Piloté par Philippe Bobichon, le projet \textit{Lexicon} présente un vocabulaire en français pour décrire les manuscrits écrits en latin, roman, grec, hébreu, et arabe (citation). Un vocabulaire spécialisé plus profondément pour l'arabe est élaboré dans le \textit{Glossaire codicologique arabe} d'Anne-Marie Eddé et Marc Geoffroy \cite{noauthor_glossaire_2002}. Ce dernier a été conçu au sein de l'Institut de recherche et d'histoire des textes après les modèles de Muzerelle et le vocabulaire codicologique en arabe d'Adam Gacek (citation).
+Aujourd'hui, la paléographie et l'étude des manuscrits peuvent profiter de l'application web \textit{Codicologia} qui réunit le \textit{Vocabulaire codicologique} ainsi que deux autres bases de données similaires: le projet multilingue \textit{Lexicon} et le \textit{Glossaire codicologique arabe}. Ses trois bases de données spécialisent dans divers écritures. Comme précisé avant, le \textit{Vocabulaire codicologique} fournit une liste de termes en français, italien, espagnol, et anglais. Piloté par Philippe Bobichon, le projet \textit{Lexicon} présente un vocabulaire en français pour décrire les manuscrits écrits en latin, roman, grec, hébreu, et arabe.~\cite{bobichon_lexicon_2009} Un vocabulaire spécialisé plus profondément pour l'arabe est élaboré dans le \textit{Glossaire codicologique arabe} d'Anne-Marie Eddé et Marc Geoffroy.~\cite{noauthor_glossaire_2002} Ce dernier a été conçu au sein de l'Institut de recherche et d'histoire des textes après les modèles de Muzerelle et le vocabulaire codicologique en arabe d'Adam Gacek.~\cite{gacek_arabic_2001}
 
 L'application web \textit{Codicologia} rassemblent ces projets et présente un vocabulaire bien étendu. Par exemple, \textit{Codicologia} fournit 15 termes pour décrire une faute d'écriture dans un manuscrit. Certains de ses termes possèdent eux-même plusieurs définitions que les divers bases de données fournissent. Le terme \textit{caviarder}, par exemple, a une définition courte dans le vocabulaire français de Muzerelle. 
 
 \begin{displayquote}
-Supprimer un mot, un passage..., en le recouvrant largement d'encre, de façon à ce qu'il ne puisse être lu. (citation)
+Supprimer un mot, un passage..., en le recouvrant largement d'encre, de façon à ce qu'il ne puisse être lu.~\cite{muzerelle_caviarder_2011}
 \end{displayquote}
 
 \noindent Selon le \texttt{Lexicon} de Bibichon, par contre, le \textit{caviarder} se définit d'une manière plus détaillé et vise à expliquer l'étymologie du mot afin de préciser son usage dans le cadre des manuscrits des divers écritures.
 
 \begin{displayquote}
-Le mot apparaît en 1907 (noircir à l'encre) : il désigne alors un procédé appliqué par la censure russe, sous Nicolas Ier. Dans certains manuscrits grecs, le détail rempli d'encre est surmonté d'un point et d'un trait court destinés à le neutraliser. Ce procédé est très souvent utilisé parmi d'autres, pour la censure des manuscrits hébreux effectué sous l'autorité de l'inquisition, en Italie, à la fin du xvie siècle et au début du xviie. \cite{bobichon_caviarder_2011}
+Le mot apparaît en 1907 (noircir à l'encre) : il désigne alors un procédé appliqué par la censure russe, sous Nicolas Ier. Dans certains manuscrits grecs, le détail rempli d'encre est surmonté d'un point et d'un trait court destinés à le neutraliser. Ce procédé est très souvent utilisé parmi d'autres, pour la censure des manuscrits hébreux effectué sous l'autorité de l'inquisition, en Italie, à la fin du xvie siècle et au début du xviie.~\cite{bobichon_caviarder_2011}
 
 
 \end{displayquote}
@@ -78,8 +74,6 @@ Le projet \textit{SegmOnto} propose un vocabulaire plus petit et pourtant peut d
 \item InterlinearLine
 \item MusicLine
 \end{itemize}
-	
-\printbibliography
 	
 \end{document}
 \documentclass[../main.tex]{subfiles}

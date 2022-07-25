@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.6.6)  25 JUL 2022 17:12
+This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.6.6)  25 JUL 2022 18:18
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -678,8 +678,6 @@ Package biblatex Info: ... file 'blx-dm.def' found.
 (/usr/local/texlive/2022/texmf-dist/tex/latex/biblatex/blx-dm.def
 File: blx-dm.def 2022/02/02 v3.17 biblatex localization (PK/MW)
 )
-Package biblatex Info: Trying to load biblatex style data model...
-Package biblatex Info: ... file 'enc.dbx' not found.
 Package biblatex Info: Trying to load biblatex custom data model...
 Package biblatex Info: ... file 'biblatex-dm.cfg' not found.
 \c@afterword=\count413
@@ -793,21 +791,35 @@ File: biblatex.def 2022/02/02 v3.17 biblatex compatibility (PK/MW)
 \biburllcskip=\muskip21
 \c@smartand=\count489
 )
-Package biblatex Info: Trying to load bibliography style 'enc'...
-Package biblatex Info: ... file 'enc.bbx' found.
+Package biblatex Info: Trying to load bibliography style 'numeric'...
+Package biblatex Info: ... file 'numeric.bbx' found.
 
-(/usr/local/texlive/2022/texmf-dist/tex/latex/biblatex-enc/enc.bbx
-File: enc.bbx 
-)
-Package biblatex Info: Trying to load citation style 'enc'...
-Package biblatex Info: ... file 'enc.cbx' found.
+(/usr/local/texlive/2022/texmf-dist/tex/latex/biblatex/bbx/numeric.bbx
+File: numeric.bbx 2022/02/02 v3.17 biblatex bibliography style (PK/MW)
+Package biblatex Info: Trying to load bibliography style 'standard'...
+Package biblatex Info: ... file 'standard.bbx' found.
 
-(/usr/local/texlive/2022/texmf-dist/tex/latex/biblatex-enc/enc.cbx
-File: enc.cbx 
+(/usr/local/texlive/2022/texmf-dist/tex/latex/biblatex/bbx/standard.bbx
+File: standard.bbx 2022/02/02 v3.17 biblatex bibliography style (PK/MW)
+\c@bbx:relatedcount=\count490
+\c@bbx:relatedtotal=\count491
+))
+Package biblatex Info: Trying to load citation style 'numeric'...
+Package biblatex Info: ... file 'numeric.cbx' found.
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/biblatex/cbx/numeric.cbx
+File: numeric.cbx 2022/02/02 v3.17 biblatex citation style (PK/MW)
 Package biblatex Info: Redefining '\cite'.
-Package biblatex Info: Redefining '\textcite'.
 Package biblatex Info: Redefining '\parencite'.
 Package biblatex Info: Redefining '\footcite'.
+Package biblatex Info: Redefining '\footcitetext'.
+Package biblatex Info: Redefining '\smartcite'.
+Package biblatex Info: Redefining '\supercite'.
+Package biblatex Info: Redefining '\textcite'.
+Package biblatex Info: Redefining '\textcites'.
+Package biblatex Info: Redefining '\cites'.
+Package biblatex Info: Redefining '\parencites'.
+Package biblatex Info: Redefining '\smartcites'.
 )
 Package biblatex Info: Trying to load configuration file...
 Package biblatex Info: ... file 'biblatex.cfg' found.
@@ -889,14 +901,14 @@ ode.tex
 \pgf@yd=\dimen271
 \w@pgf@writea=\write6
 \r@pgf@reada=\read4
-\c@pgf@counta=\count490
-\c@pgf@countb=\count491
-\c@pgf@countc=\count492
-\c@pgf@countd=\count493
+\c@pgf@counta=\count492
+\c@pgf@countb=\count493
+\c@pgf@countc=\count494
+\c@pgf@countd=\count495
 \t@pgf@toka=\toks41
 \t@pgf@tokb=\toks42
 \t@pgf@tokc=\toks43
-\pgf@sys@id@count=\count494
+\pgf@sys@id@count=\count496
 
 (/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg
 File: pgf.cfg 2021/05/15 v3.1.9a (3.1.9a)
@@ -915,13 +927,13 @@ File: pgfsys-dvipdfmx.def 2021/05/15 v3.1.9a (3.1.9a)
 df.def
 File: pgfsys-common-pdf.def 2021/05/15 v3.1.9a (3.1.9a)
 )
-\pgfsys@objnum=\count495
+\pgfsys@objnum=\count497
 )))
 (/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.
 code.tex
 File: pgfsyssoftpath.code.tex 2021/05/15 v3.1.9a (3.1.9a)
-\pgfsyssoftpath@smallbuffer@items=\count496
-\pgfsyssoftpath@bigbuffer@items=\count497
+\pgfsyssoftpath@smallbuffer@items=\count498
+\pgfsyssoftpath@bigbuffer@items=\count499
 )
 (/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.
 code.tex
@@ -949,7 +961,7 @@ Package: pgfcore 2021/05/15 v3.1.9a (3.1.9a)
 (/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex)
 (/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex
 \pgfmath@dimen=\dimen272
-\pgfmath@count=\count498
+\pgfmath@count=\count500
 \pgfmath@box=\box63
 \pgfmath@toks=\toks44
 \pgfmath@stack@operand=\toks45
@@ -974,7 +986,7 @@ code.tex)
 (/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.integ
 erarithmetics.code.tex)))
 (/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex
-\c@pgfmathroundto@lastzeros=\count499
+\c@pgfmathroundto@lastzeros=\count501
 )) (/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/math/pgfint.code.tex)
 (/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.co
 de.tex
@@ -1012,7 +1024,7 @@ File: pgfcorescopes.code.tex 2021/05/15 v3.1.9a (3.1.9a)
 \pgfpic=\box64
 \pgf@hbox=\box65
 \pgf@layerbox@main=\box66
-\pgf@picture@serial@count=\count500
+\pgf@picture@serial@count=\count502
 )
 (/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicst
 ate.code.tex
@@ -1047,8 +1059,8 @@ File: pgfcorearrows.code.tex 2021/05/15 v3.1.9a (3.1.9a)
 e.tex
 File: pgfcoreshade.code.tex 2021/05/15 v3.1.9a (3.1.9a)
 \pgf@max=\dimen296
-\pgf@sys@shading@range@num=\count501
-\pgf@shadingcount=\count502
+\pgf@sys@shading@range@num=\count503
+\pgf@shadingcount=\count504
 )
 (/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.cod
 e.tex
@@ -1115,7 +1127,7 @@ Package: tikz 2021/05/15 v3.1.9a (3.1.9a)
 (/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothan
 dlers.code.tex
 File: pgflibraryplothandlers.code.tex 2021/05/15 v3.1.9a (3.1.9a)
-\pgf@plot@mark@count=\count503
+\pgf@plot@mark@count=\count505
 \pgfplotmarksize=\dimen301
 )
 \tikz@lastx=\dimen302
@@ -1130,19 +1142,19 @@ File: pgflibraryplothandlers.code.tex 2021/05/15 v3.1.9a (3.1.9a)
 \tikz@figbox@bg=\box70
 \tikz@tempbox=\box71
 \tikz@tempbox@bg=\box72
-\tikztreelevel=\count504
-\tikznumberofchildren=\count505
-\tikznumberofcurrentchild=\count506
-\tikz@fig@count=\count507
+\tikztreelevel=\count506
+\tikznumberofchildren=\count507
+\tikznumberofcurrentchild=\count508
+\tikz@fig@count=\count509
 
 (/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.cod
 e.tex
 File: pgfmodulematrix.code.tex 2021/05/15 v3.1.9a (3.1.9a)
-\pgfmatrixcurrentrow=\count508
-\pgfmatrixcurrentcolumn=\count509
-\pgf@matrix@numberofcolumns=\count510
+\pgfmatrixcurrentrow=\count510
+\pgfmatrixcurrentcolumn=\count511
+\pgf@matrix@numberofcolumns=\count512
 )
-\tikz@expandcount=\count511
+\tikz@expandcount=\count513
 
 (/usr/local/texlive/2022/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
 s/tikzlibrarytopaths.code.tex
@@ -1165,23 +1177,23 @@ code.tex
 File: pgflibraryarrows.code.tex 2021/05/15 v3.1.9a (3.1.9a)
 \arrowsize=\dimen310
 )) (/usr/local/texlive/2022/texmf-dist/tex/latex/listings/listings.sty
-\lst@mode=\count512
+\lst@mode=\count514
 \lst@gtempboxa=\box73
 \lst@token=\toks49
-\lst@length=\count513
+\lst@length=\count515
 \lst@currlwidth=\dimen311
-\lst@column=\count514
-\lst@pos=\count515
+\lst@column=\count516
+\lst@pos=\count517
 \lst@lostspace=\dimen312
 \lst@width=\dimen313
-\lst@newlines=\count516
-\lst@lineno=\count517
+\lst@newlines=\count518
+\lst@lineno=\count519
 \lst@maxwidth=\dimen314
 
 (/usr/local/texlive/2022/texmf-dist/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2020/03/24 1.8d (Carsten Heinz)
-\c@lstnumber=\count518
-\lst@skipnumbers=\count519
+\c@lstnumber=\count520
+\lst@skipnumbers=\count521
 \lst@framebox=\box74
 )
 (/usr/local/texlive/2022/texmf-dist/tex/latex/listings/listings.cfg
@@ -1196,89 +1208,89 @@ Package csquotes Info: Redefining alias 'default' -> 'french'.
 (./main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 125.
-LaTeX Font Info:    ... okay on input line 125.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 125.
-LaTeX Font Info:    ... okay on input line 125.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 125.
-LaTeX Font Info:    ... okay on input line 125.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 125.
-LaTeX Font Info:    ... okay on input line 125.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 125.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 126.
+LaTeX Font Info:    ... okay on input line 126.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 126.
+LaTeX Font Info:    ... okay on input line 126.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 126.
+LaTeX Font Info:    ... okay on input line 126.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 126.
+LaTeX Font Info:    ... okay on input line 126.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 126.
 LaTeX Font Info:    Trying to load font information for TS1+cmr on input line 1
-25.
+26.
  (/usr/local/texlive/2022/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2019/12/16 v2.5j Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 125.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 125.
-LaTeX Font Info:    ... okay on input line 125.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 125.
-LaTeX Font Info:    ... okay on input line 125.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 125.
-LaTeX Font Info:    ... okay on input line 125.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 125.
-LaTeX Font Info:    ... okay on input line 125.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 125.
-LaTeX Font Info:    ... okay on input line 125.
+LaTeX Font Info:    ... okay on input line 126.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 126.
+LaTeX Font Info:    ... okay on input line 126.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 126.
+LaTeX Font Info:    ... okay on input line 126.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 126.
+LaTeX Font Info:    ... okay on input line 126.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 126.
+LaTeX Font Info:    ... okay on input line 126.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 126.
+LaTeX Font Info:    ... okay on input line 126.
 
 Package fontspec Info: Adjusting the maths setup (use [no-math] to avoid
 (fontspec)             this).
 
 \symlegacymaths=\mathgroup4
 LaTeX Font Info:    Overwriting symbol font `legacymaths' in version `bold'
-(Font)                  OT1/cmr/m/n --> OT1/cmr/bx/n on input line 125.
-LaTeX Font Info:    Redeclaring math accent \acute on input line 125.
-LaTeX Font Info:    Redeclaring math accent \grave on input line 125.
-LaTeX Font Info:    Redeclaring math accent \ddot on input line 125.
-LaTeX Font Info:    Redeclaring math accent \tilde on input line 125.
-LaTeX Font Info:    Redeclaring math accent \bar on input line 125.
-LaTeX Font Info:    Redeclaring math accent \breve on input line 125.
-LaTeX Font Info:    Redeclaring math accent \check on input line 125.
-LaTeX Font Info:    Redeclaring math accent \hat on input line 125.
-LaTeX Font Info:    Redeclaring math accent \dot on input line 125.
-LaTeX Font Info:    Redeclaring math accent \mathring on input line 125.
-LaTeX Font Info:    Redeclaring math symbol \Gamma on input line 125.
-LaTeX Font Info:    Redeclaring math symbol \Delta on input line 125.
-LaTeX Font Info:    Redeclaring math symbol \Theta on input line 125.
-LaTeX Font Info:    Redeclaring math symbol \Lambda on input line 125.
-LaTeX Font Info:    Redeclaring math symbol \Xi on input line 125.
-LaTeX Font Info:    Redeclaring math symbol \Pi on input line 125.
-LaTeX Font Info:    Redeclaring math symbol \Sigma on input line 125.
-LaTeX Font Info:    Redeclaring math symbol \Upsilon on input line 125.
-LaTeX Font Info:    Redeclaring math symbol \Phi on input line 125.
-LaTeX Font Info:    Redeclaring math symbol \Psi on input line 125.
-LaTeX Font Info:    Redeclaring math symbol \Omega on input line 125.
-LaTeX Font Info:    Redeclaring math symbol \mathdollar on input line 125.
-LaTeX Font Info:    Redeclaring symbol font `operators' on input line 125.
+(Font)                  OT1/cmr/m/n --> OT1/cmr/bx/n on input line 126.
+LaTeX Font Info:    Redeclaring math accent \acute on input line 126.
+LaTeX Font Info:    Redeclaring math accent \grave on input line 126.
+LaTeX Font Info:    Redeclaring math accent \ddot on input line 126.
+LaTeX Font Info:    Redeclaring math accent \tilde on input line 126.
+LaTeX Font Info:    Redeclaring math accent \bar on input line 126.
+LaTeX Font Info:    Redeclaring math accent \breve on input line 126.
+LaTeX Font Info:    Redeclaring math accent \check on input line 126.
+LaTeX Font Info:    Redeclaring math accent \hat on input line 126.
+LaTeX Font Info:    Redeclaring math accent \dot on input line 126.
+LaTeX Font Info:    Redeclaring math accent \mathring on input line 126.
+LaTeX Font Info:    Redeclaring math symbol \Gamma on input line 126.
+LaTeX Font Info:    Redeclaring math symbol \Delta on input line 126.
+LaTeX Font Info:    Redeclaring math symbol \Theta on input line 126.
+LaTeX Font Info:    Redeclaring math symbol \Lambda on input line 126.
+LaTeX Font Info:    Redeclaring math symbol \Xi on input line 126.
+LaTeX Font Info:    Redeclaring math symbol \Pi on input line 126.
+LaTeX Font Info:    Redeclaring math symbol \Sigma on input line 126.
+LaTeX Font Info:    Redeclaring math symbol \Upsilon on input line 126.
+LaTeX Font Info:    Redeclaring math symbol \Phi on input line 126.
+LaTeX Font Info:    Redeclaring math symbol \Psi on input line 126.
+LaTeX Font Info:    Redeclaring math symbol \Omega on input line 126.
+LaTeX Font Info:    Redeclaring math symbol \mathdollar on input line 126.
+LaTeX Font Info:    Redeclaring symbol font `operators' on input line 126.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `normal' on input line 125.
+(Font)              `operators' in the math version `normal' on input line 126.
 
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
-(Font)                  OT1/cmr/m/n --> TU/lmr/m/n on input line 125.
+(Font)                  OT1/cmr/m/n --> TU/lmr/m/n on input line 126.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `bold' on input line 125.
+(Font)              `operators' in the math version `bold' on input line 126.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
-(Font)                  OT1/cmr/bx/n --> TU/lmr/m/n on input line 125.
+(Font)                  OT1/cmr/bx/n --> TU/lmr/m/n on input line 126.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
-(Font)                  TU/lmr/m/n --> TU/lmr/m/n on input line 125.
+(Font)                  TU/lmr/m/n --> TU/lmr/m/n on input line 126.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
-(Font)                  OT1/cmr/m/it --> TU/lmr/m/it on input line 125.
+(Font)                  OT1/cmr/m/it --> TU/lmr/m/it on input line 126.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
-(Font)                  OT1/cmr/bx/n --> TU/lmr/b/n on input line 125.
+(Font)                  OT1/cmr/bx/n --> TU/lmr/b/n on input line 126.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/cmss/m/n --> TU/lmss/m/n on input line 125.
+(Font)                  OT1/cmss/m/n --> TU/lmss/m/n on input line 126.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/cmtt/m/n --> TU/lmtt/m/n on input line 125.
+(Font)                  OT1/cmtt/m/n --> TU/lmtt/m/n on input line 126.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
-(Font)                  TU/lmr/m/n --> TU/lmr/b/n on input line 125.
+(Font)                  TU/lmr/m/n --> TU/lmr/b/n on input line 126.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
-(Font)                  OT1/cmr/bx/it --> TU/lmr/b/it on input line 125.
+(Font)                  OT1/cmr/bx/it --> TU/lmr/b/it on input line 126.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/cmss/bx/n --> TU/lmss/b/n on input line 125.
+(Font)                  OT1/cmss/bx/n --> TU/lmss/b/n on input line 126.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/cmtt/m/n --> TU/lmtt/b/n on input line 125.
-Package hyperref Info: Link coloring OFF on input line 125.
+(Font)                  OT1/cmtt/m/n --> TU/lmtt/b/n on input line 126.
+Package hyperref Info: Link coloring OFF on input line 126.
 
 (/usr/local/texlive/2022/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2021-04-02 v2.47 Cross-referencing by name of section
@@ -1290,16 +1302,16 @@ Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
 ty
 Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
-\c@section@level=\count520
+\c@section@level=\count522
 )
-LaTeX Info: Redefining \ref on input line 125.
-LaTeX Info: Redefining \pageref on input line 125.
-LaTeX Info: Redefining \nameref on input line 125.
+LaTeX Info: Redefining \ref on input line 126.
+LaTeX Info: Redefining \pageref on input line 126.
+LaTeX Info: Redefining \nameref on input line 126.
  (./main.out) (./main.out)
 \@outlinefile=\write7
 \openout7 = `main.out'.
 
-LaTeX Info: Redefining \up on input line 125.
+LaTeX Info: Redefining \up on input line 126.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
@@ -1350,9 +1362,9 @@ Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'main.bbl' not found.
 
 No file main.bbl.
-Package biblatex Info: Reference section=0 on input line 125.
-Package biblatex Info: Reference segment=0 on input line 125.
-\c@lstlisting=\count521
+Package biblatex Info: Reference section=0 on input line 126.
+Package biblatex Info: Reference segment=0 on input line 126.
+\c@lstlisting=\count523
 [1
 
 \openout3 = `main.ist'.
@@ -1379,7 +1391,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 11--12
 Package lettrine.sty Info: Targeted height = 24.16246pt
 (lettrine.sty)             (for loversize=0, accent excluded),
 (lettrine.sty)             Lettrine height = 24.16241pt (M);
-(lettrine.sty)             reported on input line 190.
+(lettrine.sty)             reported on input line 191.
  [3] [4
 
 ] (./sections/intro/introduction.tex) [5] [6
@@ -1395,14 +1407,59 @@ Chapitre 1.
 
 ]
 Chapitre 2.
-(./sections/chap2/chap2.tex [5]
+(./sections/chap2/chap2.tex
+
+LaTeX Warning: Citation 'noauthor_digipal_2011' on page 5 undefined on input li
+ne 17.
+
+
+LaTeX Warning: Citation 'gabay_segmonto_2021' on page 5 undefined on input line
+ 17.
+
+
+LaTeX Warning: Citation 'muzerelle_vocabulaire_1985' on page 5 undefined on inp
+ut line 21.
+
+
+LaTeX Warning: Citation 'maniaci_terminologia_1996' on page 5 undefined on inpu
+t line 21.
+
+
+LaTeX Warning: Citation 'ostos_vocabulario_1997' on page 5 undefined on input l
+ine 21.
+
+[5]
+
+LaTeX Warning: Citation 'bobichon_lexicon_2009' on page 6 undefined on input li
+ne 25.
+
 
 LaTeX Warning: Citation 'noauthor_glossaire_2002' on page 6 undefined on input 
-line 29.
+line 25.
+
+
+LaTeX Warning: Citation 'gacek_arabic_2001' on page 6 undefined on input line 2
+5.
+
+
+Overfull \hbox (18.3732pt too wide) in paragraph at lines 25--26
+\TU/lmr/m/n/12 crire les manuscrits écrits en latin, roman, grec, hébreu, et ar
+abe. [[]]
+ []
+
+
+Overfull \hbox (42.69194pt too wide) in paragraph at lines 25--26
+\TU/lmr/m/n/12 dèles de Muzerelle et le vocabulaire codicologique en arabe d’Ad
+am Gacek. [[]] 
+ []
+
+
+LaTeX Warning: Citation 'muzerelle_caviarder_2011' on page 6 undefined on input
+ line 30.
 
 
 LaTeX Warning: Citation 'bobichon_caviarder_2011' on page 6 undefined on input 
-line 40.
+line 36.
 
 
 Overfull \hbox (0.91585pt too wide) has occurred while \output is active
@@ -1410,11 +1467,7 @@ Overfull \hbox (0.91585pt too wide) has occurred while \output is active
 TU/lmr/m/it/12 GUIDELINES SEGMONTO
  []
 
-[6] [7]
-
-LaTeX Warning: Empty bibliography on input line 82.
-
-)
+[6] [7])
 Overfull \hbox (0.91585pt too wide) has occurred while \output is active
 \TU/lmr/m/n/12 8 \TU/lmr/m/sl/12 CHAPITRE 2.  AU COMMENCEMENT, IL Y AVAIT LES \
 TU/lmr/m/it/12 GUIDELINES SEGMONTO
@@ -1450,7 +1503,7 @@ File: lstmisc.sty 2020/03/24 1.8d (Carsten Heinz)
 ] [21] [22]
 Chapitre 7.
 LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <24.88> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 233.
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 234.
 (./sections/chap7/chap7.tex
 File: sections/chap7//../../../images/full_tree.png Graphic file (type bmp)
 <sections/chap7//../../../images/full_tree.png>
@@ -1520,12 +1573,12 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 41448 strings out of 476179
- 836202 string characters out of 5809545
- 1826491 words of memory out of 5000000
- 61497 multiletter control sequences out of 15000+600000
+ 41491 strings out of 476179
+ 837375 string characters out of 5809545
+ 1858818 words of memory out of 5000000
+ 61537 multiletter control sequences out of 15000+600000
  473253 words of font info for 69 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 100i,6n,104p,1555b,5654s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 100i,6n,104p,1555b,5650s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on main.pdf (49 pages).

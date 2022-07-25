@@ -52,8 +52,9 @@
 
 
 % bibliographie
-\usepackage[backend=biber, sorting=nyt, style=enc,maxbibnames=10]{biblatex}
-\addbibresource{../bib.bib}
+\usepackage{biblatex}
+%\usepackage[backend=biber, sorting=nyt, style=enc,maxbibnames=10]{biblatex}
+\addbibresource{ref.bib}
 
 %si index, package pour index + makeindex
 
@@ -190,7 +191,7 @@
 	\lettrine{M}es remerciements vont tout d'abord à\dots
 	
 	%bibliographie ici
-	%\printbibliography
+	%\printbibliography{ref}
 	
 	\chapter{Introduction}
 	\subfile{sections/intro/introduction.tex}
