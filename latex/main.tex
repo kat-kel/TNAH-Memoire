@@ -4,36 +4,46 @@
 % !TEX TS-program = xelatex
 % !TEX spellcheck = French
 
-%package obligatoire : type de document
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			TYPE DE DOCUMENT
 \documentclass[a4paper,12pt,twoside]{book}
 
-% multi-file
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			MULTI-FILE
 \usepackage{blindtext}
 \usepackage{subfiles}
 
-% encodage
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			ENCODAGE
 \usepackage{fontspec}
+\usepackage{lettrine} % lettrines (pas obligatoire)
 
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			REFERENCES
 % le package hyperref avec des options, si en local
 \usepackage[pdfusetitle, pdfsubject ={Mémoire TNAH}, pdfkeywords={les mots-clés}]{hyperref}
-\usepackage{hyperref}
+\usepackage[backend=biber, sorting=nyt, style=enc, maxbibnames=10]{biblatex}
+\addbibresource{../ref.bib}
 
-%il faut mettre au moins une langue
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			LANGUE
 \usepackage[french]{babel}
 \usepackage{csquotes}
 
-% configurer le document selon les normes de l'école
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			ENC
 \usepackage[margin=2.5cm]{geometry} %marges
 \usepackage{setspace} % espacement qui permet ensuite de définir un interligne
 \onehalfspacing % interligne de 1.5
 \setlength\parindent{1cm} % indentation des paragraphes à 1 cm
 
-\usepackage{lettrine} % lettrines (pas obligatoire)
-
-% gloss
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			GLOSSAIRE
 \usepackage{glossaries}
 \makeglossaries
 
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			SCHEMA
 \newglossaryentry{schema}
 {
 	name=ALTO,
@@ -51,78 +61,82 @@
 \newacronym{rdf}{RDF}{Resource Description Framework}
 
 
-% bibliographie
-\usepackage{biblatex}
-%\usepackage[backend=biber, sorting=nyt, style=enc,maxbibnames=10]{biblatex}
-\addbibresource{ref.bib}
-
 %si index, package pour index + makeindex
 
-% flowchart
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			FLOW CHART
 \usepackage{tikz}
 \usetikzlibrary{shapes.geometric, arrows}
 \tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=red!30]
 \tikzstyle{arrow} = [thick,->,>=stealth]
 
-% Exemples de code
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			EXEMPLES DE CODE
 \usepackage{listings}
-\usepackage{color}
-\definecolor{codegray}{rgb}{0.5,0.5,0.5}
-\definecolor{codepurple}{rgb}{0.58,0,0.82}
-\definecolor{cyan}{rgb}{0.0,0.6,0.6}
-\definecolor{codegreen}{rgb}{0,0.6,0}
-\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+	\usepackage{color}
+	\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+	\definecolor{codepurple}{rgb}{0.58,0,0.82}
+	\definecolor{cyan}{rgb}{0.0,0.6,0.6}
+	\definecolor{codegreen}{rgb}{0,0.6,0}
+	\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
 
-\lstdefinelanguage{XML}{
-  backgroundcolor=\color{backcolour},  
-  basicstyle=\ttfamily\footnotesize,
-  morestring=[s]{"}{"},
-  morecomment=[s]{?}{?},
-  morecomment=[s]{!--}{--},
-  commentstyle=\color{codegreen},
-  moredelim=[s][\color{black}]{>}{<},
-  moredelim=[s][\color{red}]{\ }{=},
-  stringstyle=\color{blue},
-  identifierstyle=\color{codegray},
-  numberstyle=\tiny\color{codegray},
-  breakatwhitespace=false,         
-    breaklines=true,                 
-    captionpos=b,                    
-    keepspaces=true,                 
-    numbers=left,                    
-    numbersep=5pt,                  
-    showspaces=false,                
-    showstringspaces=false,
-    showtabs=false,                  
-    tabsize=2
-}
+	\lstdefinelanguage{XML}{
+  	backgroundcolor=\color{backcolour},  
+  	basicstyle=\ttfamily\footnotesize,
+  	morestring=[s]{"}{"},
+  	morecomment=[s]{?}{?},
+  	morecomment=[s]{!--}{--},
+  	commentstyle=\color{codegreen},
+  	moredelim=[s][\color{black}]{>}{<},
+  	moredelim=[s][\color{red}]{\ }{=},
+  	stringstyle=\color{blue},
+  	identifierstyle=\color{codegray},
+  	numberstyle=\tiny\color{codegray},
+  	breakatwhitespace=false,         
+    	breaklines=true,                 
+    	captionpos=b,                    
+    	keepspaces=true,                 
+    	numbers=left,                    
+    	numbersep=5pt,                  
+    	showspaces=false,                
+    	showstringspaces=false,
+    	showtabs=false,                  
+    	tabsize=2
+	}
 
-% Code listing style "json"
-\lstdefinestyle{json}{
-  backgroundcolor=\color{backcolour}, 
-  basicstyle=\ttfamily\footnotesize,
-  commentstyle=\color{codegreen},
-  numberstyle=\tiny\color{codegray},
-  basicstyle=\ttfamily\footnotesize,
-  breakatwhitespace=false,         
-  breaklines=true,                 
-  captionpos=b,                    
-  keepspaces=true,                 
-  numbers=left,                    
-  numbersep=5pt,                  
-  showspaces=false,                
-  showstringspaces=false,
-  showtabs=false,                  
-  tabsize=2
-}
+	\lstdefinestyle{json}{
+  	backgroundcolor=\color{backcolour}, 
+  	basicstyle=\ttfamily\footnotesize,
+  	commentstyle=\color{codegreen},
+  	numberstyle=\tiny\color{codegray},
+  	basicstyle=\ttfamily\footnotesize,
+  	breakatwhitespace=false,         
+  	breaklines=true,                 
+  	captionpos=b,                    
+  	keepspaces=true,                 
+  	numbers=left,                    
+  	numbersep=5pt,                  
+  	showspaces=false,                
+  	showstringspaces=false,
+  	showtabs=false,                  
+  	tabsize=2
+	}
 
-% images
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			IMAGES
 \usepackage{graphicx}
 
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			AUTEUR.RICE & TITRE
 \author{Kelly Christensen}
 \title{Modélisation des transcriptions ALTO avec la TEI}
 
-%%% DOCUMENT %%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			DOCUMENT
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
 	\begin{titlepage}
 		\begin{center}
@@ -181,7 +195,8 @@
 	\thispagestyle{empty}	
 	\cleardoublepage
 	
-	%%% FRONT MATTER %%%
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			FRONT MATTER
 	\frontmatter
 	
 	\chapter{Résumé}
@@ -199,10 +214,12 @@
 	\thispagestyle{empty}
 	\cleardoublepage
 	
-	%%% MAIN MATTER %%%
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			MAIN MATTER
 	\mainmatter
 	
-	%%% PARTIE I. %%%
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			PARTIE I.
 	\part{Présentation du projet}
 	
 	\chapter{Qu'est-ce que l'HTR ?}
@@ -214,8 +231,8 @@
 	\chapter{Le rêve du projet \textit{Gallic(orpor)a}}
 	\subfile{sections/chap3/chap3.tex}
 	
-	
-	%%% PARTIE II. %%%
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			PARTIE II.
 	\part{Exposition de la préparation et du travail d'analyse}
 
 	\chapter{Un pipeline visant à tout rassembler}
@@ -227,8 +244,8 @@
 	\chapter{À la recherche des métadonnées}
 	\subfile{sections/chap6/chap6.tex}
 	
-
-	%%% PARTIE III. %%%
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			PARTIE III.
 	\part{Mise en opérationnelle du projet}
 	
 	\chapter{La génération du \texttt{<teiHeader>}}
@@ -245,25 +262,32 @@
 	
 	\addcontentsline{toc}{chapter}{Conclusion}
 	
-	%les annexes
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			ANNEXES
 	\appendix
 	\chapter{Données}
 	\subfile{sections/data/data.tex}
 	
 	\backmatter
 
-% index à mettre ici si index	
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			INDEX
 %	\printindex
 
-%glossaire si glossaire
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			GLOSSAIRE
 	\printglossaries
 
-% si figures
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			FIGURES
 	\listoffigures
 
-%si tables
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			TABLES
 	\listoftables
 
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			TABLE DE MATIERES
 	\tableofcontents
 	
 \end{document}
