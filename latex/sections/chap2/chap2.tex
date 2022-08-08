@@ -1,84 +1,99 @@
+% PREAMBULE
+% !BIB TS-program = biber
+% !TEX TS-program = xelatexmk
+% ITEX TS-program = latex
+% !TEX spellcheck = French
+
 \documentclass[class=article, crop=false]{standalone}
 \usepackage[subpreambles=true]{standalone}
 \usepackage{import}
 \usepackage{blindtext}
+\usepackage{fontspec}
+\usepackage[french]{babel}
 \usepackage{csquotes}
+\usepackage{url}
 
 %%%%%%%%%%%%%%%%%%%%%%%%
 %			REFERENCES
 % le package hyperref avec des options, si en local
 \usepackage[pdfusetitle, pdfsubject ={Mémoire TNAH}, pdfkeywords={les mots-clés}]{hyperref}
-\usepackage[backend=biber, sorting=nyt, style=enc, maxbibnames=10]{biblatex}
-\addbibresource{../../../ref.bib}
+\usepackage[backend=biber, sorting=nyt, style=verbose-ibid]{biblatex}
+\addbibresource{../../../bib.bib}
 
-\usepackage{url}
 \begin{document}
 	
 \section{La problématique}
+Un manuscrit se définit par ses moyens de création. Étant rédigé à la main, souvent avant la croissance de l'imprimerie, un manuscrit est un objet singulier dans le monde. Il est vrai que d'autres ressources peuvent présenter le même texte, les mêmes images, ou bien la même musique que présent un manuscrit. Cependant, un manuscrit n'a pas d'autre exemplaire. Ses contenus sont réalisés par et se répandent dans sa constitution matérielle particulière. Un manuscrit est unique avec son écriture, parfois de plusieurs mains, ses fautes d'écriture, ses parties abîmées, décorées, ou révisées, sa provenance et son histoire en tant qu'objet rare qui se transfère entre des individus, des familles, et des organisations. De plus, chaque propriétaire peut encore modifier la ressource en ajoutant ou retirant des pages, en corrigeant ou blâmant du texte ou des images, ainsi qu'en changeant la reliure et les informations portant sur l'édition.
 
-...
+Pour étudier un manuscrit, il faut donc développer un vocabulaire qui sait décrire les divers aspects de l'objet composé. Après tout, le pouvoir de bien définir les termes d'une étude est à la base de l'analyse. Sans un vocabulaire bien élaboré et cohérent, les arguments d'une chercheuse ou d'un chercheur ne seront pas compréhensibles. L'harmonisation d'un vocabulaire est encore plus importante eu égard à la communication des découverts et à la collaboration entre plusieurs personnes, surtout si elles ont des spécialités différentes. Ces deux activités, la communication et la collaboration, sont fondamentales à la recherche et exigent donc l'élaboration d'un vocabulaire cohérent pour décrire des manuscrits.
+
+Voici les défis lexicographiques de l'étude des manuscrits et voici l'un des obstacles que le projet \textit{Gallic(orpor)a} a essayé de franchir. Imaginons, par exemple, qu'on veut décrire le texte principal qui se trouve sur la page d'un document. On peut y appliquer l'étiquette descriptive \textit{Main Zone} ou bien \textit{Principal Text}. En lisant des articles scientifiques où chacun utilise une étiquette différente, un humain arriverait à reconnaître que les étiquettes différentes parlent de la même partie de la page. Mais pour un outil informatique, si la même région d'une page ne porte pas la même étiquette, il n'arriverait pas à les associer sans être instruit à chercher plusieurs versions du même concept. Dans ce cas, l'analyse serait trop compliquée à effectuer à l'échelle. C'est ainsi que la description des manuscrits est importante au projet \textit{Gallic(orpor)a}. Le projet \textit{Gallic(orpor)a} cherchait donc à profiter d'un vocabulaire bien élaboré et cohérent, qui pourrait décrire soit les manuscrits, soit les imprimés historiques. Il y avait plusieurs projets qui avaient cherché à répondre à cette problématique, mais celui que le projet \textit{Gallic(orpor)a} a choisi est le vocabulaire du projet \textit{SegmOnto}.
 
 \section{Les solutions proposées}
 
-Plusieurs projets avaient proposé des solutions au manque de cohérence dans la manière par laquelle la communauté scientifique caractérise les composants d'un texte numérisé. Hors de la France, les vocabulaires codicologiques ont été élaborés notamment en anglais pour les manuscrits médiévaux. Un exemple important est la base de données DigiPal (Digital Resource and Database of Palaeography, Manuscripts and Diplomatic), qui n'est plus mis à jour mais qui a été développé au sein du département des humanités numériques à King's College London. ~\cite{noauthor_digipal_2011} L'un de ses auteurs, Peter Stokes, travaille actuellement en France et continue dans la même veine en collaborant avec des chercheurs français sur le projet \textit{SegmOnto}.~\cite{gabay_segmonto_2021} Avant la création des \textit{guidelines} de \textit{SegmOnto}, le développement des vocabulaires codicologiques en France était toujours basé sur le modèle de Denis Muzerelle et son \textit{Vocabulaire codicologique}, que nous expliquons prochainement.
+Plusieurs projets avaient proposé des solutions quant à la description normalisée des manuscrits. Hors de la France, les vocabulaires ont été élaborés notamment en anglais et pour les manuscrits médiévaux. Un exemple important est la base de données \textit{DigiPal} (Digital Resource and Database of Palaeography, Manuscripts and Diplomatic), qui n'est plus mis à jour mais qui a été développé au sein du département des humanités numériques à King's College London. ~\autocite{DigiPalDigitalResource2011} L'un de ses auteurs, Peter Stokes, travaille actuellement en France et continue dans la même veine en contribuant au projet \textit{SegmOnto} qui était développé dans un environnement francophone, même si son vocabulaire est rédigé en anglais.~\autocite{gabaySegmOnto2021} Mais le projet \textit{SegmOnto} n'est pas le premier projet français qui a essayé d'élaborer un lexique pour les documents historiques. Ni est le projet \textit{DigiPal} le premier en Europe. Avant leur création, la codicologie en France et en Europe suivait le modèle de Denis Muzerelle et son \textit{Vocabulaire codicologique}, que nous expliquons prochainement.
 
 \subsection{Le Vocabulaire international de la codicologie}
 
-En 1985, Denis Muzerelle a conçu un vocabulaire codicologique qui avait pour but de fournir des médiévistes avec des termes uniformes pouvant décrire les aspects d'un manuscrit.~\cite{muzerelle_vocabulaire_1985} Depuis l'apparition de son vocabulaire en français, des autres chercheurs sont venus pour adapter les termes de Muzerelle en d'autres langues. Marilena Maniaci a publié une version du \textit{Vocabulaire codicologique} pour l'italien en 1996.~\cite{maniaci_terminologia_1996} Pilar Ostos, Luisa Pardo, et Elena Rodríguez en ont créé un pour l'espagnol l'année suivante.~\cite{ostos_vocabulario_1997} Parfois appelé le \textit{Vocabulaire international de la codicologie}, l'édition multilingue du \textit{Vocabulaire codicologique} que Muzerelle a commencé en 1985 était maintenue jusqu'à l'édition d'une version 1.1. en 2002-2003.~(besoin de citation)
+En 1985, Denis Muzerelle a conçu un vocabulaire codicologique qui avait pour but de fournir des médiévistes avec des termes uniformes pouvant décrire les aspects d'un manuscrit.~\autocite{muzerelleVocabulaireCodicologiqueRepertoire1985} Depuis l'apparition de son vocabulaire en français, des autres chercheurs sont venus pour adapter les termes de Muzerelle en d'autres langues. Marilena Maniaci a publié une version du \textit{Vocabulaire codicologique} pour l'italien en 1996.~\autocite{maniaciTerminologiaLibroManoscritto1996} Pilar Ostos, Luisa Pardo, et Elena Rodríguez en ont créé un pour l'espagnol l'année suivante.~\autocite{ostosVocabularioCodicologIaVersion1997} Parfois appelé le \textit{Vocabulaire international de la codicologie}, l'édition multilingue du \textit{Vocabulaire codicologique} que Muzerelle a commencé en 1985 était maintenue jusqu'à l'édition d'une version 1.1. en 2002-2003.~(besoin de citation)
 
 \subsection{La Codicologia}
 
-Aujourd'hui, la paléographie et l'étude des manuscrits peuvent profiter de l'application web \textit{Codicologia} qui réunit le \textit{Vocabulaire codicologique} ainsi que deux autres bases de données similaires: le projet multilingue \textit{Lexicon} et le \textit{Glossaire codicologique arabe}. Ses trois bases de données spécialisent dans divers écritures. Comme précisé avant, le \textit{Vocabulaire codicologique} fournit une liste de termes en français, italien, espagnol, et anglais. Piloté par Philippe Bobichon, le projet \textit{Lexicon} présente un vocabulaire en français pour décrire les manuscrits écrits en latin, roman, grec, hébreu, et arabe.~\cite{bobichon_lexicon_2009} Un vocabulaire spécialisé plus profondément pour l'arabe est élaboré dans le \textit{Glossaire codicologique arabe} d'Anne-Marie Eddé et Marc Geoffroy.~\cite{noauthor_glossaire_2002} Ce dernier a été conçu au sein de l'Institut de recherche et d'histoire des textes après les modèles de Muzerelle et le vocabulaire codicologique en arabe d'Adam Gacek.~\cite{gacek_arabic_2001}
+Aujourd'hui, la paléographie et l'étude des manuscrits peuvent profiter de l'application web \textit{Codicologia} qui réunit le \textit{Vocabulaire codicologique} ainsi que deux autres bases de données similaires: le projet multilingue \textit{Lexicon} et le \textit{Glossaire codicologique arabe}. Ses trois bases de données spécialisent dans divers écritures. Le \textit{Vocabulaire codicologique} a été développé pour les manuscrits de l'écriture latin. Piloté par Philippe Bobichon, le projet \textit{Lexicon} présente un vocabulaire en français pour décrire les manuscrits écrits en latin, roman, grec, hébreu, et arabe.~\autocite{bobichonLexiconMisePage2009} Un vocabulaire spécialisé plus profondément pour l'arabe a été élaboré dans le \textit{Glossaire codicologique arabe} d'Anne-Marie Eddé et Marc Geoffroy.~\autocite{GlossaireCodicologiqueFrancaisarabe2002} Ce dernier a été conçu au sein de l'Institut de recherche et d'histoire des textes après les modèles de Muzerelle et le vocabulaire codicologique en arabe d'Adam Gacek.~\autocite{gacekArabicManuscriptTradition2001}
 
 L'application web \textit{Codicologia} rassemblent ces projets et présente un vocabulaire bien étendu. Par exemple, \textit{Codicologia} fournit 15 termes pour décrire une faute d'écriture dans un manuscrit. Certains de ses termes possèdent eux-même plusieurs définitions que les divers bases de données fournissent. Le terme \textit{caviarder}, par exemple, a une définition courte dans le vocabulaire français de Muzerelle. 
 
 \begin{displayquote}
-Supprimer un mot, un passage..., en le recouvrant largement d'encre, de façon à ce qu'il ne puisse être lu.~\cite{muzerelle_caviarder_2011}
+Supprimer un mot, un passage..., en le recouvrant largement d'encre, de façon à ce qu'il ne puisse être lu.~\autocite{muzerelleCaviarder2011}
 \end{displayquote}
 
-\noindent Selon le \texttt{Lexicon} de Bibichon, par contre, le \textit{caviarder} se définit d'une manière plus détaillé et vise à expliquer l'étymologie du mot afin de préciser son usage dans le cadre des manuscrits des divers écritures.
+\noindent Selon le \textit{Lexicon} de Bibichon, par contre, le \textit{caviarder} se définit d'une manière plus détaillé et vise à expliquer l'étymologie du mot afin de préciser son usage dans le cadre des manuscrits des divers écritures.
 
 \begin{displayquote}
-Le mot apparaît en 1907 (noircir à l'encre) : il désigne alors un procédé appliqué par la censure russe, sous Nicolas Ier. Dans certains manuscrits grecs, le détail rempli d'encre est surmonté d'un point et d'un trait court destinés à le neutraliser. Ce procédé est très souvent utilisé parmi d'autres, pour la censure des manuscrits hébreux effectué sous l'autorité de l'inquisition, en Italie, à la fin du xvie siècle et au début du xviie.~\cite{bobichon_caviarder_2011}
+Le mot [\textit{caviarder}] apparaît en 1907 (noircir à l'encre) : il désigne alors un procédé appliqué par la censure russe, sous Nicolas Ier. Dans certains manuscrits grecs, le détail rempli d'encre est surmonté d'un point et d'un trait court destinés à le neutraliser. Ce procédé est très souvent utilisé parmi d'autres, pour la censure des manuscrits hébreux effectué sous l'autorité de l'inquisition, en Italie, à la fin du xvie siècle et au début du xviie.~\autocite{bobichonCaviarder2011}
 
 
 \end{displayquote}
 
 \noindent Étant élaboré à partir d'un corpus très diversifié, le \textit{Lexicon} de Bibichon a moins de termes qu'a le \textit{Vocabulaire codicologique} mais ses termes sont plus généralisés. Le vocabulaire de Muzerelle, par contre, fait plus de distinctions entre les aspects d'un manuscrit et donc a plus de termes distincts par rapport aux deux autres vocabulaires de l'application \textit{Codicologia}.
 
-En réunissant les trois bases de données, sans privilégier aucun, \textit{Codicologia} présente un vocabulaire codicologique vraiment vaste. Cependant, l'application \textit{Codicologia}, comme toutes ses bases de données, vise à répondre au manque de cohérence dans la manière par laquelle la communauté scientifique décrit les manuscrits. Le grandeur de son vocabulaire pose un problème à cet objectif. Ayant plus de deux milles termes en français---certains d'entre eux ont eux-même plusieurs définitions---la solution proposée par \textit{Codicologia} livre un vocabulaire bien harmonisé et documenté mais trop étendu pour être appliqué à l'échelle dans une approche informatique. Sans un corpus d'entraînement gigantesque, qui couterait une somme énorme, l'apprentissage automatique ne peut pas faire de distinction au niveau des termes conçus par Muzerelle et les autres auteurs des bases de données de \textit{Codicologia}. Aujourd'hui, un modèle ne peut pas s'entraîner sur des milles des étiquettes possibles et arriver à distinguer entre, par exemple, 15 types de faute d'écriture. Un humaine peut le faire, et pour cette raison les bases de données de \textit{Codicologia} sont utiles. Mais leurs vocabulaires ne conviennent pas bien à une approche informatique.  
+En réunissant les trois bases de données, sans privilégier aucun, \textit{Codicologia} présente un vocabulaire codicologique vraiment vaste. Cependant, l'application \textit{Codicologia}, comme toutes ses bases de données, vise à répondre au manque de cohérence dans la manière par laquelle la communauté scientifique décrit les manuscrits. Le grandeur de son vocabulaire pose un problème à cet objectif. Ayant plus de deux milles termes en français---certains d'entre eux ont eux-même plusieurs définitions---la solution proposée par \textit{Codicologia} livre un vocabulaire bien harmonisé et documenté mais trop étendu pour être appliqué à l'échelle dans une approche informatique.
+
+Sans un corpus d'entraînement gigantesque, qui couterait une somme énorme, l'apprentissage automatique ne peut pas faire de distinction au niveau des termes conçus par Muzerelle et les autres auteurs des bases de données de \textit{Codicologia}. Aujourd'hui, un modèle ne peut pas s'entraîner sur des milles des étiquettes possibles et arriver à distinguer entre, par exemple, 15 types de faute d'écriture. Un humaine peut le faire, et pour cette raison les bases de données de \textit{Codicologia} sont utiles. Mais leurs vocabulaires ne conviennent pas bien à une approche informatique.  
 
 \section{Les \textit{guidelines} de \textit{SegmOnto}}
 
-Le projet \textit{SegmOnto} propose un vocabulaire plus petit et pourtant peut décrire une grande diversité de documents historiques, y compris les manuscrits et les imprimés. Cet objectif est encore plus compliqué à achever qu'un vocabulaire spécialisé aux manuscrits. Décrire les documents d'une diachronie longue, et sans préférence d'une écriture en particulier, exige un équilibre délicat entre la généralité et la particularité. Les \textit{guidelines} du projet \textit{SegmOnto} essaient de limiter le nombre de termes dans son vocabulaire sans priver un terme d'une identité distincte. Les \textit{guidelines} se divisent en deux catégories génériques : les régions ou ``zones'' d'une page et les lignes de texte ou d'écriture sur la page. Chaque catégorie se compose d'une liste des étiquettes, chacune de lesquels cherche à parvenir à l'équilibre. Une étiquette devrait pouvoir être appliquée à soit un manuscrit, soit un imprimé, de peu importe quelle langue et quelle écriture.
+Le projet \textit{SegmOnto} propose un vocabulaire plus petit qui peut pourtant décrire une grande diversité de documents historiques, y compris les manuscrits et les imprimés. Cet objectif est encore plus compliqué à achever qu'un vocabulaire spécialisé aux manuscrits. Décrire les documents d'une diachronie longue, et sans préférence d'une écriture en particulier, exige un équilibre délicat entre la généralité et la particularité. Pour y arriver, les \textit{guidelines} du projet \textit{SegmOnto} limite le nombre de termes dans son vocabulaire, sans en priver aucun d'une identité distincte.
+
+Les \textit{guidelines} se divisent en deux catégories~: les \og~zones~\fg{} et les \og~lines~\fg{}. La première parle des régions sur la page, y compris les régions de texte et les régions sans texte, tel qu'une image. Pour la plupart de temps, la catégorie de la ligne veut décrire les différents types de lignes de texte. Mais une ligne du vocabulaire \textit{SegmOnto} peut aussi tracer la ligne d'une partition musicale ou une ligne réelle sur la page qui n'oriente pas des autres systèmes d'écriture, telle qu'une ligne qui divise la page en deux. Chacune de ces deux catégories se compose d'une liste des étiquettes, et chacune d'elles cherche à parvenir à l'équilibre entre la généralité et la particularité. Une étiquette devrait pouvoir être appliquée à soit un manuscrit, soit un imprimé, de peu importe quelle langue et quelle écriture.
 
 \subsection{Les zones}
 \begin{itemize}
-\item CustomZone
-\item DamageZone
-\item DecorationZone
-\item DigitizationArtefact
-\item DropCapitalZone
-\item MainZone
-\item MarginTextZone
-\item MusicZone
-\item NumberingZone
-\item QuireMarksZone
-\item RunningTitleZone
-\item SealZone
-\item StampZone
-\item TableZone
-\item TitlePageZone
+\item \textbf{CustomZone}~: une zone qui ne convient pas à aucune d'autres catégories de zone.
+\item \textbf{DamageZone}~: une zone qui contient des marques de dégâts sur le document source, tel qu'un trou.
+\item \textbf{DecorationZone}~: une zone qui contient un élément graphique, y compris de la peinture et les petits dessins dans la marge de la page.
+\item \textbf{DigitizationArtefactZone}~: une zone qui contient un item qui n'appartient pas au document source mais est lié au processus de la numérisation, tel qu'une règle pour montrer la mesure du document. 
+\item \textbf{DropCapitalZone}~: une zone qui contient une initiale ; l'initiale peut prendre l'espace de plusieurs lignes de texte ou porter une décoration importante, tel que de l'historicisation, l'ornementation, ou des dessins.
+\item \textbf{MainZone}~: une zone qui contient le texte principal du document source.
+\item \textbf{MarginTextZone}~: une zone qui contient le texte dans la marge du document source.
+\item \textbf{MusicZone}~: une zone qui contient une partition musicale.
+\item \textbf{NumberingZone}~: une zone qui contient des numéros de page, y compris les numéros rédigés en chiffres romans.
+\item \textbf{QuireMarksZone}~: une zone qui contient des notes en bas page destinées à la fabrication du document source pour garder les pages dans le bon ordre.
+\item \textbf{RunningTitleZone}~: une zone qui contient une version du titre du document ou d'une section du document qui se trouve en tête de la page.
+\item \textbf{SealZone}~: une zone qui contient un sceau sur le document source.
+\item \textbf{StampZone}~: une zone qui contient l'empreint d'un tampon sur le document source.
+\item \textbf{TableZone}~: une zone qui contient une table. 
+\item \textbf{TitlePageZone}~: une zone souvent sur l'une des premières pages du document source qui contient toutes les informations concernant le titre et l'édition du document.
 \end{itemize}
 
 \subsection{Les lignes}
 \begin{itemize}
-\item CustomList
-\item DefaultLine
-\item DropCapitalLine
-\item HeadingLine
-\item InterlinearLine
-\item MusicLine
+\item \textbf{CustomLine}~: une ligne qui ne convient pas à aucune d'autres catégories de ligne.
+\item \textbf{DefaultLine}~: une ligne qui contient du texte attendu dans la zone.
+\item \textbf{DropCapitalLine}~: une ligne qui contient l'initiale. 
+\item \textbf{HeadingLine}~: une ligne qui contient le texte d'un titre, tel que celui d'une section ou d'un chapitre.
+\item \textbf{InterlinearLine}~: une ligne qui traverse la page pour marquer une limite.
+\item \textbf{MusicLine}~: une ligne de la portée d'une partition.
 \end{itemize}
 	
 \end{document}

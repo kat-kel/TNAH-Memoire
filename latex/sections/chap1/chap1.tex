@@ -1,38 +1,402 @@
+% PREAMBULE
+
+% !BIB TS-program = biber
+% !TEX TS-program = xelatexmk
+% ITEX TS-program = latex
+
+% !TEX spellcheck = French
+
 \documentclass[class=article, crop=false]{standalone}
 \usepackage[subpreambles=true]{standalone}
 \usepackage{import}
 \usepackage{blindtext}
+\usepackage{fontspec}
+\usepackage[french]{babel}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{csquotes}
+\usepackage{url}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			REFERENCES
+% le package hyperref avec des options, si en local
+\usepackage[pdfusetitle, pdfsubject ={Mémoire TNAH}, pdfkeywords={les mots-clés}]{hyperref}
+\usepackage[backend=biber, sorting=nyt, style=verbose-ibid]{biblatex}
+\addbibresource{../../../bib.bib}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			GLOSSAIRE
+\usepackage[acronym]{glossaries}
+\makeglossaries
+\newglossaryentry{htr}
+{
+    name=Handwritten Text Recognition,
+    description={La reconnaissance du texte écrit sur une image numérique}
+}
+\newacronym{HTR}{HTR}{Handwritten Text Recognition}
+
+\newglossaryentry{ocr}
+{
+    name=Optical Character Recognition,
+    description={La reconnaissance des polices du texte sur une image numérique}
+}
+\newacronym{OCR}{OCR}{Optical Character Recognition}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			DIAGRAM
+\usepackage{tikz}
+\usetikzlibrary{calc, matrix}
+\usepackage{pgfplots}
+\usepackage{array}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%	       ~~~ DOCUMENT ~~~
 \begin{document}
 
-\section{L'objectif de l'HTR}
-	
-Décrire les enjeux de la reconnaissance automatiques des caractères de texte sur une image. Donner des exemples de cette tâche avec une petite figure qui montre le processus.
+\pgfplotstableread[row sep=\\,col sep=&]{
+    interval	& count \\
+    0.33	& 7  \\
+    0.53	& 5   \\
+    0.66	& 1 \\
+    0.86	& 4  \\
+    0.99	& 6 \\
+    1.00	& 12  \\
+    }\mydata
 
-\begin{figure}[h!]
+Qu'est-ce qu'est l'\textit{\Gls{htr}} ou, traduit en français, la reconnaissance du texte écrit à la main ? L'\textit{\acrlong{HTR}} (\acrshort{HTR}) est l'un des meilleurs approches aujourd'hui à prédire du texte à partir d'une image numérique. Pour expliquer comment l'\acrshort{HTR} se réalise, il faut exposer en premier temps qu'est-ce qu'une image numérique. En sachant à quoi ressemble la saisie d'un logiciel \acrshort{HTR}, qui fait la prédiction du texte sur l'image, on comprend mieux le défi dont s'occupaient des chercheurs pendant près d'un siècle.
+
+\section{Les objectifs de l'HTR}
+\subsection{Le contour}
+L'un des objectifs de l'\acrshort{HTR} est d'imiter l'œil humain et reconnaître les lignes et les points d'une écriture sur une image numérisée du texte. Une image numérique se compose d'un quadrillage des carrés qui s'appellent des pixels. Venant de l'anglais, le mot pixel veut dire \textit{picture element} et il décrit l'élément le plus minimal d'une image numérique. Les pixels sont stockés dans un format \textit{bitmap} ou BMP et chaque pixel peut compter 1 bit, 4 bits, 8 bits, ou 24 bits selon l'encodage de l'image. Quelque soit l'encodage, chaque pixel n'a qu'une seule couleur. Vu ensemble, un groupe de pixels peut donner l'impression des courbes d'un objet ou d'un caractère. L'exemple de figure~\ref{fig:pixel1} pourrait donc montrer la diagonale de la lettre \og{}A~\fg{} écrite en crayon rouge.
+
+\definecolor{5}{RGB}{255,0,0} % 5
+\definecolor{4}{RGB}{255,75,75} % 4
+\definecolor{3}{RGB}{255,125,125} % 3
+\definecolor{2}{RGB}{255,200,200} % 2
+\definecolor{1}{RGB}{255,250,250} % 1
+
+\begin{figure}[hbt!]
 \centering
-\begin{tikzpicture}[node distance=10cm]
-\node (start) [startstop] {Pixels};
-\node (stop) [startstop, right of=start] {Unicode};
-\draw [arrow] (start) --node {OCR} (stop);
+\begin{tikzpicture}[element/.style={minimum width=0.5cm,minimum height=0.5cm}]
+\matrix[
+	matrix of nodes,
+	nodes={element}, 
+	column sep=-\pgflinewidth, 
+	row sep=-\pgflinewidth]
+{
+|[draw]| & 		|[draw]| & 		|[draw,fill=1]| & 		|[draw,fill=5]| & 		|[draw,fill=1]| \\
+|[draw]| & 		|[draw]| & 		|[draw,fill=4]| & 		|[draw,fill=4]| & 		|[draw,fill=5]| \\
+|[draw]| & 		|[draw,fill=1]| & 	|[draw,fill=5]| & 		|[draw,fill=2]| & 		|[draw,fill=5]| \\
+|[draw]| & 		|[draw,fill=5]| & 	|[draw,fill=4]| & 		|[draw,fill=1]| & 		|[draw,fill=4]| \\
+|[draw,fill=1]| &	|[draw,fill=5]| & 	|[draw,fill=2]| & 		|[draw]| & 			|[draw,fill=2]| \\
+|[draw,fill=3]| & 	|[draw,fill=4]| & 	|[draw,fill=1]| & 		|[draw]| & 			|[draw]| \\
+|[draw,fill=5]| & 	|[draw,fill=2]| & 	|[draw]| & 			|[draw]| & 			|[draw]| \\
+};
 \end{tikzpicture}
-\caption{figure}
+\caption{Une couleur per pixel}
+\label{fig:pixel1}
 \end{figure}
 
-\section{L'histoire et l'évolution de la technologie}
+Un scanner encode l'image en décomposant une image en les unités de pixel et en donnant à chaque pixel un tableau de trois entiers. (cf.~Figure~\ref{fig:pixel2}) Le premier entier qui se trouve dans la donnée tripartite d'un pixel déclare le degré de la couleur rouge à rendre dans la carré. Le deuxième entier déclare le degré de la couleur vert et le troisième de la couleur bleu. En visionnant de loin un groupe de ces carrés, l'œil humain arrive à distinguer les formes. L'\acrshort{HTR} vise à reproduire le même résultat et reconnaître les points contiguës d'un caractère. 
 
-Décrire l'évolution de cette technologie, en commençant avec l'OCR.
-	
-\section{Les deux approches actuelles}
-	
-Expliquer qu'il y a actuellement deux approches : OCR et HTR.
+\begin{figure}[hbt!]
+\centering
+\begin{tikzpicture}
+[element/.style={
+			minimum width=1.8cm,
+			minimum height=1.8cm}]
+\matrix[
+	matrix of nodes,
+	nodes={element}, 
+	column sep=-\pgflinewidth, 
+	row sep=-\pgflinewidth]
+{
+% 5 = 255,0,0
+% 4 = 255,75,75
+% 3 = 255,125,125
+% 2 = 255,200,200
+% 1 = 255,250,250
+% 0 = 255,255,255
+|[draw]|\scriptsize{255,255,255} & 	|[draw]|\scriptsize{255,255,255} & 		|[draw,fill=1]|\scriptsize{255,250,250} & 	|[draw,fill=5]|\scriptsize{255,0,0} & 			|[draw,fill=1]|\scriptsize{255,250,250} \\
+|[draw]|\scriptsize{255,255,255} & 	|[draw]|\scriptsize{255,255,255} & 		|[draw,fill=4]|\scriptsize{255,75,75} & 		|[draw,fill=4]|\scriptsize{255,75,75} & 			|[draw,fill=5]|\scriptsize{255,0,0} \\
+|[draw]|\scriptsize{255,255,255} & 	|[draw,fill=1]|\scriptsize{255,250,250} & 	|[draw,fill=5]|\scriptsize{255,0,0} & 		|[draw,fill=2]|\scriptsize{255,200,200} & 		|[draw,fill=5]|\scriptsize{255,0,0} \\
+|[draw]|\scriptsize{255,255,255} & 	|[draw,fill=5]|\scriptsize{255,0,0} & 		|[draw,fill=4]|\scriptsize{255,75,75} & 		|[draw,fill=1]|\scriptsize{255,250,250} & 		|[draw,fill=4]|\scriptsize{255,75,75} \\
+|[draw,fill=1]|\scriptsize{255,250,250} &|[draw,fill=5]|\scriptsize{255,0,0} & 		|[draw,fill=2]|\scriptsize{255,200,200} & 	|[draw]|\scriptsize{255,255,255} & 			|[draw,fill=2]|\scriptsize{255,200,200} \\
+|[draw,fill=3]|\scriptsize{255,125,125} & |[draw,fill=4]|\scriptsize{255,75,75} & 	|[draw,fill=1]|\scriptsize{255,250,250} & 	|[draw]|\scriptsize{255,255,255}& 			|[draw]|\scriptsize{255,255,255} \\
+|[draw,fill=5]|\scriptsize{255,0,0} & 	|[draw,fill=2]|\scriptsize{255,200,200} & 	|[draw]|\scriptsize{255,255,255} & 		|[draw]|\scriptsize{255,255,255} & 			|[draw]|\scriptsize{255,255,255} \\
+};
+\end{tikzpicture}
+\caption{Donnée tripartite portant sur le degré du rouge, du vert, et du bleu}
+\label{fig:pixel2}
+\end{figure}
 
-\subsection{L'OCR}
+\subsection{Le masque}
+L'autre objectif de l'\acrshort{HTR} est de distinguer les limites et regrouper les composants d'un caractère. Même si un modèle \acrshort{HTR} arrivait à reconnaître toutes les lignes de la lettre \textit{A}, il n'arriverait pas pourtant à reconnaître que les lignes se constituent un caractère sans les rassembler et classifier comme un objet contiguë. Il faut donc tracer la limite d'un caractère dans une entité qui s'appelle un \og{}masque\fg{}.\autocite{coquenetHandwrittenTextRecognition2021}
 
-Expliquer comment cette technologie plus ancienne compte sur les polices des caractères et a besoin des technologies de traitement automatique des langues.
+\subsection{Allier les deux objectifs}
+Un modèle \acrshort{HTR} doit donc réaliser ces deux objectifs~: identifier les contours d'un caractère et se rende compte que ces points contiguës constituent un objet contiguë. Cet objet contiguë permet au modèle reconnaître du texte. La reconnaissance du texte n'est pas de magie. Elle compte sur la constitution des objets ou des \textit{masques} à partir des pixels. Le modèle \acrshort{HTR} traite ces objets comme des matrices, qui s'expliquera prochainement, et peut donc réaliser des calculs qui lui permet prédire du texte.
 
-\subsection{L'HTR}
+\section{Les origines de l'HTR}
+L'\textit{\acrlong{HTR}} a évolué à partir de l'\textit{\Gls{ocr}}. Les origines de cette dernière méthode atteignent jusqu'au dix-neuvième siècle. Mais les progrès les plus importants à la technologie éventuelle dont le projet \textit{Gallic(orpor)a} profite ont eu lieu il y a plus qu'un demi-siècle aux États-Unis. Le développement des logiciels \acrshort{OCR} a été réalisé dans le cadre de l'amélioration du traitement en masse des données numérisées. Dans les années soixante, ce besoin de gérer et traiter des quantités vastes de données s'est fait senti largement dans les grandes sociétés, surtout les banques. Mais la numérisation des journaux et le traitement en masse des lettres à la poste étaient aussi quelqu'uns des contextes importants du développement de la reconnaissance du texte sur l'image.
 
-Expliquer comment l'HTR réussit à s'entraîner sur les courbes des caractères écrits et peut donc compléter ses tâches sans besoin d'un modèle TAL derrière. (Au moins, c'est actuellement ce que j'ai compris des explications d'Ariane Pinche) Justifie pourquoi l'HTR a été privilégié dans le projet Gallic(orpor)a, même pour les imprimés.
+Dans les années mille neuf cent soixante, plus en plus de sociétés voulaient adopter le traitement des données assisté par ordinateur. Ce traitement a exigé l'encodage des données dans un format directement exploitable par ordinateur. En gros il y avait deux moyens de la saisie des données. En premier temps, il y avait la carte perforée dans laquelle une machine ferait des trous qu'un ordinateur savait lire. En deuxième temps, il y avait la bande magnétique sur laquelle une machine imprimerait des bytes, la plus petite unité exploitable par ordinateur.
+
+L'\textit{\acrlong{OCR}} comptait sur ce dernier moyen ainsi qu'une autre technologie, la numérisation des images par scanner. L'atout de l'\acrshort{OCR} est qu'en principe sa saisie de données se fait automatiquement. À l'époque, les autres moyens d'encoder les données textuelles exigeaient la saisie manuelle des données. Dans le cas des cartes perforées, un individu lirait un document et taperait son texte à la perforatrice à clavier. Le \textit{Magnetic Tape/Selectric Typewriter} (MT/ST), développé par l'entreprise américaine IBM en 1964, comptait sur la même saisie manuelle des données mais il les a encodé sur une bande magnétique au lieu d'une carte perforée.
+
+En 1971, le chercheur Ben R. Schneider a comparé l'\acrshort{OCR} et ces deux autres moyens d'encodage du texte.~\autocite{schneiderProductionMachinereadableText1971} Schneider a déterminé que l'\acrshort{OCR} n'avait pas encore surpassé l'appareil MT/ST d'IBM parce que, malgré sa saisie automatique de données, il exigeait toujours beaucoup de correction à la main. Contrairement aux deux autres méthodes, puisque les données d'entrée du traitement \acrshort{OCR} n'étaient pas créées par un humain mais par un scanner, l'\acrshort{OCR} n'a pas permis de la correction lors de la saisie. L'appareil MT/ST avait donc une exactitude supérieure à l'\acrshort{OCR} à l'époque.
+
+En outre, un logiciel \acrshort{OCR} était limité par son jeu de données de polices, puisqu'il prédit du texte en faisant un comparaison entre un caractère qu'il a mémorisé et le motif qu'il a reconnu sur l'image. Même aujourd'hui l'\acrshort{OCR} se distingue de son successeur l'\acrshort{HTR} par le fait qu'il compte sur une base de données des polices. Contraire à l'\acrshort{OCR} dans les années soixante-dix, l'appareil MT/ST pourrait encoder des documents des diverses polices en comptant sur le discernement d'un être humain lors de la saisie des données.
+
+En 1977, ayant vu le progrès de la technologie, Gian Piero Zarri a résumé l'état de l'\acrshort{OCR}. Il a remarqué que la reconnaissance du texte sur les manuscrits n'était pas encore faisable.
+\begin{displayquote}
+Rappelons que la reconnaissance optique des caractères permet la lecture directe du texte par un \og{}scanner~\fg{} qui se charge d'effectuer le transfert sur bande magnétique~; le texte doit être composé avec des caractères de type \og{}imprimerie~\fg{} ou \og{}machine à écrire~\fg{}, car la lecture de caractères \og{}manuels~\fg{} ne semble pas encore actuellement complètement sortie de la phase expérimentale.~\autocite{zarriQuelquesAspectsTechniques1977}
+\end{displayquote}
+Il y a deux ans avant l'appréciation de Zarri, le chercheur américain Ray Kurzweil a produit son lecture \textit{Kurzweil} ou le \textit{Kurzweil Reading Machine} (KRM). L'appareil a avancé l'\acrshort{OCR} en pouvant reconnaître plusieurs polices.~\autocite{goodrichKurzweilReadingMachine1979} Cependant, comme dit Zarri, l'\acrshort{OCR} restait sous la dépendance de la reconnaissance des polices et donc ne pouvait pas encore parvenir à la prédiction du texte écrit, ce qui a poussé le développement de l'\textit{\acrlong{HTR}}.
+
+\subsection{La binarisation}
+Afin de reconnaître la police d'un caractère, les logiciels \acrshort{OCR} du XXe siècle avaient besoin d'un processus préliminaire qui s'appelle la binarisation. Cette étape est toujours nécessaire pour l'\acrshort{HTR} puisque le logiciel, quelque soit sa manière de reconnaître des motifs dans une image, a besoin de relever d'un tableau de pixels les contours d'un caractère. La binarisation trie les pixels d'une image en deux classes~: l'arrière-plan (\textit{background} en anglais) et le premier plan (\textit{foreground} en anglais).
+
+\subsubsection{Le niveau de gris}
+Normalement pour binariser une image, on veut remplacer la valeur composée d'un pixel, c'est-à-dire les trois degrés du rouge, du vert, et du bleu, avec la valeur simple d'un décimal. Ce décimal veut représenter l'échelle des gris dans le pixel. En anglais, ce traitement s'appelle le \textit{grayscale} ou le niveau de gris en français. Aujourd'hui les langages de programmation ont souvent des librairies qui fournissent des méthodes pour rendre une image en niveau de gris automatiquement. Mais dans la Figure~\ref{fig:pixelMath}, nous donnons un calcul simple qui sert à montrer en exemple le traitement niveau de gris. On commence toujours avec la donnée tripartite du pixel, qu'on veut remplacer par une seule valeur. Représentons chaque partie de la donnée du pixel par les variables \(p\)~:
+\[ p_1, p_2, p_3 \]
+En premier temps, on prend la moyenne des degrés de la couleur, c'est-à-dire la moyenne de \(p\) ou \(\bar{p}\). La Figure~\ref{fig:pixelMoyenne} montre le résultat de ce calcul superposé à l'image originale.
+\[ \bar{p} = \sum_{i=1}^3 \frac{1}{3} p_i = \frac{1}{3} (p_1 + p_2 + p_3) \]
+Ensuite, on récupère \(\bar{p}\) et la divise par la valeur maximale du \(p\), qui est 255 parce que le degré du rouge, vert, ou bleu d'un pixel ne monte qu'à 255. La Figure~\ref{fig:grayscale} montre le résultat de ce calcul.
+
+\begin{figure}[hbt!]
+\centering
+\centering
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{|| c | c | c ||} 
+ \hline
+Donnée tripartite du pixel & Moyenne du pixel & Valeur niveau de gris du pixel \\ [0.5ex] 
+\( p_1, p_2, p_3 \) & \( \sum_{i=1}^3 p_i\) & \( \frac{ \sum_{i=1}^3 p_i}{\max\{p_i\}} \) \\ [0.5ex] 
+ \hline\hline
+ 255,000,000 & \( \bar{p} = \frac{255+0+0}{3} = 85 \) & \( \frac{\bar{p} }{255} = 0.33 \) \\ 
+ \hline
+ 255,075,075 & \( \bar{p}  = \frac{255+75+75}{3} = 135 \) & \( \frac{\bar{p} }{255} = 0.53 \) \\
+ \hline
+ 255,125,125 & \( \bar{p}  = \frac{255+125+125}{3} = 168.33 \) & \( \frac{\bar{p} }{255} = 0.66 \) \\
+ \hline
+ 255,200,200 & \( \bar{p}  = \frac{255+200+200}{3} = 218.33 \) & \( \frac{\bar{p} }{255} = 0.86 \) \\
+ \hline
+ 255,250,250 & \( \bar{p}  = \frac{255+220+220}{3} = 251.67 \) & \( \frac{\bar{p} }{255} = 0.99 \) \\ 
+ \hline
+ 255,255,255 & \( \bar{p}  = \frac{255+255+255}{3} = 255 \) & \( \frac{\bar{p} }{255} = 1.00 \) \\ [1ex] 
+ \hline
+\end{tabular}
+\caption{Évaluation des pixels}
+\label{fig:pixelMath}
+\end{figure}
+
+\subsubsection{Le seuil}
+Il y a plusieurs techniques de binarisation mais toute a besoin d'un seuil (\textit{threshold} en anglais). Le seuil nous permet à trier les pixels en les deux classes~: le \textit{background} et le \textit{foreground}. Nos yeux font cette étape facilement, mais un ordinateur a besoin d'un algorithme. L'un des algorithmes le plus courant pour définir le seuil a été élaboré en 1979 par le chercheur Nobuyuki Otsu.~\autocite{otsuThresholdSelectionMethod1979}
+
+La méthode Otsu de seuillage reste toujours courante dans l'\acrshort{HTR}~\autocite{siddiqiWritingPropertyDescriptors2011} et elle fait partie de la librairie Python \texttt{numpy}.~\autocite{NumpyNumPyFundamental} Elle examine la variance entre les deux classes (\textit{background} et \textit{foreground}) pour déterminer un seuil idéal pour le jeu de données. Visualisées dans un histogramme, comme on voit dans la Figure~\ref{fig:histogram}, les données d'un jeu de pixels devraient se lever dans deux sommets et, idéalement, une baisse profonde devrait les diviser. Cette variance veut dire qu'il y a dans l'image une distinction importante entre les contours d'un caractère et l'arrière-plan de l'image. La méthode de seuillage examine la variance entre ces deux classes, le contour et l'arrière-plan, pour générer un seuil adapté aux données.
+
+\begin{figure}[hbt!]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+            ybar,
+            bar width=30pt,
+            width=.66\textwidth,
+            symbolic x coords={0.33,0.53,0.66,0.86,0.99,1.00},
+            xtick=data]
+        \addplot table[x=interval,y=count]{\mydata};
+    \end{axis}
+\end{tikzpicture}
+\caption{Histogramme des valeurs niveau de gris des pixels}
+\label{fig:histogram}
+\end{figure}
+
+\begin{figure}[hbt!]
+\centering
+
+\begin{subfigure}[b]{0.3\textwidth}
+\centering
+\begin{tikzpicture}[element/.style={minimum width=1cm,minimum height=1cm}]
+\matrix[
+	matrix of nodes,
+	nodes={element}, 
+	column sep=-\pgflinewidth, 
+	row sep=-\pgflinewidth]
+% 5 = 255,0,0 = 85
+% 4 = 255,75,75 = 135
+% 3 = 255,125,125 = 168.33
+% 2 = 255,200,200 = 218.33
+% 1 = 255,250,250 = 251.67
+% 0 = 255,255,255 = 255
+{
+|[draw]|\tiny{255} & 			|[draw]|\tiny{255} & 			|[draw,fill=1]|\tiny{251.67} & 	|[draw,fill=5]|\tiny{85} & 		|[draw,fill=1]|\tiny{251.67} \\
+|[draw]|\tiny{255} & 			|[draw]|\tiny{255} & 			|[draw,fill=4]|\tiny{135} & 		|[draw,fill=4]|\tiny{135} & 		|[draw,fill=5]|\tiny{85} \\
+|[draw]|\tiny{255} & 			|[draw,fill=1]|\tiny{251.67} & 	|[draw,fill=5]|\tiny{85} & 		|[draw,fill=2]|\tiny{218.33} & 	|[draw,fill=5]|\tiny{85} \\
+|[draw]|\tiny{255} & 			|[draw,fill=5]|\tiny{85} &	 	|[draw,fill=4]|\tiny{135} & 		|[draw,fill=1]|\tiny{251.67} & 	|[draw,fill=4]|\tiny{135} \\
+|[draw,fill=1]|\tiny{251.67} &	|[draw,fill=5]|\tiny{85} &	 	|[draw,fill=2]|\tiny{218.33} & 	|[draw]|\tiny{255} & 			|[draw,fill=2]|\tiny{218.33} \\
+|[draw,fill=3]|\tiny{168.33} & 	|[draw,fill=4]|\tiny{135}  &	 	|[draw,fill=1]|\tiny{251.67} & 	|[draw]|\tiny{255} & 			|[draw]|\tiny{255} \\
+|[draw,fill=5]|\tiny{85} & 		|[draw,fill=2]|\tiny{218.33} & 	|[draw]|\tiny{255} & 			|[draw]|\tiny{255} & 			|[draw]|\tiny{255} \\
+};
+\end{tikzpicture}
+\caption{La moyenne de chaque pixel}
+\label{fig:pixelMoyenne}
+\end{subfigure}
+
+\begin{subfigure}[b]{0.3\textwidth}
+\begin{tikzpicture}[element/.style={minimum width=0.75cm,minimum height=0.75cm}]
+\definecolor{5}{gray}{0.33} % 85 -- 0.33
+\definecolor{4}{gray}{0.53} % 135 -- 0.53
+\definecolor{3}{gray}{0.66} % 168.33 -- 0.66
+\definecolor{2}{gray}{0.86} % 218.33 -- 0.86
+\definecolor{1}{gray}{0.98} % 251.67 -- 0.98
+\matrix[
+	matrix of nodes,
+	nodes={element}, 
+	column sep=-\pgflinewidth, 
+	row sep=-\pgflinewidth]
+% 5 = 255,0,0 = 85
+% 4 = 255,75,75 = 135
+% 3 = 255,125,125 = 168.33
+% 2 = 255,200,200 = 218.33
+% 1 = 255,250,250 = 251.67
+% 0 = 255,255,255 = 255
+{
+|[draw]|\tiny{1.00} & 			|[draw]|\tiny{1.00} & 			|[draw,fill=1]|\tiny{0.98} & 	|[draw,fill=5]|\tiny{0.33} & 		|[draw,fill=1]|\tiny{1.98} \\
+|[draw]|\tiny{1.00} & 			|[draw]|\tiny{1.00} & 			|[draw,fill=4]|\tiny{0.53} & 		|[draw,fill=4]|\tiny{0.53} & 		|[draw,fill=5]|\tiny{0.33} \\
+|[draw]|\tiny{1.00} & 			|[draw,fill=1]|\tiny{0.98} & 	|[draw,fill=5]|\tiny{0.33} & 		|[draw,fill=2]|\tiny{0.86} & 	|[draw,fill=5]|\tiny{0.33} \\
+|[draw]|\tiny{1.00} & 			|[draw,fill=5]|\tiny{0.33} &	 	|[draw,fill=4]|\tiny{0.53} & 		|[draw,fill=1]|\tiny{0.98} & 	|[draw,fill=4]|\tiny{0.53} \\
+|[draw,fill=1]|\tiny{0.98} &	|[draw,fill=5]|\tiny{0.33} &	 	|[draw,fill=2]|\tiny{0.86} & 	|[draw]|\tiny{1.00} & 			|[draw,fill=2]|\tiny{0.86} \\
+|[draw,fill=3]|\tiny{0.66} & 	|[draw,fill=4]|\tiny{0.53}  &	 	|[draw,fill=1]|\tiny{0.98} & 	|[draw]|\tiny{1.00} & 			|[draw]|\tiny{1.00} \\
+|[draw,fill=5]|\tiny{0.33} & 		|[draw,fill=2]|\tiny{0.86} & 	|[draw]|\tiny{1.00} & 			|[draw]|\tiny{1.00} & 			|[draw]|\tiny{1.00} \\
+};
+\end{tikzpicture}
+\caption{L'image en niveau de gris}
+\label{fig:grayscale}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.3\textwidth}
+\centering
+\begin{tikzpicture}[element/.style={minimum width=0.75cm,minimum height=0.75cm}]
+\definecolor{5}{gray}{0} % 85 -- 0.33 -- 0.67
+\definecolor{4}{gray}{0} % 135 -- 0.53 -- 0.47
+\definecolor{3}{gray}{0} % 168.33 -- 0.66 -- 0.34
+\definecolor{2}{gray}{1} % 218.33 -- 0.86 -- 0.14
+\definecolor{1}{gray}{1} % 251.67 -- 0.99 -- 0.02
+\matrix[
+	matrix of nodes,
+	nodes={element}, 
+	column sep=-\pgflinewidth, 
+	row sep=-\pgflinewidth]
+{
+|[draw]|\tiny{0} & 		|[draw]|\tiny{0} & 		|[draw,fill=1]|\tiny{0} & 	|[draw,fill=5]|\color{white}\tiny{1}\color{black} & 		|[draw,fill=1]|\tiny{0} \\
+|[draw]|\tiny{0} & 		|[draw]|\tiny{0} & 		|[draw,fill=4]|\color{white}\tiny{1}\color{black} & 	|[draw,fill=4]|\color{white}\tiny{1}\color{black} & 	|[draw,fill=5]|\color{white}\tiny{1}\color{black} \\
+|[draw]|\tiny{0} & 		|[draw,fill=1]|\tiny{0} & 	|[draw,fill=5]|\color{white}\tiny{1}\color{black} & 	|[draw,fill=2]|\tiny{0} & 	|[draw,fill=5]|\color{white}\tiny{1}\color{black} \\
+|[draw]|\tiny{0} & 		|[draw,fill=5]|\color{white}\tiny{1}\color{black} &	 |[draw,fill=4]|\color{white}\tiny{1}\color{black} & 	|[draw,fill=1]|\tiny{0} & 	|[draw,fill=4]|\color{white}\tiny{1}\color{black} \\
+|[draw,fill=1]|\tiny{0} &	|[draw,fill=5]|\color{white}\tiny{1}\color{black} &	 |[draw,fill=2]|\tiny{0} & 	|[draw]|\tiny{0} & 		|[draw,fill=2]|\tiny{0} \\
+|[draw,fill=3]|\color{white}\tiny{1}\color{black} & 	|[draw,fill=4]|\color{white}\tiny{1}\color{black}  &	 |[draw,fill=1]|\tiny{0} & 	|[draw]|\tiny{0} & 		|[draw]|\tiny{0} \\
+|[draw,fill=5]|\color{white}\tiny{1}\color{black} & 	|[draw,fill=2]|\tiny{0} & 	|[draw]|\tiny{0} & 		|[draw]|\tiny{0} & 		|[draw]|\tiny{0} \\
+};
+\end{tikzpicture}
+\caption{L'image binarisée}
+\label{fig:binarisation}
+\end{subfigure}
+
+\caption{La binarisation}
+\end{figure}
+
+Le seuil sert à transformer la valeur numérique de chaque pixel soit en 0, soit en 1. Les pixels dont la valeur tombe au-dessous du seuil prennent la valeur 0~; les autres, étant déterminés de faire partie du contour du caractère, prennent la valeur 1. La Figure~\ref{fig:binarisation} montre un exemple du résultat de ce triage. Ainsi, les logiciels \acrshort{OCR} et \acrshort{HTR} peuvent analyser les valeurs identiques et contiguës dans les données de l'image. Mais le logiciel n'est pas encore prêt à percevoir l'occurence d'un caractère.
+
+\subsubsection{Le masque}
+Ayant relevé sur l'image binarisée les points contiguës, c'est-à-dire les lignes, le logiciel doit ensuite reconnaître les objets qui s'en constituent. Les composants d'un caractère doivent s'encadrer dans un masque que le logiciel \acrshort{OCR} ou \acrshort{HTR} rendra comme une matrice binaire. (cf. Figure~\ref{fig:matrix}) Grâce aux méthodes de segmentation, un logiciel produira les masques des glyphes, dont les composants qu'il a reconnus. En plus, le logiciel remarquera quels glyphes font partie de quels segments et quelles lignes de texte. Les processus de segmentation comptent sur la reconnaissance des espaces qui désunissent les groupes de points contiguës.
+
+\begin{figure}[hbt!]
+\centering
+\begin{subfigure}[b]{0.3\textwidth}
+\centering
+\begin{tikzpicture}[element/.style={minimum width=0.6cm,minimum height=0.6cm}]
+\definecolor{1}{gray}{0}
+\matrix[
+	matrix of nodes,
+	nodes={element}, 
+	column sep=-\pgflinewidth, 
+	row sep=-\pgflinewidth]
+{
+|[draw]| &		|[draw]| &		|[draw]| & 		|[draw]|& 		|[draw]| & 		|[draw,fill=1]| & 	|[draw]| &		|[draw]| &		|[draw]| &		|[draw]|& 		|[draw]|  \\
+|[draw]| &		|[draw]| &		|[draw]| & 		|[draw]| & 		|[draw,fill=1]| & 	|[draw,fill=1]|& 	|[draw,fill=1]| &	|[draw]| &		|[draw]| &		|[draw]|& 		|[draw]|  \\
+|[draw]| &		|[draw]| &		|[draw]|& 		|[draw]|&	 	|[draw,fill=1]|& 	|[draw]| & 		|[draw,fill=1]| &	|[draw]| &		|[draw]| &		|[draw]|& 		|[draw]|  \\
+|[draw]| &		|[draw]| &		|[draw]|& 		|[draw,fill=1]|&	|[draw,fill=1]| & 	|[draw]|& 		|[draw,fill=1]| &	|[draw,fill=1]| &	|[draw]| &		|[draw]|& 		|[draw]|  \\
+|[draw]| &		|[draw]| &		|[draw]| &		|[draw,fill=1]| &	|[draw]| & 		|[draw]|& 		|[draw]| &		|[draw,fill=1]| &	|[draw]| &		|[draw]|& 		|[draw]|  \\
+|[draw]| &		|[draw]| &		|[draw,fill=1]|& 	|[draw,fill=1]|&	|[draw]| & 		|[draw]|& 		|[draw]| &		|[draw,fill=1]| &	|[draw,fill=1]| &	|[draw]|& 		|[draw]|  \\
+|[draw]| &		|[draw]| &		|[draw,fill=1]|& 	|[draw]| &		|[draw]| & 		|[draw]| & 		|[draw]|& 		|[draw]| &		|[draw,fill=1]| &	|[draw]|& 		|[draw]|  \\
+|[draw]| &		|[draw,fill=1]| &	|[draw,fill=1]|& 	|[draw,fill=1]| &	|[draw,fill=1]| & 	|[draw,fill=1]| & 	|[draw,fill=1]|& 	|[draw,fill=1]| &	|[draw,fill=1]| &	|[draw,fill=1]|& 	|[draw]|  \\
+|[draw]| &		|[draw,fill=1]| &	|[draw]|& 		|[draw]| &		|[draw]| & 		|[draw]| & 		|[draw]|& 		|[draw]| &		|[draw]| &		|[draw,fill=1]|& 	|[draw]|  \\
+|[draw,fill=1]| &	|[draw,fill=1]| &	|[draw]|& 		|[draw]| &		|[draw]| & 		|[draw]| & 		|[draw]|& 		|[draw]| &		|[draw]| &		|[draw,fill=1]|& 	|[draw,fill=1]|  \\
+|[draw,fill=1]|&	|[draw]| &		|[draw]|& 		|[draw]| &		|[draw]| & 		|[draw]| & 		|[draw]|& 		|[draw]| &		|[draw]| &		|[draw]|& 	|[draw,fill=1]|  \\
+|[draw,fill=1]|&	|[draw]| &		|[draw]|& 		|[draw]| &		|[draw]| & 		|[draw]| & 		|[draw]|& 		|[draw]| &		|[draw]| &		|[draw]|& 	|[draw,fill=1]|  \\
+};
+\end{tikzpicture}
+\caption{Le masque de la lettre \textit{A}, sur l'image binarisée}
+\end{subfigure}
+
+\hfill
+
+\begin{subfigure}[b]{0.3\textwidth}
+\[ \left( \begin{array}{ c c c c c c c c c c c }
+0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 1 & 1 & 1 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 1 & 0 & 1 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 1 & 1 & 0 & 1 & 1 & 0 & 0 & 0 \\
+0 & 0 & 0 & 1 & 0 & 0 & 0 & 1 & 0 & 0 & 0 \\
+0 & 0 & 1 & 1 & 0 & 0 & 0 & 1 & 1 & 0 & 0 \\
+0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\
+0 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 0 \\
+0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 \\
+1 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 1 \\
+1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\
+1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\
+\end{array} \right)\]
+\caption{La matrice du masque de la lettre \textit{A}}
+\label{fig:matrix}
+\end{subfigure}
+
+\end{figure}
+
+\subsection{L'intelligence artificielle}
+Pourquoi transforme-t-on les pixels d'un caractère en une matrice, telle que celle dans la Figure~\ref{fig:matrix}~? À la base, l'ordinateur est une calculatrice. Les logiciels \acrshort{OCR} et \acrshort{HTR} décomposent une image numérique en les représentations mathématiques, les matrices. Ainsi, les matrices permettent aux logiciels faire des calculs probabilistes et prédire quel caractère correspond à quelle représentation. Mais pour faire des prédictions, un logiciel a besoin d'une intelligence artificielle.
+
+\subsubsection{\textit{Template matching}}
+Pendant la dernière moitié du XXe siècle, la reconnaissance du texte et l'intelligence artificielle ont tous les deux vécu des progrès importants. Déjà en 1950, il y a plus que soixante-dix ans, Alan Turing a publié sa théorisation de l'IA.\autocite{turingComputingMachineryIntelligence1950} Pendant les années soixante, au début de l'\acrshort{OCR}, l'IA a rendu possible la prédiction du texte représenté par les matrices en correspondant la représentation qu'un logiciel a reconnue à la représentation d'un caractère qu'il avait dans sa base de données. Cette technique primitive est le \textit{template matching} ou le filtrage par modèle. Elle n'est pas le moyen le plus pratique. Les chercheurs V.~K. Govindan et A.~P. Shivaprasad l'ont apprécié en 1990, après qu'elle a été dépassée par le \textit{feature analysis}.
+\begin{displayquote}
+{[Template matching]} directly compares an input character to a standard set of prototypes stored {[\textit{modèles stockés}]}. The prototype that matches most closely provides recognition. {[\ldots]} This type of technique suffers from sensitivity  to noise and is not adaptive to differences in writing style.\autocite{govindanCharacterRecognitionReview1990}
+\end{displayquote}
+Sous la dépendance du \textit{template matching}, un logiciel \acrshort{OCR} ne parviendra pas à la prédiction d'un caractère si la totalité de sa représentation en matrice n'est pas assez proche au modèle stocké lors de sa programmation.
+
+\subsubsection{\textit{Feature analysis}}
+Les progrès dans l'IA pendant les années soixante-dix et quatre-vingt ont rendu possible le développement d'une nouvelle technique dont profitent toujours les logiciels \acrshort{OCR}, quoique avec beaucoup d'élaboration depuis. Au lieu de correspondre la représentation d'un caractère à une autre, les logiciels \acrshort{OCR} décomposent un caractère en ses \textit{features} ou ses aspects. En 1990, Govindan et Shivaprasad ont résumé l'état de cette technique.
+\begin{displayquote}
+The features may represent global and local properties of the characters. These include strokes, and bays in various directions, end points, intersections of line segments, loops {[\ldots]}, and stroke relations, angular properties, sharp protrusions {[\ldots]}. These features have high tolerances to distortions and style variations, and also tolerate a certain degree of translation and rotation. However, the extraction processes are in general very complex and it is difficult to generate masks for these types of features.\autocite{govindanCharacterRecognitionReview1990}
+\end{displayquote}
+Ainsi, le logiciel \acrshort{OCR} essaie de correspondre l'ensemble de certains aspects d'une représentation à l'ensemble des mêmes aspects aux lesquels le logiciel associe un caractère. Comme dissent Govindan et Shivaprasad, un aspect peut être un trait, le croisement des lignes, une boucle, la relation entre plusieurs traits, la caractéristique des angles, ou une saillie.
+
+Grâce à la technique de \textit{feature analysis}, un logiciel \acrshort{OCR} moderne parvient à prendre une décision quant à la représentation d'un caractère bien qu'il n'ait pas trouvé le caractère de la même police, ayant la même représentation, dans sa base de données. \textit{L'\acrlong{HTR}} utilise aussi du \textit{feature analysis}. Mais à la place de produire les métadonnées sur la police du caractère segmenté et reconnu ainsi que la langue du texte, l'\acrshort{HTR} analyse les aspects d'un caractère simplement pour prédire le texte. Cependant, cette analyse n'est pas plus simple que celle réalisée par un logiciel \acrshort{OCR}.
+
+Le logiciel \acrshort{HTR} a besoin d'associer beaucoup d'aspects d'une variété immense à un seul caractère puisqu'un main peut écrire un caractère par plusieurs moyens, selon la position de la lettre dans un mot. En outre, un main peut bien varier sa manière d'écriture et une page peut avoir plusieurs mains. Dit simplement, l'\acrshort{OCR} analyse les aspects d'un caractère du point de vue d'une langue et d'une police attendue. L'\acrshort{HTR} se focalise uniquement sur les aspects topologiques d'un caractère, sans besoin de savoir la langue ni avoir appris la police du texte. 
+
+\subsubsection{\textit{Deep learning}}
+Aujourd'hui l'\acrshort{HTR} profite du \textit{feature analysis} ainsi qu'un développement plus récent dans l'intelligence artificielle qui s'appelle le \textit{deep learning} ou l'apprentissage profond. Pouvant s'améliorer grâce aux réseaux neurones, un logiciel \acrshort{OCR} ou \acrshort{HTR} moderne peut prendre les décisions de plus en plus bonnes quand il essaie de prédire du texte à partir de l'analyse des aspects (\textit{feature analysis}). L'un des premiers mises en œuvre des reseaux neurones pour \textit{l'\acrlong{HTR}} était le projet european \textit{Transkribus} en 2019.\autocite{muehlbergerTransformingScholarshipArchives2019} Un autre projet européen a suivi \textit{Transkribus} et, contraire au premier, laisse ses données et les architectures de ses modèles ouvertes~: \textit{Kraken}. Élaboré dans l'esprit de la science ouverte, le projet \textit{Gallic(orpor)a} a profité plutôt du \textit{Kraken} ainsi qu'une interface graphique qui le met en œuvre et qui est aussi ouverte, l'\textit{eScriptorium}.
+
+\section{Le modèle HTR}
+Puisque \textit{Transkribus} et \textit{Kraken} profitent tous les deux de l'apprentissage profonde, les processus mis en œuvre par les interfaces graphiques \textit{Transkribus} et \textit{eScriptorium} ressemblent généralement à la même description. Ils commencent avec l'entraînement d'un modèle \acrshort{HTR}. Ensuite, ils appliquent le modèle entraîné aux données non préparées. Le taux de réussite se calcule par le pourcentage des mots et des lignes de texte que le modèle n'a jamais vus mais qui étaient bien prédits.
+
+En premier temps, avant de penser à l'entraînement d'un modèle, il faut bien connaître sa saisie de données. Les données d'entré d'un modèle vont être les images numériques, composées des pixels. En général, leurs contenus textuels devraient se ressembler afin que le modèle se spécialise dans une écriture particulière. Il est pourtant possible de entraîner un modèle très généralisé. Cependant, il faut un corpus très large des données d'entraînement.
+
+Le premier défi de l'entraînement d'un modèle \acrshort{HTR} est la création des données d'entraînement. Lors de l'apprentissage, elles fournissent au modèle en cours son résultat souhaité pour qu'il puisse savoir comment se modifier sa manière de prédire afin de produire les bonnes prédictions. Les données doivent ressembler perfectement la prédiction idéale d'une donnée d'entrée. Grâce à l'apprentissage profonde, un modèle peut s'apprendre comment arriver à la prédiction souhaité, selon ses données d'entraînement.
+
+Avec ces données d'entraînement, qui se connaissent parfois comme le corpus d'or puisqu'elles sont générées avec beaucoup de soin et souvent beaucoup d'argent, un modèle a aussi besoin des données non préparées qui ressemblent aux données préparées du corpus d'or. Le modèle \acrshort{HTR} va s'évalue lors de l'apprentissage selon son taux de réussite avec les données qu'il devrait savoir  prédire, les données préparées, et les données qu'il pense de n'avoir jamais vu, les données non préparées qui font partie de ce qu'on appelle un \textit{training set}. Il est le combinaison de ces deux jeux de données, préparées et non préparées, qui rend possible l'apprentissage profonde.
+
+Le résultat de l'entraînement s'appelle un modèle. Étant spécialisé dans une écriture particulière, le modèle pourrait ensuite se mettre en œuvre pour prédire du texte sur les images qui ressemblent aux données d'entraînement. Les chercheurs s'occupent du développment des nouveaux modèles \acrshort{HTR} qui se spécialisent dans certains manuscrits et certaines imprimés historiques. Le projet \textit{Gallic(orpor)a} visait à entraîner plusieurs modèles. Un se spécialiserait dans l'écriture des manuscrits du XVe siècle, l'un dans l'écriture des incunables du XVe siècle, un autre dans l'écriture des imprimés du XVIe siècle, un autre dans celui des imprimés du XVIIe siècle, et un autre dans l'écriture des imprimés du XVIIIe siècle.
+
+Cependant, tous les modèles du projet \textit{Gallic(orpor)a} se spécialisent dans les écritures latines. En théorie, un modèle \acrshort{HTR} n'est pas limité aux polices et aux langues. Mais, jusqu'au présent, tout modèle efficace compte sur une écriture specifique. Donc, un modèle entraîné sur les imprimés XVIIe siècle en français peut cependant produire des bonnent prédictions du texte d'une imprimée du même siècle en italien. Par contre, un texte écrit en arabe ne parviendra pas au même taux de réussite. Le modèle ne sait pas segmenter la ligne de texte ni décomposer ses segments en glyphes puisqu'il s'est appris comment reconnaître des caractères en cherchant des espaces attendues dans une écriture latine.
+
 
 \end{document}
 \documentclass[../main.tex]{subfiles}

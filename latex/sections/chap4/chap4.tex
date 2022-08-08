@@ -5,17 +5,27 @@
 \begin{document}
 
 
-\section{Les données d'entraînement HTR}
+\section{La reconnaissance du texte et des segments}
 
-J'ai généré des données d'entraînement sur eScriptorium en suivant les mêmes conseils donnés aux vacataires chargés à segmenter et transcrire les images d'un document selon les normes de \textit{SegmOnto}. Je me suis familiarisée avec leur travail et la création du corpus d'or qui serviraient à l'entraînement du modèle HTR. J'ai aussi surveillé la discussion entre les vacataires et les chefs du projet, afin de poser et de répondre aux questions généralisées. Grâce à ces tâches, je comprends mieux le défi d'harmoniser la création d'un corpus d'or par en groupe.
+Le premier étape du pipeline \textit{Gallic(orpor)a} est la reconnaissance du texte sur les images numérisées. Pour arriver d'un rassemblement de pixels au caractère d'un système d'écriture, il faut un modèle HTR qui sait chercher dans les pixels les configurations des caractères. Avec la reconnaissance de texte, il faut un deuxième modèle qui sait reconnaître les régions cohérentes sur la page. Ce dernier modèle cherchent aussi dans les pixels pour les configurations consistantes, mais au lieu de reconnaître dedans des caractères, il relève les polygons ou les rectangles qui contient une entité cohérente.
 
-\section{Les données d'entraînement TAL}
+\subsection{La création des données d'entraînement}
 
-Certains vacataires ont travaillé sur les textes extraits des transcriptions que les autres vacataires ont faites sur eScriptorium, et ils ont créé des données textuelles qui serviraient à l'entraînement des modèles TAL. Afin de les aider dans la création de ce deuxième corpus d'or, j'ai créé un workflow automatisé sur les dépôts GitHub du projet qui extrait automatiquement les lignes de texte des fichiers ALTO et divise le texte en segments selon les signes de ponctuation. La création d'un workflow sur GitHub m'ai appris comment le faire plus tard pour l'application \texttt{alto2tei}.
+\subsection{L'entraînement des modèles}
 
-\section{La fin du pipeline : TEI Publisher}
+\subsection{Les modèles prédisent le texte}
 
-J'ai assisté à un atelier sur le logiciel TEI Publisher afin de mieux comprendre les objectifs downstream de l'application \texttt{alto2tei}.
+\section{La reconstitution des données}
+
+\section{L'analyse linguistique}
+
+\subsection{La création des données d'entraînement}
+
+\subsection{L'entraînement des modèles}
+
+\subsection{Les modèles analysent le texte prédit}
+
+\section{Le texte pré-édité}
 
 
 \end{document}

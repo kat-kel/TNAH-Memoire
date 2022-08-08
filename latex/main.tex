@@ -1,7 +1,7 @@
-% document vide aux normes de l'école pour le mémoire
-
 % PREAMBULE
-% !TEX TS-program = xelatex
+% !BIB TS-program = biber
+% !TEX TS-program = xelatexmk
+% ITEX TS-program = latex
 % !TEX spellcheck = French
 
 %%%%%%%%%%%%%%%%%%%%%%%%
@@ -17,16 +17,19 @@
 %			ENCODAGE
 \usepackage{fontspec}
 \usepackage{lettrine} % lettrines (pas obligatoire)
+\usepackage{caption}
+\usepackage{subcaption}
 
 %%%%%%%%%%%%%%%%%%%%%%%%
 %			REFERENCES
 % le package hyperref avec des options, si en local
-\usepackage[pdfusetitle, pdfsubject ={Mémoire TNAH}, pdfkeywords={les mots-clés}]{hyperref}
-\usepackage[backend=biber, sorting=nyt, style=enc, maxbibnames=10]{biblatex}
-\addbibresource{../ref.bib}
+\usepackage{hyperref}
+\usepackage[backend=biber, sorting=nyt, style=verbose-ibid]{biblatex}
+\addbibresource{../bib.bib}
 
 %%%%%%%%%%%%%%%%%%%%%%%%
 %			LANGUE
+% !TEX spellcheck = French
 \usepackage[french]{babel}
 \usepackage{csquotes}
 
@@ -39,20 +42,22 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%
 %			GLOSSAIRE
-\usepackage{glossaries}
+\usepackage[acronym]{glossaries}
 \makeglossaries
-
-%%%%%%%%%%%%%%%%%%%%%%%%
-%			SCHEMA
-\newglossaryentry{schema}
+\newglossaryentry{htr}
 {
-	name=ALTO,
-	description={Un schéma XML qui précise la mise en page ainsi que le contenu d'une ressource textuelle, tel qu'un bouquin.}
-	name=TEI,
-	description={Un schéma XML qui résume des règles et des normes d'encodage qui ont pour but de rendre une source textuelle lisible aux machines}
+    name=Handwritten Text Recognition,
+    description={La reconnaissance du texte écrit sur une image numérique}
 }
-\newacronym{htr}{HTR}{Handwritten Text Recognition}
-\newacronym{ocr}{OCR}{Optical Character Recognition}
+\newacronym{HTR}{HTR}{Handwritten Text Recognition}
+
+\newglossaryentry{ocr}
+{
+    name=Optical Character Recognition,
+    description={La reconnaissance des polices du texte sur une image numérique}
+}
+\newacronym{OCR}{OCR}{Optical Character Recognition}
+
 \newacronym{alto}{ALTO}{Analyzed Layout and Text Object}
 \newacronym{tei}{TEI}{Text Encoding Initiaite}
 \newacronym{xml}{XML}{eXtensible Markup Language}
@@ -60,15 +65,14 @@
 \newacronym{almanach}{ALMAnaCH}{Automatic Language Modelling and Analysis \& Computational Humanities}
 \newacronym{rdf}{RDF}{Resource Description Framework}
 
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			DIAGRAM
+\usepackage{tikz}
+\usetikzlibrary{calc, matrix}
+\usepackage{pgfplots}
+\usepackage{array}
 
 %si index, package pour index + makeindex
-
-%%%%%%%%%%%%%%%%%%%%%%%%
-%			FLOW CHART
-\usepackage{tikz}
-\usetikzlibrary{shapes.geometric, arrows}
-\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=red!30]
-\tikzstyle{arrow} = [thick,->,>=stealth]
 
 %%%%%%%%%%%%%%%%%%%%%%%%
 %			EXEMPLES DE CODE
@@ -198,8 +202,10 @@
 %%%%%%%%%%%%%%%%%%%%%%%%
 %			FRONT MATTER
 	\frontmatter
+	\cleardoublepage
 	
 	\chapter{Résumé}
+	
 	\subfile{sections/abstract/abstract.tex}
 	
 	\chapter{Remerciements}
