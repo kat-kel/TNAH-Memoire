@@ -45,7 +45,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%
 %			DIAGRAM
 \usepackage{tikz}
-\usetikzlibrary{calc, matrix}
+\usetikzlibrary{calc, matrix, shapes.geometric, arrows}
 \usepackage{pgfplots}
 \usepackage{array}
 
@@ -63,10 +63,10 @@
     1.00	& 12  \\
     }\mydata
 
-Qu'est-ce qu'est l'\textit{\Gls{htr}} ou, traduit en français, la reconnaissance du texte écrit à la main ? L'\textit{\acrlong{HTR}} (\acrshort{HTR}) est l'un des meilleurs approches aujourd'hui à prédire du texte à partir d'une image numérique. Pour expliquer comment l'\acrshort{HTR} se réalise, il faut exposer en premier temps qu'est-ce qu'une image numérique. En sachant à quoi ressemble la saisie d'un logiciel \acrshort{HTR}, qui fait la prédiction du texte sur l'image, on comprend mieux le défi dont s'occupaient des chercheurs pendant près d'un siècle.
+Qu'est-ce qu'est l'\textit{\Gls{htr}} ou la reconnaissance des écritures manuscrites ? L'\textit{\acrlong{HTR}} (\acrshort{HTR}) est l'un des meilleurs approches aujourd'hui à prédire du texte à partir d'une image numérique, y compris les manuscrits et les imprimés. Pour expliquer comment l'\acrshort{HTR} se réalise, il faut exposer en premier temps qu'est-ce qu'une image numérique. En sachant à quoi ressemble la saisie d'un logiciel \acrshort{HTR}, qui fait la prédiction du texte sur l'image, on comprend mieux le défi dont s'occupaient des chercheurs pendant près d'un siècle.
 
-\section{Les objectifs de l'HTR}
-\subsection{Le contour}
+\section{Les bases de l'HTR}
+\subsection{L'image numérique}
 L'un des objectifs de l'\acrshort{HTR} est d'imiter l'œil humain et reconnaître les lignes et les points d'une écriture sur une image numérisée du texte. Une image numérique se compose d'un quadrillage des carrés qui s'appellent des pixels. Venant de l'anglais, le mot pixel veut dire \textit{picture element} et il décrit l'élément le plus minimal d'une image numérique. Les pixels sont stockés dans un format \textit{bitmap} ou BMP et chaque pixel peut compter 1 bit, 4 bits, 8 bits, ou 24 bits selon l'encodage de l'image. Quelque soit l'encodage, chaque pixel n'a qu'une seule couleur. Vu ensemble, un groupe de pixels peut donner l'impression des courbes d'un objet ou d'un caractère. L'exemple de figure~\ref{fig:pixel1} pourrait donc montrer la diagonale de la lettre \og{}A~\fg{} écrite en crayon rouge.
 
 \definecolor{5}{RGB}{255,0,0} % 5
@@ -130,11 +130,38 @@ Un scanner encode l'image en décomposant une image en les unités de pixel et e
 \label{fig:pixel2}
 \end{figure}
 
-\subsection{Le masque}
-L'autre objectif de l'\acrshort{HTR} est de distinguer les limites et regrouper les composants d'un caractère. Même si un modèle \acrshort{HTR} arrivait à reconnaître toutes les lignes de la lettre \textit{A}, il n'arriverait pas pourtant à reconnaître que les lignes se constituent un caractère sans les rassembler et classifier comme un objet contiguë. Il faut donc tracer la limite d'un caractère dans une entité qui s'appelle un \og{}masque\fg{}.\autocite{coquenetHandwrittenTextRecognition2021}
+\subsection{Les tâches d'un logiciel HTR}
+Un logiciel \acrshort{HTR} peut faire trois tâches~: la segmentation de la page, l'analyse de la mise en page, et la transcription du texte. L'analyse de la mise en page n'est pas nécessaire, mais les deux autres tâches sont essentielles. Chacune exige son propre modèle entraîné pour la faire. (cf. Figure~\ref{fig:flow})
 
-\subsection{Allier les deux objectifs}
-Un modèle \acrshort{HTR} doit donc réaliser ces deux objectifs~: identifier les contours d'un caractère et se rende compte que ces points contiguës constituent un objet contiguë. Cet objet contiguë permet au modèle reconnaître du texte. La reconnaissance du texte n'est pas de magie. Elle compte sur la constitution des objets ou des \textit{masques} à partir des pixels. Le modèle \acrshort{HTR} traite ces objets comme des matrices, qui s'expliquera prochainement, et peut donc réaliser des calculs qui lui permet prédire du texte.
+\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=6cm, minimum height=1cm,text centered, draw=black, fill=red!30]
+\tikzstyle{process} = [rectangle, minimum width=6cm, minimum height=1cm, text centered, draw=black, fill=orange!30]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+\begin{figure}
+\centering
+\begin{tikzpicture}[node distance=2cm]
+\node (start) [startstop] {Données d'entrée (image numérique)};
+\node (seg) [process, below of=start] {Segmentation des lignes de texte};
+\node (mise) [process, below of=seg] {Analyse de la mise en page};
+\node (tran) [process, below of=mise] {Transcription du texte segmenté};
+\node (stop) [startstop, below of=tran] {Données de sortie};
+
+\draw [arrow] (start) -- (seg);
+\draw [arrow] (seg) -- (mise);
+\draw [arrow] (mise) -- (tran);
+\draw [arrow] (tran) -- (stop);
+\end{tikzpicture}
+\caption{Processus d'un logiciel HTR}
+\label{fig:flow}
+\end{figure}
+
+\subsubsection{La segmentation et la mise en page}
+La première tâche de la reconnaissance du texte et de localiser l'emplacement du texte. Cette étape s'appelle souvent la segmentation et elle est indispensable.\footcite{chagueHTRUnitedMutualisonsVerite2021} Afin de prédire le texte sur une image, il faut d'abord avoir établi sa présence. Cette étape s'effectue par un modèle de segmentation, qui se distingue d'un modèle \acrshort{HTR}~; le dernier s'occupe de la transcription d'une écriture manuscrite, et le premier s'occupe de la segmentation de la page. Cependant, un logiciel \acrshort{HTR} allie les données produites par ces deux types de modèle.
+
+Selon son entraînement, un modèle de segmentation recherche les espaces entre les contours d'un caractère ou entre les lignes de texte. Si le modèle est entraîné de reconnaître du texte écrit en japonais, par exemple, il rechercherait l'ensemble de caractères bordés à gauche et à droit de l'espace et les reconnaîtrait comme étant une ligne de texte. Ainsi que tracer la limite d'une ligne de texte, il faut aussi tracer la limite d'un caractère. L'ensemble de coordonnées qui encadre une telle entité s'appelle un \og{}masque\fg{}.\autocite{coquenetHandwrittenTextRecognition2021} Cet objet contiguë permet au modèle reconnaître du texte. Après avoir reconnu les entités telles que les lignes de texte, qui s'encadrent dans les masques, le logiciel \acrshort{HTR} pourrait ensuite analyser la mise en page des entités, mais, comme explique Alix Chagué, cette étape n'est pas nécessaire à l'\acrshort{HTR}.\footcite{chagueHTRUnitedMutualisonsVerite2021}
+
+\subsubsection{La transcription}
+Fondamentale à l'\acrshort{HTR} est la transcription du texte. Cette dernière tâche d'un logiciel \acrshort{HTR} s'effectue à partir des données encadrées dans les masques. Il faut ce qu'on appelle un modèle \acrshort{HTR}, pourtant l'\acrshort{HTR} veut décrire plus généralement le processus de reconnaître du texte, y compris la segmentation et la transcription. La sortie d'un logiciel \acrshort{HTR} peut être aussi enrichie pour inclure les données de la segmentation ou aussi simple qu'il ne présente que le texte brut de la transcription. En tout cas, la transcription est l'essentiel dans la reconnaissance du texte.
 
 \section{Les origines de l'HTR}
 L'\textit{\acrlong{HTR}} a évolué à partir de l'\textit{\Gls{ocr}}. Les origines de cette dernière méthode atteignent jusqu'au dix-neuvième siècle. Mais les progrès les plus importants à la technologie éventuelle dont le projet \textit{Gallic(orpor)a} profite ont eu lieu il y a plus qu'un demi-siècle aux États-Unis. Le développement des logiciels \acrshort{OCR} a été réalisé dans le cadre de l'amélioration du traitement en masse des données numérisées. Dans les années soixante, ce besoin de gérer et traiter des quantités vastes de données s'est fait senti largement dans les grandes sociétés, surtout les banques. Mais la numérisation des journaux et le traitement en masse des lettres à la poste étaient aussi quelqu'uns des contextes importants du développement de la reconnaissance du texte sur l'image.
@@ -382,20 +409,28 @@ Grâce à la technique de \textit{feature analysis}, un logiciel \acrshort{OCR} 
 Le logiciel \acrshort{HTR} a besoin d'associer beaucoup d'aspects d'une variété immense à un seul caractère puisqu'un main peut écrire un caractère par plusieurs moyens, selon la position de la lettre dans un mot. En outre, un main peut bien varier sa manière d'écriture et une page peut avoir plusieurs mains. Dit simplement, l'\acrshort{OCR} analyse les aspects d'un caractère du point de vue d'une langue et d'une police attendue. L'\acrshort{HTR} se focalise uniquement sur les aspects topologiques d'un caractère, sans besoin de savoir la langue ni avoir appris la police du texte. 
 
 \subsubsection{\textit{Deep learning}}
-Aujourd'hui l'\acrshort{HTR} profite du \textit{feature analysis} ainsi qu'un développement plus récent dans l'intelligence artificielle qui s'appelle le \textit{deep learning} ou l'apprentissage profond. Pouvant s'améliorer grâce aux réseaux neurones, un logiciel \acrshort{OCR} ou \acrshort{HTR} moderne peut prendre les décisions de plus en plus bonnes quand il essaie de prédire du texte à partir de l'analyse des aspects (\textit{feature analysis}). L'un des premiers mises en œuvre des reseaux neurones pour \textit{l'\acrlong{HTR}} était le projet european \textit{Transkribus} en 2019.\autocite{muehlbergerTransformingScholarshipArchives2019} Un autre projet européen a suivi \textit{Transkribus} et, contraire au premier, laisse ses données et les architectures de ses modèles ouvertes~: \textit{Kraken}. Élaboré dans l'esprit de la science ouverte, le projet \textit{Gallic(orpor)a} a profité plutôt du \textit{Kraken} ainsi qu'une interface graphique qui le met en œuvre et qui est aussi ouverte, l'\textit{eScriptorium}.
+Aujourd'hui l'\acrshort{HTR} profite du \textit{feature analysis} ainsi qu'un développement plus récent dans l'intelligence artificielle qui s'appelle le \textit{deep learning} ou l'apprentissage profond. Pouvant s'améliorer grâce aux réseaux neurones, un logiciel \acrshort{OCR} ou \acrshort{HTR} moderne peut prendre les décisions de plus en plus bonnes quand il essaie de prédire du texte à partir de l'analyse des aspects (\textit{feature analysis}). L'un des premiers mises en œuvre des reseaux neurones pour \textit{l'\acrlong{HTR}} était le projet european \textit{Transkribus}.\autocite{muehlbergerTransformingScholarshipArchives2019} Un autre projet européen a suivi \textit{Transkribus} et, contraire au premier, laisse ses données et les architectures de ses modèles ouvertes~: \textit{Kraken}.\autocite{kiesslingKrakenUniversalText2019} Élaboré dans l'esprit de la science ouverte, le projet \textit{Gallic(orpor)a} a profité plutôt du \textit{Kraken} ainsi qu'une interface graphique qui le met en œuvre et qui est aussi ouverte, \textit{eScriptorium}.
 
 \section{Le modèle HTR}
 Puisque \textit{Transkribus} et \textit{Kraken} profitent tous les deux de l'apprentissage profonde, les processus mis en œuvre par les interfaces graphiques \textit{Transkribus} et \textit{eScriptorium} ressemblent généralement à la même description. Ils commencent avec l'entraînement d'un modèle \acrshort{HTR}. Ensuite, ils appliquent le modèle entraîné aux données non préparées. Le taux de réussite se calcule par le pourcentage des mots et des lignes de texte que le modèle n'a jamais vus mais qui étaient bien prédits.
 
-En premier temps, avant de penser à l'entraînement d'un modèle, il faut bien connaître sa saisie de données. Les données d'entré d'un modèle vont être les images numériques, composées des pixels. En général, leurs contenus textuels devraient se ressembler afin que le modèle se spécialise dans une écriture particulière. Il est pourtant possible de entraîner un modèle très généralisé. Cependant, il faut un corpus très large des données d'entraînement.
+\subsection{Les données d'entrée}
+En premier temps, avant de penser à l'entraînement d'un modèle, il faut bien connaître sa saisie de données. Les données d'entrée d'un modèle vont être les images numériques, composées des pixels. En général, leurs contenus textuels devraient se ressembler afin que le modèle se spécialise dans une écriture particulière. Il est pourtant possible d'entraîner un modèle très généralisé. Cependant, il faut un corpus très large des données d'entraînement.
 
-Le premier défi de l'entraînement d'un modèle \acrshort{HTR} est la création des données d'entraînement. Lors de l'apprentissage, elles fournissent au modèle en cours son résultat souhaité pour qu'il puisse savoir comment se modifier sa manière de prédire afin de produire les bonnes prédictions. Les données doivent ressembler perfectement la prédiction idéale d'une donnée d'entrée. Grâce à l'apprentissage profonde, un modèle peut s'apprendre comment arriver à la prédiction souhaité, selon ses données d'entraînement.
+\subsection{Les données d'entraînement}
+Le premier défi de l'entraînement d'un modèle \acrshort{HTR} est la création des données d'entraînement. Ces données sont des transcriptions annotées et corrigées à la main à partir des images. La paire d'image et de transcription s'appelle un vérité de terrain ou \textit{ground truth} en anglais, puisque la transcription doit être parfaite ou \textit{vraie}.\footcite{lassnerPublishingOCRGround2021} Afin d'entraîner un modèle \acrshort{HTR}, il faut un jeu des vérités de terrain. Alix Chagué explique les vérités de terrain comme,
+\begin{displayquote}
+des ensembles de données annotées et corrigées de manière à fournir au modèle des paires composées d'une part d'une image ou d'une portion d'image (entrée) et d'autre part de l’annotation attendue (sortie), qui peut être des coordonnées dans le cas de la segmentation ou un ensemble de caractères pour la transcription.\footcite{chagueHTRUnitedMutualisonsVerite2021}
+\end{displayquote}
+Lors de l'apprentissage, les vérités de terrain fournissent au modèle en cours son résultat souhaité pour qu'il puisse savoir comment se modifier sa manière de prédire afin de produire les bonnes prédictions ou les prédictions \textit{vraies}. Les données doivent ressembler parfaitement la prédiction idéale d'une donnée d'entrée. Grâce à l'apprentissage profonde, un modèle peut s'apprendre comment arriver à la prédiction souhaitée, selon ses données d'entraînement.
 
+\subsection{L'entraînement}
 Avec ces données d'entraînement, qui se connaissent parfois comme le corpus d'or puisqu'elles sont générées avec beaucoup de soin et souvent beaucoup d'argent, un modèle a aussi besoin des données non préparées qui ressemblent aux données préparées du corpus d'or. Le modèle \acrshort{HTR} va s'évalue lors de l'apprentissage selon son taux de réussite avec les données qu'il devrait savoir  prédire, les données préparées, et les données qu'il pense de n'avoir jamais vu, les données non préparées qui font partie de ce qu'on appelle un \textit{training set}. Il est le combinaison de ces deux jeux de données, préparées et non préparées, qui rend possible l'apprentissage profonde.
 
+\subsection{Le résultat d'entraînement}
 Le résultat de l'entraînement s'appelle un modèle. Étant spécialisé dans une écriture particulière, le modèle pourrait ensuite se mettre en œuvre pour prédire du texte sur les images qui ressemblent aux données d'entraînement. Les chercheurs s'occupent du développment des nouveaux modèles \acrshort{HTR} qui se spécialisent dans certains manuscrits et certaines imprimés historiques. Le projet \textit{Gallic(orpor)a} visait à entraîner plusieurs modèles. Un se spécialiserait dans l'écriture des manuscrits du XVe siècle, l'un dans l'écriture des incunables du XVe siècle, un autre dans l'écriture des imprimés du XVIe siècle, un autre dans celui des imprimés du XVIIe siècle, et un autre dans l'écriture des imprimés du XVIIIe siècle.
 
-Cependant, tous les modèles du projet \textit{Gallic(orpor)a} se spécialisent dans les écritures latines. En théorie, un modèle \acrshort{HTR} n'est pas limité aux polices et aux langues. Mais, jusqu'au présent, tout modèle efficace compte sur une écriture specifique. Donc, un modèle entraîné sur les imprimés XVIIe siècle en français peut cependant produire des bonnent prédictions du texte d'une imprimée du même siècle en italien. Par contre, un texte écrit en arabe ne parviendra pas au même taux de réussite. Le modèle ne sait pas segmenter la ligne de texte ni décomposer ses segments en glyphes puisqu'il s'est appris comment reconnaître des caractères en cherchant des espaces attendues dans une écriture latine.
+Cependant, tous les modèles du projet \textit{Gallic(orpor)a} se spécialisent dans les écritures latines. En théorie, un modèle \acrshort{HTR} n'est pas limité aux polices et aux langues. Mais, jusqu'au présent, tout modèle efficace compte sur une écriture specifique. Donc, un modèle entraîné sur les imprimés XVIIe siècle en français peut cependant produire des bonnent prédictions du texte d'une imprimée du même siècle en italien. Par contre, la prédiction d'un texte écrit en arabe ne parviendra pas au même taux de réussite. Le modèle ne sait pas segmenter l'écriture puisqu'il s'est appris comment reconnaître des caractères en cherchant des espaces attendues dans une écriture latine.
 
 
 \end{document}
