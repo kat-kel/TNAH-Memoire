@@ -2,17 +2,56 @@
 \usepackage[subpreambles=true]{standalone}
 \usepackage{import}
 \usepackage{blindtext}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			GLOSSAIRE
+\usepackage[acronym]{glossaries}
+\makeglossaries
+\newglossaryentry{htr}
+{
+    name=Handwritten Text Recognition,
+    description={La reconnaissance du texte écrit sur une image numérique}
+}
+\newacronym{HTR}{HTR}{Handwritten Text Recognition}
+
+\newglossaryentry{ocr}
+{
+    name=Optical Character Recognition,
+    description={La reconnaissance des polices du texte sur une image numérique}
+}
+\newacronym{OCR}{OCR}{Optical Character Recognition}
+
+\newglossaryentry{TEI}
+{
+	name={Text Encoding Initiative},
+	description={Normes internationales de l'encodage des documents texts}
+}
+\newacronym{tei}{TEI}{Text Encoding Initiative}
+
+\newglossaryentry{iiif}
+{
+	name={International Image Interoperability Framework},
+	description={Normes internationales de l'exploitation des images numériques et de leurs métadonnées par API}
+}
+\newacronym{IIIF}{IIIF}{International Image Interoperability Framework}
+
+\newacronym{ALTO}{ALTO}{Analyzed Layout and Text Object}
+
+\newacronym{XML}{XML}{eXtensible Markup Language}
+
+\newacronym{BNF}{BnF}{Bibliothèque nationale de France}
+
 \begin{document}
 
 \medskip
 
-Quand des modèles OCR et HTR extraient les données d'une ressource textuelle numérisée, les informations relatives à la structure physique de l'image risquent de se perdre. Un schéma XML standardisé qui s'appelle ALTO a été créé afin de conserver et structurer ces données non-textuelles et géometriques en les tenant en relation avec le contenu textuel. La plupart des modèles OCR et HTR compte sur ce schéma. Cependant ALTO ne convient pas bien à l'édition numérique ni aux traitements automatique du langage. Les éditeurs et les chercheurs en lettres attendent un schéma XML plus courant dans le monde des humanités numériques : la TEI. Il faut donc un mapping pour transformer un fichier ALTO en fichier TEI sans perdre aucune donnée lors du processus. Cette transformation automatisée permet à conserver les données particulières au schéma ALTO, telles que celles sur la segmentation et sur la structure physique du document numérisé, ainsi qu'à exploiter le contenu textuel de la ressource textuelle. La flexibilité de la TEI et son usage très répandu rendent le schéma idéal pour mieux valoriser les données produites par les modèles OCR et HTR.\\
+Quand des modèles \acrshort{OCR} et \acrshort{HTR} extraient les données d'une ressource textuelle numérisée, les informations relatives à la structure physique de l'image risquent de se perdre. Un schéma XML standardisé qui s'appelle \acrshort{ALTO} a été créé afin de conserver et structurer ces données non-textuelles et géometriques en les tenant en relation avec le contenu textuel. La plupart des modèles \acrshort{OCR} et \acrshort{HTR} compte sur ce schéma. Cependant \acrshort{ALTO} ne convient pas bien à l'édition numérique ni aux traitements automatique du langage. Les éditeurs et les chercheurs en lettres attendent un schéma XML plus courant dans le monde des humanités numériques : la \acrshort{TEI}. Il faut donc un mapping pour transformer un fichier \acrshort{ALTO} en fichier \acrshort{TEI} sans perdre aucune donnée lors du processus. Cette transformation automatisée permet à conserver les données particulières au schéma \acrshort{ALTO}, telles que celles sur la segmentation et sur la structure physique du document numérisé, ainsi qu'à exploiter le contenu textuel de la ressource textuelle. La flexibilité de la \acrshort{TEI} et son usage très répandu rendent le schéma idéal pour mieux valoriser les données produites par les modèles \acrshort{OCR} et \acrshort{HTR}.\\
 
-Dans le cadre du stage pour obtenir le diplôme de Master 2 \og~Technologies numériques appliquées à l'histoire~\fg{}, ce mémoire porte sur la modélisation de la transformation de ALTO en TEI. Cette modélisation a été réalisée dans le cadre du projet \textit{Gallic(orpor)a}, financé par la BnF lors d'un stage qui a eu lieu au sein du laboratoire Automatic Language Modelling and Analysis \& Computational Humanities entre avril et juillet 2022.\\
+Dans le cadre du stage pour obtenir le diplôme de Master 2 \og~Technologies numériques appliquées à l'histoire~\fg{}, ce mémoire porte sur la modélisation de la transformation de \acrshort{ALTO} en \acrshort{TEI}. Cette modélisation a été réalisée dans le cadre du projet \textit{Gallic(orpor)a}, financé par la \acrshort{BNF} lors d'un stage qui a eu lieu au sein du laboratoire Automatic Language Modelling and Analysis \& Computational Humanities entre avril et juillet 2022.\\
 	
 	\textbf{Mots-clés~:} HTR, OCR, ALTO, TEI, TAL, édition numérique.
 	
-	\textbf{Informations bibliographiques~:} Kelly Christensen, \textit{Modélisation des transcriptions ALTO avec la TEI. En complétant le pipeline du projet} Gallic(orpor)a, mémoire de master \og{}Technologies numériques appliquées à l'histoire\fg{}, dir. [Noms des directeurs], École nationale des chartes, 2022.
+	\textbf{Informations bibliographiques~:} Kelly Christensen, \textit{D’ALTO à TEI, modélisation de transcriptions automatiques pour une pré-éditorialisant des textes}, mémoire de master \og{}Technologies numériques appliquées à l'histoire\fg{}, dir. Ségolène Albouy, École nationale des chartes, 2022.
 	
 \end{document}
 \documentclass[../main.tex]{subfiles}

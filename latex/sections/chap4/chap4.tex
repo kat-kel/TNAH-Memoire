@@ -11,6 +11,28 @@ Le premier étape du pipeline \textit{Gallic(orpor)a} est la reconnaissance du t
 
 \subsection{La création des données d'entraînement}
 
+Le pipeline a besoin d'une structure de fichier rigide qu'il construit lors de la récupération des images depuis l'API de la \acrshort{BNF}. Sinon, l'utilisatrice ou l'utilisateur doit l'imiter en appuyant sur ses propres images numériques d'un document source. Mais les images doivent être disponible en ligne par l'API de \textit{l'\Gls{iiif}} (\acrshort{IIIF}) pour que les métadonnées de la source de l'image soient encodées et accessibles par la requête.
+
+\begin{center}
+\begin{verbatim}
+data/
+|____ARK1/
+|        |____image1.jpg
+|        |____image2.jpg
+|        |____image3.jpg
+...
+|____ARK2/
+|        |____image1.jpg
+|        |____image2.jpg
+|        |____image3.jpg
+...
+\end{verbatim}
+\end{center}
+
+\noindent Toute image numérique doit se trouve dans un dossier qui porte comme nom l'identifiant ARK (\textit{Archival Resource Key}) du document source. Cette clef est importante pour la diffusion et le requêtage des images numériques par les APIs \acrshort{IIIF}. Le pipeline a aussi besoin de cette clef ainsi que de l'association évidente entre elle et les images qui appartiennent au document, qui se donne grâce à la structure de fichier.
+
+Avec cet identifiant ARK, donné par la structure de fichier, le pipeline récupère les métadonnées du document source. Il recherche les informations sur le document source en passant une requête à l'API de l'image \acrshort{IIIF}~; cet API est maintenu par l'institution patrimonial qui se charge de la conservation et/ou de la diffusion en ligne du document. Les métadonnées récupérés de l'API IIIF, géré par l'institution hôte du document numérique, sont liées---si possible---avec des autres sources de données. Dans l'exemple des documents numériques de la base de données Gallica, le pipeline récupère les métadonnées quant au document source depuis l'API \acrshort{IIIF} que la \acrshort{BNF} met à disposition. Si cette requête a réussi, le pipeline va récupérer les données du catalogue général de la \acrshort{BNF} en passant une requête à l'API \textit{SRU} de la \acrshort{BNF} qui veut dire, en anglais, le \textit{Search/Retrieve via URL}. Pour terminer, le pipeline recherche encore des métadonnées dans le catalogue du Système Universitaire de Documentation (SUDOC).
+
 \subsection{L'entraînement des modèles}
 
 \subsection{Les modèles prédisent le texte}

@@ -63,12 +63,12 @@ d’'écriture manuscrite des matériaux anciens}
 \newacronym{CREMMA}{CREMMA}{Consortium Reconnaissance
 d’Écriture Manuscrite des Matériaux Anciens}
 
-\newglossaryentry{TEI}
+\newglossaryentry{tei}
 {
 	name={Text Encoding Initiative},
 	description={Normes internationales de l'encodage des documents texts}
 }
-\newacronym{tei}{TEI}{Text Encoding Initiative}
+\newacronym{TEI}{TEI}{Text Encoding Initiative}
 
 \newglossaryentry{iiif}
 {
@@ -77,11 +77,11 @@ d’Écriture Manuscrite des Matériaux Anciens}
 }
 \newacronym{IIIF}{IIIF}{International Image Interoperability Framework}
 
-\newacronym{alto}{ALTO}{Analyzed Layout and Text Object}
-\newacronym{xml}{XML}{eXtensible Markup Language}
+\newacronym{ALTO}{ALTO}{Analyzed Layout and Text Object}
+\newacronym{XML}{XML}{eXtensible Markup Language}
 \newacronym{BNF}{BnF}{Bibliothèque nationale de France}
 \newacronym{almanach}{ALMAnaCH}{Automatic Language Modelling and Analysis \& Computational Humanities}
-\newacronym{rdf}{RDF}{Resource Description Framework}
+\newacronym{RDF}{RDF}{Resource Description Framework}
 \newacronym{TAL}{TAL}{Traitement automatique des langues}
 
 
@@ -173,8 +173,11 @@ Ainsi que la création des vérités de terrain, qui est expliqué dans la secti
 \item le texte pré-éditorialisé, extrait du document
 \item le texte analysé par les outils \acrlong{TAL} (\acrshort{TAL})
 \end{enumerate}
-Chaque type d'information veut servir une utilité différente que la lectrice éventuelle ou le lecteur éventuel de la ressource pourrait désirer. Les métadonnées s'informent sur le document source, sa conservation, et sa ressource lexicographique que le pipeline génère. Les données topologiques et linguistiques représentent toute donnée extraite par le modèle \acrshort{HTR}. Le texte pré-éditorialisé et le texte analysé viennent tous les deux des donnés extraites par le modèle. Le texte pré-éditorialisé représente le texte tel qu'il se trouve dans la transcription du document. Et le texte analysé présente le texte extrait après être lemmatisé, normalisé, et analysé par les modèles \acrshort{TAL}.
-La saisie des métadonnées et la saisie des données des modèles \acrshort{HTR} et \acrshort{TAL}, tel que le texte extrait et le texte annoté, se fusionnent dans la structure de données XML et selon la norme d'encodage le \textit{\Gls{TEI}} (\acrshort{tei}). Ensuite, ce format sert à reposer sur d'autres structures des données et donc d'autres exploitations, tel que \textit{l'\Gls{iiif}} (\acrshort{IIIF}). Une visualisation du pipeline se voit dans le Figure~\ref{fig:pipeline}.
+
+
+Chaque type d'information veut servir une utilité différente que la lectrice éventuelle ou le lecteur éventuel de la ressource pourrait désirer. Les métadonnées s'informent sur trois types de document concerné par le pipeline~: (1) la ressource lexicographique qu'il créé, (2) le fac-similé numérique du document source, (3) le document source physique qui se conserve quelque part, sinon qui a été conservé avant sa disparition. Les données produites par les modèles \acrshort{HTR} présentent la segmentation de la mise en page et la prédiction du texte. Ensuite, le texte pré-éditorialisé est présenté, sans sa segmentation, d'une manière plus convenable à l'analyse linguistique. Et en fin, la ressource présente son analyse du texte prédit grâce à l'application de certains modèles \acrshort{TAL}.
+
+Une visualisation du pipeline se voit dans le Figure~\ref{fig:pipeline}. Elle montre en bleu les saisies des données, en vert les fichiers préliminaires que le pipeline construit, en orange sa première sortie, et en violet les divers moyens d'exploitation de sa sortie. Puisque le pipeline va générer des métadonnées et les données topologiques et linguistiques, il a besoin d'au moins deux saisies des données. L'un porte sur les métadonnées des trois types de document concernés (la ressource lexicographique elle-même, le fac-similé numérique du document source, le document source physique). L'autre saisie des données est l'image numérique elle-même. La première saisie peut se composer de plusieurs sources de données en ligne, afin de fournir à la ressource lexicographique autant de détail que possible. La deuxième saisie se compose du fac-similé numérique dans le format simple des images numériques, tel que JPEG, TIFF, ou PNG.
 
 \begin{figure}[hbt!]
 \includegraphics[width=\textwidth]{../../../images/pipeline.png}
@@ -182,50 +185,13 @@ La saisie des métadonnées et la saisie des données des modèles \acrshort{HTR
 \label{fig:pipeline}
 \end{figure}
 
-\subsection{Les formats déployés dans le pipeline}
-Tous les formats de données qui font partie du pipeline se divisent en deux catégories. En premier temps, le pipeline a besoin des images numériques qui composent le fac-similé numérique d'un document source. Ces images peuvent être de plusieurs formats, mais les modèles \acrshort{HTR} que l'utilisatrice ou l'utilisateur a sélectionné pour appliquer doivent pouvoir les traiter. Ensuite, il y a les formats utilisés pour la création des données, qui dans la Figure~\ref{fig:pipeline} s'encadrent dans les carrés gris en pointillé. Le premier, l'extrait du texte (\textit{Text extraction} dans la Figure), se constitue d'un format \acrshort{xml} qui s'appelle \acrshort{alto} (\textit{\acrlong{alto}}) que renvoie le logiciel \acrshort{HTR}. Les modèles \acrshort{TAL} renvoie les données de l'annotation du texte (\textit{Text annotation} dans la Figure) dans une autre structure de données, soit TSV (\textit{tab separated values}) soit CSV (\textit{comma separated values}).
+En vert, la Figure~\ref{fig:pipeline} montre les premiers fichiers préliminaires créés par le pipeline, les fichiers \acrshort{ALTO}. Ce format d'un fichier \acrshort{XML} est un schéma particulièrement convenable à l'encodage de l'analyse de la mise en page que fait un modèle de segmentation et la prédiction du texte que fait un modèle \acrshort{HTR}. Son acronyme veut dire en anglais \textit{l'\acrlong{ALTO}}, ou la mise en page analysée et l'objet de texte. Comme se voit par la nature bipartite du nom \textit{\acrlong{ALTO}}, les fichiers \acrshort{ALTO} aligne la mise en page et le texte prédit. Le pipeline créé ce genre de fichier préliminaire en appliquant les modèles \acrshort{HTR} aux données d'entrée visuelles.
 
-En deuxième temps, il y a les formats déployés dans le pipeline pour exploiter les données ainsi créées~; la Figure~\ref{fig:pipeline} les représente soit en orange soit en violet. Le premier, le \acrshort{tei}, est le format \textit{pivot} qui repose sur les trois autres formats. La ressource lexicographique que le pipeline créé peut donc être exploitée en tant que document \acrshort{tei}, représenté dans la figure en orange. Sinon, le format \textit{pivot} peut être manipulé pour extraire ses métadonnées~; ces dernières peuvent être exploitées dans le format \acrshort{IIIF}, le format DTS (\textit{Distributed Text Services})\footcite{almasDistributedTextServices2021}, ou le format RDF (\textit{Resource Description Framework}), dont la structure des données est un triplet RDF.
+Après la création des premiers fichiers préliminaires, le pipeline créé la première version du fichier \acrshort{TEI}, qu'il va plus tard enrichir avec l'analyse linguistique du texte prédit. Ce premier fichier \acrshort{TEI} occasionne la création des métadonnées. Comme montre la flèche bleue dans la Figure~\ref{fig:pipeline}, les métadonnées sont récupérées depuis les sources en ligne et ensuite nettoyées et intégrées au fichier \acrshort{TEI}. Le fichier \acrshort{TEI} préliminaire récupère aussi les données des fichiers \acrshort{ALTO}. Il est le combinaison de ces deux genres de données que rend le fichier \acrshort{TEI} bien fait pour présenter toutes les données créés par le pipeline.
 
-\subsection{Les données récupérées}
+À la suite de la récupération, du nettoyage, et enfin de la transformation des données des deux sources pour les conformer au schéma \acrshort{TEI}, le pipeline continue à traiter le texte qu'il a récupéré des fichiers \acrshort{ALTO}. Le pipeline trait deux fois le texte prédit. En premier temps, il parse les données récupérées des fichiers \acrshort{ALTO} et extrait toute ligne de texte imbriquée dans une zone qui fait partie du texte principal. Cela veut dire qu'il n'extrait pas de numéro de page, d'en-tête, etc. Les lignes de texte ainsi sélectionnées sont présentées comme le texte pré-éditorialisé du document source. Elles représentent une espèce de transcription du texte, en ignorant la mise en page et les autres types d'écriture sur la page qui sont communiqués autre part dans le fichier \acrshort{TEI}.
 
-\subsubsection{Les données topologiques et linguistiques prédites}
-À la saisie d'un fac-similé numérique, le pipeline démarre sa phase d'extraction du texte, mise en pointillé dans la Figure~\ref{fig:pipeline}, et déploie ses modèles de segmentation et de l'\acrshort{HTR}. Il peut déployer peu importe quel modèle \acrshort{HTR} qu'une utilisatrice ou un utilisateur veut appliquer au fac-similé numérique, mais le modèle doit produire les données qui conforment au schéma \acrshort{alto}. En séquence, le pipeline applique les modèles à chaque image numérique afin de produire les transcriptions en XML-\acrshort{alto}.
-
-L'un des objectifs du pipeline est de conserver toute donnée produite par les modèles \acrshort{HTR} afin que la ressource lexicographique en XML-\acrshort{tei} qu'il produit puisse se servir à l'entraînement des nouveaux modèles. Les coordonnées des zones et le texte prédit, étant liés au fac-similé numérique, font une vérité de terrain. Ces données topologiques et linguistiques sont récupérées et conservées dans le document \textit{pivot}, la ressource XML-\acrshort{tei}. Ainsi quelqu'un peut extraire les vérités de terrain et les utiliser pour entraîner son propre modèle. La \textit{\acrlong{tei}} fournit un schéma qui convient bien à la conservation de telles données, l'élément XML \texttt{<sourceDoc>}.
-
-\subsubsection{Les métadonnées}
-La deuxième saisie de données que prend le pipeline, après le fac-similé numérique, est le nom du dossier dans lequel sont stockées les images du fac-similé. Le pipeline a besoin d'une structure de fichier rigide qu'il construit lors de la récupération des images depuis l'API de la \acrshort{BNF}. Sinon, l'utilisatrice ou l'utilisateur doit l'imiter en appuyant sur ses propres images numériques d'un document source. Mais les images doivent être disponible en ligne par l'API de \textit{l'\Gls{iiif}} (\acrshort{IIIF}) pour que les métadonnées de la source de l'image soient encodées et accessibles par la requête.
-
-\begin{center}
-\begin{verbatim}
-data/
-|____ARK1/
-|        |____image1.jpg
-|        |____image2.jpg
-|        |____image3.jpg
-...
-|____ARK2/
-|        |____image1.jpg
-|        |____image2.jpg
-|        |____image3.jpg
-...
-\end{verbatim}
-\end{center}
-
-\noindent Toute image numérique doit se trouve dans un dossier qui porte comme nom l'identifiant ARK (\textit{Archival Resource Key}) du document source. Cette clef est importante pour la diffusion et le requêtage des images numériques par les APIs \acrshort{IIIF}. Le pipeline a aussi besoin de cette clef ainsi que de l'association évidente entre elle et les images qui appartiennent au document, qui se donne grâce à la structure de fichier.
-
-Avec cet identifiant ARK, donné par la structure de fichier, le pipeline récupère les métadonnées du document source. Il recherche les informations sur le document source en passant une requête à l'API de l'image \acrshort{IIIF}~; cet API est maintenu par l'institution patrimonial qui se charge de la conservation et/ou de la diffusion en ligne du document. Les métadonnées récupérés de l'API IIIF, géré par l'institution hôte du document numérique, sont liées---si possible---avec des autres sources de données. Dans l'exemple des documents numériques de la base de données Gallica, le pipeline récupère les métadonnées quant au document source depuis l'API \acrshort{IIIF} que la \acrshort{BNF} met à disposition. Si cette requête a réussi, le pipeline va récupérer les données du catalogue général de la \acrshort{BNF} en passant une requête à l'API \textit{SRU} de la \acrshort{BNF} qui veut dire, en anglais, le \textit{Search/Retrieve via URL}. Pour terminer, le pipeline recherche encore des métadonnées dans le catalogue du Système Universitaire de Documentation (SUDOC).
-
-La \textit{\acrlong{tei}} dispose d'un élément XML qui s'appelle le \texttt{<teiHeader>} pour encoder les métadonnées. Le pipeline génère ou récupère et nettoye les métadonnées sur (1) la ressource lexicographique qu'il créé, (2) le fac-similé numérique que les modèles \acrshort{HTR} traite, et (3) le document source dont les pages ont été numérisées. Ces métadonnées sont présentées dans les éléments \acrshort{tei} pertinents qui descende directement ou indirectement de l'élément XML \texttt{<teiHeader>}.
-
-\subsection{Les données produites}
-Après avoir créé les métadonnées du document source ainsi que les données topologiques et linguistiques produites par les modèles de segmentation et de l'\acrshort{HTR}, le pipeline continue à traiter les données de la transcription.
-
-\subsubsection{Le texte pré-éditorialisé}
-Le pipeline crée 
-
-\subsubsection{Le texte analysé}
+Ce texte pré-éditorialisé peut servir à l'analyse d'une utilisatrice ou d'un utilisateur qui veut appuyer sur le texte tel qu'il était dans le document source. Ce texte sert aussi à la génération d'un texte analysé par les outils \acrshort{TAL}. Le résultat de ce dernier traitement est visualisé dans la Figure~\ref{fig:pipeline} comme la sortie en orange, le fichier \acrshort{TEI} enrichi, \textit{TEI file +}. Pour terminer, les données de la sortie peuvent être exploitées dans plusieurs formats, que la Figure~\ref{fig:pipeline} visualise en violet.
 
 \end{document}
 \documentclass[../main.tex]{subfiles}

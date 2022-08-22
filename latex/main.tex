@@ -65,6 +65,8 @@
 }
 \newacronym{INRIA}{Inria}{Institut national de recherche en sciences et technologies du numérique}
 
+\newacronym{almanach}{ALMAnaCH}{Automatic Language Modelling and Analysis \& Computational Humanities}
+
 \newglossaryentry{enc}
 {
     name=École nationale des chartes,
@@ -87,12 +89,12 @@ d’'écriture manuscrite des matériaux anciens}
 \newacronym{CREMMA}{CREMMA}{Consortium Reconnaissance
 d’Écriture Manuscrite des Matériaux Anciens}
 
-\newglossaryentry{TEI}
+\newglossaryentry{tei}
 {
 	name={Text Encoding Initiative},
 	description={Normes internationales de l'encodage des documents texts}
 }
-\newacronym{tei}{TEI}{Text Encoding Initiative}
+\newacronym{TEI}{TEI}{Text Encoding Initiative}
 
 \newglossaryentry{iiif}
 {
@@ -101,16 +103,20 @@ d’Écriture Manuscrite des Matériaux Anciens}
 }
 \newacronym{IIIF}{IIIF}{International Image Interoperability Framework}
 
-\newacronym{alto}{ALTO}{Analyzed Layout and Text Object}
-\newacronym{xml}{XML}{eXtensible Markup Language}
+\newacronym{ALTO}{ALTO}{Analyzed Layout and Text Object}
+
+\newacronym{XML}{XML}{eXtensible Markup Language}
+
 \newacronym{BNF}{BnF}{Bibliothèque nationale de France}
-\newacronym{almanach}{ALMAnaCH}{Automatic Language Modelling and Analysis \& Computational Humanities}
-\newacronym{rdf}{RDF}{Resource Description Framework}
+
+\newacronym{RDF}{RDF}{Resource Description Framework}
+
 \newacronym{TAL}{TAL}{Traitement automatique des langues}
 
 %%%%%%%%%%%%%%%%%%%%%%%%
 %			DIAGRAM
 \usepackage{tikz}
+\usetikzlibrary{positioning}
 \usetikzlibrary{calc, matrix, shapes.geometric, arrows}
 \usepackage{pgfplots}
 \usepackage{array}
@@ -176,7 +182,7 @@ d’Écriture Manuscrite des Matériaux Anciens}
 %%%%%%%%%%%%%%%%%%%%%%%%
 %			AUTEUR.RICE & TITRE
 \author{Kelly Christensen}
-\title{Modélisation des transcriptions ALTO avec la TEI}
+\title{D’ALTO à TEI, modélisation de transcriptions automatiques pour une pré-éditorialisant des textes}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%
@@ -203,8 +209,7 @@ d’Écriture Manuscrite des Matériaux Anciens}
 				\textbf{Kelly Christensen}\\
 			\end{Large}
 		%selon le cas
-			\begin{normalsize} \textit{licenciée ès enseignement musical}\\
-				\textit{diplômée de master musicologie}\\
+			\begin{normalsize} 
 				\textit{diplômée de doctorat musicologie}
 			\end{normalsize}
 			
@@ -213,12 +218,12 @@ d’Écriture Manuscrite des Matériaux Anciens}
 			\bigskip
 			
 			\begin{Huge}
-				\textbf{Modélisation des transcriptions ALTO avec la TEI}\\
+				\textbf{D’ALTO à TEI}\\
 			\end{Huge}
 			\bigskip
 			\bigskip
 			\begin{LARGE}
-				\textbf{En complétant le pipeline du projet \textit{Gallic(orpor)a}}\\
+				\textbf{Modélisation de transcriptions automatiques pour une pré-éditorialisant des textes}\\
 			\end{LARGE}
 			
 			\bigskip
@@ -274,13 +279,13 @@ d’Écriture Manuscrite des Matériaux Anciens}
 	\chapter{Qu'est-ce que l'HTR ?}
 	\subfile{sections/chap1/chap1.tex}
 	\label{chap:htr}
+
+	\chapter{Le rêve du projet \textit{Gallic(orpor)a}}
+	\subfile{sections/chap3/chap3.tex}
 	
 	\chapter{Au commencement, il y avait les \textit{guidelines SegmOnto}}
 	\label{chap:segmonto}
 	\subfile{sections/chap2/chap2.tex}
-
-	\chapter{Le rêve du projet \textit{Gallic(orpor)a}}
-	\subfile{sections/chap3/chap3.tex}
 	
 %%%%%%%%%%%%%%%%%%%%%%%%
 %			PARTIE II.
