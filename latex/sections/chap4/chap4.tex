@@ -1,54 +1,415 @@
+% PREAMBULE
+
+% !BIB TS-program = biber
+% !TEX TS-program = xelatexmk
+% ITEX TS-program = latex
+
+% !TEX spellcheck = French
+
 \documentclass[class=article, crop=false]{standalone}
 \usepackage[subpreambles=true]{standalone}
 \usepackage{import}
 \usepackage{blindtext}
+\usepackage{fontspec}
+\usepackage[french]{babel}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{csquotes}
+\usepackage{url}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			DIAGRAM
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usetikzlibrary{calc, matrix, shapes.geometric, arrows}
+\usepackage{pgfplots}
+\usepackage{array}
+\usepackage{tabularx}
+
+
+%Example of code
+\usepackage{listings}
+\usepackage{color}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{cyan}{rgb}{0.0,0.6,0.6}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinelanguage{XML}{
+  backgroundcolor=\color{backcolour},  
+  basicstyle=\ttfamily\footnotesize,
+  morestring=[s]{"}{"},
+  moredelim=[s][\color{black}]{>}{<},
+  morecomment=[s]{!--}{--},
+  commentstyle=\color{codegreen},
+  moredelim=[s][\color{red}]{\ }{=},
+  stringstyle=\color{blue},
+  identifierstyle=\color{cyan},
+  numberstyle=\tiny\color{codegray},
+  breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+%Code listing style named "json"
+\lstdefinestyle{json}{
+  backgroundcolor=\color{backcolour}, 
+  basicstyle=\ttfamily\footnotesize,
+  commentstyle=\color{codegreen},
+  numberstyle=\tiny\color{codegray},
+  basicstyle=\ttfamily\footnotesize,
+  breakatwhitespace=false,         
+  breaklines=true,                 
+  captionpos=b,                    
+  keepspaces=true,                 
+  numbers=left,                    
+  numbersep=5pt,                  
+  showspaces=false,                
+  showstringspaces=false,
+  showtabs=false,                  
+  tabsize=2
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			REFERENCES
+% le package hyperref avec des options, si en local
+\usepackage[pdfusetitle, pdfsubject ={Mémoire TNAH}, pdfkeywords={les mots-clés}]{hyperref}
+\usepackage[backend=biber, sorting=nyt, style=verbose-ibid]{biblatex}
+\addbibresource{../../../bib.bib}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			GLOSSAIRE
+\usepackage[acronym]{glossaries}
+\makeglossaries
+\newglossaryentry{htr}
+{
+    name=Handwritten Text Recognition,
+    description={La reconnaissance du texte écrit sur une image numérique}
+}
+\newacronym{HTR}{HTR}{Handwritten Text Recognition}
+
+\newglossaryentry{ocr}
+{
+    name=Optical Character Recognition,
+    description={La reconnaissance des polices du texte sur une image numérique}
+}
+\newacronym{OCR}{OCR}{Optical Character Recognition}
+
+\newglossaryentry{Inria}
+{
+    name=Inria,
+    description={Institut national de recherche en sciences et technologies du numérique}
+}
+\newacronym{INRIA}{Inria}{Institut national de recherche en sciences et technologies du numérique}
+
+\newacronym{almanach}{ALMAnaCH}{Automatic Language Modelling and Analysis \& Computational Humanities}
+
+\newglossaryentry{enc}
+{
+    name=École nationale des chartes,
+    description={Grande école bla bla bla}
+}
+\newacronym{ENC}{ENC}{École nationale des chartes}
+
+\newglossaryentry{HTR-United}
+{
+    name=HTR-United,
+    description={HTR-United is a catalog and an ecosystem for sharing and finding ground truth for optical character or handwritten text recognition (OCR/HTR)}
+}
+
+\newglossaryentry{CLab}
+{
+	name=CREMMALab,
+	description={Consortium pour la reconnaissance
+d’'écriture manuscrite des matériaux anciens}
+}
+\newacronym{CREMMA}{CREMMA}{Consortium Reconnaissance
+d’Écriture Manuscrite des Matériaux Anciens}
+
+\newglossaryentry{tei}
+{
+	name={Text Encoding Initiative},
+	description={Normes internationales de l'encodage des documents texts}
+}
+\newacronym{TEI}{TEI}{Text Encoding Initiative}
+
+\newglossaryentry{iiif}
+{
+	name={International Image Interoperability Framework},
+	description={Normes internationales de l'exploitation des images numériques et de leurs métadonnées par API}
+}
+\newacronym{IIIF}{IIIF}{International Image Interoperability Framework}
+
+\newacronym{ALTO}{ALTO}{Analyzed Layout and Text Object}
+
+\newacronym{XML}{XML}{eXtensible Markup Language}
+
+\newacronym{BNF}{BnF}{Bibliothèque nationale de France}
+
+\newacronym{RDF}{RDF}{Resource Description Framework}
+
+\newacronym{TAL}{TAL}{Traitement automatique des langues}
+
+\newacronym{ARK}{ARK}{Archival Resource Key}
+
+\newacronym{API}{API}{Application Programming Interface}
+
+\newacronym{DTS}{DTS}{Distributed Text Services}
+
+\newglossaryentry{iiifapi}
+{
+	name={IIIF Image API},
+	description={Un service web qui renvoie une image suite à une requête standardisée HTTP(S). L'URI peut préciser la région, la taille, la rotation, la qualité, les caractéristiques, et le format de l'image demandée.}
+}
+
+\newglossaryentry{odd}
+{
+	name={One Document Does it all},
+	description={Un fichier XML TEI qui précise les règles d'un schème TEI personnalisé.}
+}
+\newacronym{ODD}{ODD}{One Document Does it all}
+
+\newacronym{JSON}{JSON}{JavaScript Object Notation}
+
+\newacronym{HTML}{HTML}{HyperText Markup Language}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			DOCUMENT
 \begin{document}
 
+Le pipeline du projet \textit{Gallic(orpor)a} se déroule dans cinq étapes. En premier temps, il récupère les fac-similés numériques des documents sources sur Gallica. En deuxième temps, il applique des modèles \acrshort{HTR} aux fac-similés téléchargés afin de produire une prédiction du texte et une transcription de la mise en page. Ensuite, il crée un fichier \acrshort{TEI} préliminaire qui réunit les données produites par les modèles \acrshort{HTR} et les métadonnées récupérées de plusieurs sources en ligne. Le quatrième étape enrichit le fichier \acrshort{TEI} avec une analyse linguistique du texte de la transcription. En fin, le pipeline export les données du fichier \acrshort{TEI} en divers formats, y compris les données conformant aux schèmes \acrshort{RDF}, \acrshort{DTS}, et \acrshort{IIIF}.
 
-\section{La reconnaissance du texte et des segments}
+\section{La récupération des fac-similés numériques}
+L'accès aux pages numérisées d'un document source est une condition essentielle à toute étape du pipeline de \textit{Gallic(orpor)a}. Afin de transcrire le document et produire la ressource lexicographique du format \acrshort{TEI}, il faut d'abord dire au logiciel comment il peut accéder au fac-similé numérique. De plus, les images doivent être d'une qualité aussi bonne, sans être pourries par trop de bruit, que le logiciel \acrshort{HTR} peut bien reconnaître le texte et les segments dedans. Et en fin, bien qu'il ne soit pas essentiel à l'étape de la transcription de l'image, l'image devrait s'associer aux métadonnées qui porte sur le document pour que le pipeline puisse enrichir la ressource lexicographique avec les informations portant sur le document transcrit.
 
-Le premier étape du pipeline \textit{Gallic(orpor)a} est la reconnaissance du texte sur les images numérisées. Pour arriver d'un rassemblement de pixels au caractère d'un système d'écriture, il faut un modèle HTR qui sait chercher dans les pixels les configurations des caractères. Avec la reconnaissance de texte, il faut un deuxième modèle qui sait reconnaître les régions cohérentes sur la page. Ce dernier modèle cherchent aussi dans les pixels pour les configurations consistantes, mais au lieu de reconnaître dedans des caractères, il relève les polygons ou les rectangles qui contient une entité cohérente.
+\subsection{\acrlong{ARK} (\acrshort{ARK})}
+Deux solutions existent pour répondre aux questions d'accès et de métadonnées. En premier temps, il existe dans le monde archivistique une espèce de clef numérique qui se connaît par l'acronyme \acrshort{ARK}, qui veut dire en anglais \textit{\acrlong{ARK}}. Cette clef est un identifiant unique qui indique une ressource, soit numérique soit physique, dont la conservation une institution, telle que la \acrlong{BNF}, se charge. Le schème \acrshort{ARK} est actuellement maintenu par la communauté ARK Alliance.\footcite{allianceCommunity2020} L'identifiant unique facilite la récupération d'une ressource en particulière, sans la confondre avec d'autres exemplaires du même document. La précision qu'accorde l'\acrshort{ARK} améliore l'exactitude d'un processus de traitement automatique.
 
-\subsection{La création des données d'entraînement}
+\subsubsection{La mise en place d'un système de fichiers}
+Le pipeline se sert de l'identifiant \acrshort{ARK} afin de gérer le lien entre les images numériques et le document source. Une partie du système de fichiers du pipeline de \textit{Gallic(orpor)a} est visualisée dans la Figure~\ref{fig:filestructure}, qui montre l'exemple de deux documents sources dans lequel chacun a trois pages numérisées en format JPEG. Le chemin d'accès à chaque image se compose donc de l'identifiant \acrshort{ARK}. Ainsi son association au document source est conservée et accessible au logiciel.
 
-Le pipeline a besoin d'une structure de fichier rigide qu'il construit lors de la récupération des images depuis l'API de la \acrshort{BNF}. Sinon, l'utilisatrice ou l'utilisateur doit l'imiter en appuyant sur ses propres images numériques d'un document source. Mais les images doivent être disponible en ligne par l'API de \textit{l'\Gls{iiif}} (\acrshort{IIIF}) pour que les métadonnées de la source de l'image soient encodées et accessibles par la requête.
+\tikzstyle{folder} = [rectangle, rounded corners, minimum width=2cm, minimum height=0.75cm,text centered, draw=black, fill=yellow!30]
+\tikzstyle{file} = [rectangle, rounded corners, minimum width=2cm, minimum height=0.75cm,text centered, draw=black, fill=gray!30]
+\tikzstyle{arrow} = [thick,>=stealth]
 
+\begin{figure}[htp]
+\centering
+\begin{tikzpicture}[node distance=0.5cm]
+
+\node (data) [folder] {\texttt{data/}};
+
+\node (ark1) [folder, below left = of data] {\footnotesize{\texttt{ARK1/}}};
+\node (ark1img1) [file, below = of ark1] {\footnotesize{\texttt{folio1.jpg}}};
+\node (ark1img2) [file, below = of ark1img1] {\footnotesize{\texttt{folio2.jpg}}};
+\node (ark1img3) [file, below = of ark1img2] {\footnotesize{\texttt{folio3.jpg}}};
+
+\node (ark2) [folder, below right = of data] {\footnotesize{\texttt{ARK2/}}};
+\node (ark2img1) [file, below = of ark2] {\footnotesize{\texttt{folio1.jpg}}};
+\node (ark2img2) [file, below = of ark2img1] {\footnotesize{\texttt{folio2.jpg}}};
+\node (ark2img3) [file, below = of ark2img2] {\footnotesize{\texttt{folio3.jpg}}};
+
+\draw [arrow] (data) -- (ark1);
+\draw [arrow] (data) -- (ark2);
+\draw[arrow] (ark1) -- (ark1img1);
+\draw[arrow] (ark1img1) -- (ark1img2);
+\draw[arrow] (ark1img2) -- (ark1img3);
+\draw[arrow] (ark2) -- (ark2img1);
+\draw[arrow] (ark2img1) -- (ark2img2);
+\draw[arrow] (ark2img2) -- (ark2img3);
+\end{tikzpicture}
+\caption{Système de fichiers}
+\label{fig:filestructure}
+\end{figure}
+
+\subsection{\acrlong{IIIF} (\acrshort{IIIF})}
+En plus d'associer les images à leur document source, l'identifiant \acrshort{ARK} sert aussi à récupérer les images depuis l'internet. Ce genre de requête se fait par un outil généralisé qui s'appelle une \acrshort{API} (\textit{\acrlong{API}}). Une telle interface facilite la communication entre deux ordinateurs pour qu'ils puissent échanger d'information. Ainsi, un ordinateur peut demander aux serveurs de la \acrlong{BNF} les images d'un document source qu'ils conservent.
+
+Comme des autres institutions participantes, la \acrshort{BNF} met en pratique une \acrshort{API} spécialisée à l'échange des données visuelles qui vient d'une initiative internationale qui s'appelle \textit{l'\Gls{iiif}}. Le \acrshort{IIIF} s'engage à standardiser la gestion des ressources visuelles mises en ligne avec le but d'améliorer l'exploitation et la partage des ressources et de leurs métadonnées. Suite à une requête standardisée HTTP(S), l'\Gls{iiifapi} renvoie l'image. L'URI se compose de quatre éléments généralisés, suivis par cinq éléments qui peut préciser (1) la région, (2) la taille, (3) la rotation, (4) la qualité, et (5) le format de l'image demandée. Puisque la \acrshort{BNF} s'engage à l'initiative de l'\acrshort{IIIF}, toute image sur sa base de données Gallica peut être requêtée par l'URL que l'\Gls{iiifapi} attend.
+
+
+\begin{figure}[htp]
+\centering
+%%%%% Start of Image API URI
+\begin{subfigure}[b]{0.4\textwidth}
+\centering
+\begin{tabular}{|c||l|} 
+\hline
+scheme & \texttt{https://} \\ \hline
+server & \texttt{gallica.bnf.fr}\\ \hline
+prefix & \texttt{/iiif}\\ \hline
+identifier & \texttt{/ark:12148/bpt6k1057726c}\\ \hline
+folio & \texttt{/f1}\\ \hline
+region & \texttt{/full}\\ \hline
+size & \texttt{/full}\\ \hline
+rotation & \texttt{/0}\\ \hline
+quality & \texttt{/native}\\ \hline
+format & \texttt{.jpg}\\ \hline
+\end{tabular}
+\caption{URI pour l'IIIF Image API}
+\label{fig:uri-imageapi}
+\end{subfigure}
+%%%%% End of Image API URI
+\hfill
+%%%%% Start of Presentation API URI
+\begin{subfigure}[b]{0.4\textwidth}
+\centering
+\begin{tabular}{|c||l|} 
+\hline
+scheme & \texttt{https://} \\ \hline
+server & \texttt{gallica.bnf.fr}\\ \hline
+prefix & \texttt{/iiif}\\ \hline
+identifier & \texttt{/ark:12148/bpt6k1057726c}\\ \hline
+manifest & \texttt{/manifest}\\ \hline
+format & \texttt{.json}\\ \hline
+\end{tabular}
+\caption{URI pour l'IIIF Presentation API}
+\label{fig:uri-presentationapi}
+\end{subfigure}
+%%%%% End of Presentation API URI
+
+\hspace{0.3\textwidth}%
+
+%%%%% Start of API Diagram
+\begin{subfigure}[b]{\textwidth}
+\tikzstyle{source} = [cylinder, draw=black, thick, aspect=0.7, minimum height=1.7cm, minimum width=2cm, text width=2cm, text centered, fill=blue!10]
+\tikzstyle{api} = [rectangle, minimum width=2cm, minimum height=1.7cm,text centered, draw=black, fill=gray!30, text width=2.25cm]
+\tikzstyle{objet} = [rectangle, rounded corners, minimum height=1.7cm, text centered, draw=black, text width=1.7cm]
+\tikzstyle{url} = [rectangle, minimum height=1.7cm, draw=black, text width=4cm, text centered, fill=yellow!30]
+\tikzstyle{arrow} = [thick,->,>=stealth]
 \begin{center}
-\begin{verbatim}
-data/
-|____ARK1/
-|        |____image1.jpg
-|        |____image2.jpg
-|        |____image3.jpg
-...
-|____ARK2/
-|        |____image1.jpg
-|        |____image2.jpg
-|        |____image3.jpg
-...
-\end{verbatim}
+\begin{tikzpicture}
+
+\node[source] (server) {Serveur d'images};
+\node[source, below = of server] (metadata) {Source des métadonnées};
+\node[api, right = of server] (imageapi) {IIIF Image API};
+\node[objet, right = of imageapi] (image) {Image (JPEG)};
+\node[objet, right, below = of image] (data) {Données (JSON)};
+\node[api, right = of image] (presentationapi) {IIIF Presentation API};
+\node[objet, right = of presentationapi] (end) {Browser};
+\node[url, above = of imageapi] (imagerequest) {URI pour l'IIIF Image API};
+\node[url, above = of presentationapi] (presentationrequest) {URI pour l'IIIF Presentation API};
+\draw[arrow] (server) -- (imageapi);
+\draw[arrow] (metadata) -- (data);
+\draw[arrow] (imageapi) -- (image);
+\draw[arrow] (image) -- (presentationapi);
+\draw[arrow] (data) -- (presentationapi);
+\draw[arrow] (presentationapi) -- (end);
+\draw[arrow]  (imagerequest) -- (imageapi);
+\draw[arrow] (presentationrequest) -- (presentationapi);
+
+\end{tikzpicture}
 \end{center}
+\caption{IIIF Image API et IIIF Presentation API}
+\label{fig:apis}
+\end{subfigure}
+%%%% End of API diagram
+\caption{IIIF APIs}
+\label{fig:api}
+\end{figure}
 
-\noindent Toute image numérique doit se trouve dans un dossier qui porte comme nom l'identifiant ARK (\textit{Archival Resource Key}) du document source. Cette clef est importante pour la diffusion et le requêtage des images numériques par les APIs \acrshort{IIIF}. Le pipeline a aussi besoin de cette clef ainsi que de l'association évidente entre elle et les images qui appartiennent au document, qui se donne grâce à la structure de fichier.
+La Figure~\ref{fig:api} montre comment construire les URI qui se servent de la requête à une \acrshort{API} \acrshort{IIIF}. Prenons le document source de l'identifiant \acrshort{ARK} bpt6k1057726c. Pour récupérer ses pages numérisées depuis la base de données Gallica, on envoie une requête à l'\Gls{iiifapi}~; l'exemple pour récupérer la totalité de la première page du document en format JPEG, sans rotation ni d'autre modification, se voit dans la Figure~\ref{fig:uri-imageapi}. Comme la Figure~\ref{fig:apis} visualise, une telle requête HTTPS envoyée à l'\Gls{iiifapi} renverra un objet numérique de l'image. Afin d'accès aux métadonnées de l'image, on enverrait une requête d'une autre structure à la Presentaiton \acrshort{API}, montrée dans la Figure~\ref{fig:uri-presentationapi}, qui renverrait des données en format \acrshort{JSON}.
 
-Avec cet identifiant ARK, donné par la structure de fichier, le pipeline récupère les métadonnées du document source. Il recherche les informations sur le document source en passant une requête à l'API de l'image \acrshort{IIIF}~; cet API est maintenu par l'institution patrimonial qui se charge de la conservation et/ou de la diffusion en ligne du document. Les métadonnées récupérés de l'API IIIF, géré par l'institution hôte du document numérique, sont liées---si possible---avec des autres sources de données. Dans l'exemple des documents numériques de la base de données Gallica, le pipeline récupère les métadonnées quant au document source depuis l'API \acrshort{IIIF} que la \acrshort{BNF} met à disposition. Si cette requête a réussi, le pipeline va récupérer les données du catalogue général de la \acrshort{BNF} en passant une requête à l'API \textit{SRU} de la \acrshort{BNF} qui veut dire, en anglais, le \textit{Search/Retrieve via URL}. Pour terminer, le pipeline recherche encore des métadonnées dans le catalogue du Système Universitaire de Documentation (SUDOC).
+\subsection{La mise en pratique}
+Dans le cadre du projet \textsc{Artl@s} en 2020, Caroline Corbières a développé un script pour importer à partir de l'\Gls{iiifapi} les pages d'un fac-similé numérique stocké sur les serveurs de la \acrshort{BNF}.\footcite{gabayAutomatingArtlExtracting2021} Le projet \textit{Gallic(orpor)a} a profité du travail de Corbières et l'a utilisé pour récupérer des fac-similés numériques ciblés par l'utilisatrice ou l'utilisateur du pipeline. En ajoutant une option au script (\texttt{-l}) je l'ai modifié afin de permettre qu'une utilisatrice ou utilisateur puisse limiter les nombres de pages récupérées. La limite évite le téléchargement de trop d'images ainsi qu'économise l'énergie dépensée. Ainsi, l'utilisatrice ou l'utilisateur peut tester la mise en œuvre des modèles \acrshort{HTR} ou \acrshort{TAL} sur un panel restreint des données.
+
+\section{L'application des modèles HTR}
+Le pipeline du projet \textit{Gallic(orpor)a} visait à transcrire les ressources textuelles avec un modèle \acrshort{HTR} qui convient bien au type du document, en rappelant qu'un modèle se spécialise dans une écriture particulière grâce à son entraînement. Cela exige donc que le pipeline a d'accès aux modèles entraînés et qu'il prend la décision automatiquement sur quel modèle convient auquel document. L'utilisateur ou l'utilisatrice doit donner des modèles au pipeline, pour qu'il puisse les appliquer aux données visuelles. Par contre, l'utilisateur ou l'utilisatrice ne doit pas forcément prendre la décision. Le pipeline saura quel modèle il doit appliquer en interrogeant les métadonnées du document et en recherchant sa langue et son siècle de création.
 
 \subsection{L'entraînement des modèles}
+Dans le cadre du projet \textit{Gallic(orpor)a}, l'équipe a entraîné des nouveaux modèles généralisés, l'un pour les manuscrits et les incunables d'une écriture latine, l'autre pour les imprimés créées avant la révolution française et aussi d'une écriture latine. Ces modèles ont besoin des vérités de terrain produites lors du projet \textit{Gallic(orpor)a}. Bien que le pipeline ne refasse pas la création de ces vérités de terrain, ne de l'entraînement des modèles, il compte de cet aspect du projet puisqu'il a besoin des modèles. Néanmoins, le pipeline peut s'adapter aux divers modèles et mettre en œuvre le modèle souhaités d'une 'utilisatrice ou d'un l'utilisateur. En s'adaptant aux modèles publiés ainsi qu'aux modèles toujours en cours, qu'une utilisatrice ou un utilisateur lui donne directement, le pipeline facilite les expériences scientifiques quant à l'\acrshort{HTR} appliqué aux plusieurs corpus.
 
-\subsection{Les modèles prédisent le texte}
+\subsubsection{La création des vérités de terrain}
+Lors de la première moitié de 2022, l'équipe du projet \textit{Gallic(orpor)a} se composait des vacataires qui se chargeaient de la création des vérités de terrain pour les nouveaux modèles \acrshort{HTR}. Les chefs du projet Simon Gabay et Ariane Pinche ont sélectionné un corpus de documents à transcrire. Les membres de l'équipe se spécialisaient dans certains types de document sur la liste, tels que les manuscrits et les incunables médiévaux. Un vacataire prendrait l'un des documents du corpus et saisir son identifiant \acrshort{ARK} dans l'interface de transcription \textit{eScriptorium}, dont je parle dans le chapitre~\ref{chap:htr}. L'interface imite ce que le pipeline du \textit{Gallic(orpor)a} fait, ainsi que le script de Corbières, en téléchargeant les images \acrshort{IIIF} du document.
 
-\section{La reconstitution des données}
+L'interface \textit{eScriptorium} facilite la segmentation et la transcription des pages. Les vacataires l'ont utilisaient pour segmenter les zones de la page et y mettre les étiquettes conformant au vocabulaire \textit{SegmOnto}. Portant les étiquettes de \textit{SegmOnto}, les transcriptions aident à entraîner les modèles avec un vocabulaire cohérent pour tout type de document, y compris les manuscrits et les imprimés. L'interface \textit{eScriptorium} export les vérités de terrain dans un fichier \acrshort{XML} \acrshort{ALTO} avec des images télécharges en format JPEG ou PNG.
 
-\section{L'analyse linguistique}
+\subsection{La sélection des modèles}
+Dans l'intérêt de maximiser l'automatisation du pipeline, la mise en œuvre d'un modèle s'effectue automatiquement, selon une analyse des métadonnées du document à traiter. Grâce au fait que les images sont diffusées par une \acrshort{API} \acrshort{IIIF}, le pipeline a d'accès à leurs métadonnées. Comme montre la Figure~\ref{fig:apis}, une requête au format de l'URI pour l'IIIF Presentation API renvoie des données qui portent sur la date de création ou d'apparition du document ainsi que la langue principale de son texte. Ces deux critères informent le pipeline du type de modèle à privilégier pour le document. Néanmoins, en l'absence du modèle parfait donné lors de l'installation de l'application \textit{Gallic(orpor)a}, les paramètres du pipeline met en œuvre un modèle de segmentation et un modèle \acrshort{HTR} désigné les modèles par défaut.
 
-\subsection{La création des données d'entraînement}
+\subsection{La sortie des modèles segmentation et HTR}
+Les modèles \acrshort{HTR} produisent des fichiers \acrshort{ALTO}, qui est un schème \acrshort{XML}. La structure de données souhaitées dans le fichier final du pipeline est également de l'\acrshort{XML}, qui se définie par l'imbrication des données. Mais au final, le pipeline produira un fichier \acrshort{TEI}. La sortie des modèles \acrshort{HTR} se conforme au schème \acrshort{ALTO} et donc a besoin d'être transformée en \acrshort{TEI}.
 
-\subsection{L'entraînement des modèles}
+\subsection{Le schème ALTO}
+La \acrlong{BNF} définit le schéma \acrshort{ALTO} comme, \og{}un schéma XML standardisé, qui permet de stocker les informations relatives à la structure physique et au texte extrait par \acrshort{OCR}\fg{}.\footcite[75]{caronFormatsDonneesPour2021} Les logiciels \acrshort{HTR} exportent aussi leurs prédictions dans le format \acrshort{XML} \acrshort{ALTO}. Il y a les schémas \acrshort{XML} qui conviennent bien à l'encodage du texte, tel que la \acrshort{TEI}. Mais le liaison entre le texte et la mise en page, transcrite par un modèle de segmentation, est mieux établi par le schéma \acrshort{ALTO} qui spécialise dans l'encodage de la structure physique d'une ressource textuelle.
 
-\subsection{Les modèles analysent le texte prédit}
+Le schéma \acrshort{ALTO} a été développé dans le cadre du projet METS (\textit{Metadata Encoding and Transmission Schema}). Le dernier date de 2001.\footcite{METSMetadataEncoding} Comme résume la \acrlong{BNF},
+\begin{displayquote}METS renseigne alors sur la structure logique de la page (nature sémantique des blocs de texte, par exemple titre, partie d'article, légende d'illustration, etc.), tandis qu'ALTO localise des contenants (blocs, lignes, etc.) sur la matrice de l'image de la page.\footcite[75]{caronFormatsDonneesPour2021}
+\end{displayquote}
+Le schéma \acrshort{ALTO} vise donc à renseigner sur la mise en page ainsi que sur le texte d'une page. Certains de ses éléments, tel que l'élément \acrshort{ALTO} \texttt{<polygon>}, par exemple, précise les coordonnées d'une région ou d'une zone sur la page qu'avait prédite un modèle de segmentation. Cependant, certains attributs, tel que l'attribut \texttt{@CONTENT}, s'attribuent à certains parties de l'image du texte prédit. Par exemple, un schème \acrshort{ALTO} encoderait une ligne de texte disant une phrase incomplète, \textit{oyseaux lesq̃lz ie esperoye pren}, dans l'architecture \acrshort{XML} qui ressemble à ce qui se voit dans la Figure~\ref{fig:alto}. Tout cela veut dire que le schéma \acrshort{ALTO} réussit à réunir les données structurelles de la mise en page et les données textuelles de la transcription prédite.
 
-\section{Le texte pré-édité}
+\begin{figure}[ht]
+\centering
+\begin{lstlisting}[language=XML]
+<TextLine	ID="eSc_line_1ed06324"
+    TAGREFS="LT825"
+    BASELINE="1193 982 2263 969"
+    HPOS="1184"
+    VPOS="877"
+    WIDTH="1079"
+    HEIGHT="127">
+    <Shape>
+        <Polygon POINTS="1193 982 1184 903 1303 877 1307 877 2255 890 2263 969 2263 995 1193 1004"/>
+    </Shape>
+    <String
+        CONTENT="oyseaux lesq̃lz ie esperoye pren"
+        HPOS="1184"
+        VPOS="877"
+        WIDTH="1079"
+        HEIGHT="127">
+    </String>
+</TextLine>
+\end{lstlisting}
+\caption{L'encodage d'une ligne de texte en ALTO}
+\label{fig:alto}
+\end{figure}
 
+Le schéma \acrshort{XML} \acrshort{ALTO} peut se réaliser dans plusieurs formats, et pas uniquement celui qui se voit dans la Figure~\ref{fig:alto}. Dans l'exemple de la Figure~\ref{fig:alto}, les données textuelles sorties de la fonction prédictive du modèle \acrshort{HTR} se trouvent dans l'attribut \texttt{@CONTENT} dans ce format. L'exemple montre un élément qui indique la région sur l'image source qu'occupe la ligne de texte, l'élément \texttt{<String>}. Son attribut \texttt{@CONTENT} porte sur le contenu textuel prédit sur cette ligne de texte.
+
+Sinon, la sortie d'un logiciel \acrshort{HTR} peut prendre les autres formats \acrshort{ALTO} qui existent. L'un des défis pour le pipeline a été de le faire adapter aux divers formats d'\acrshort{ALTO} qu'un logiciel \acrshort{HTR} pourrait produire. Par exemple, le contenu textuel d'une ligne de texte sera encodé dans l'attribut \texttt{@CONTENT} de l'élément \acrshort{ALTO} \texttt{<String>}, comme se voit dans la Figure~\ref{fig:alto}, à la sortie de l'interface \textit{eScriptorium}. Cependant, à la sortie de l'interface depuis la ligne de commande (CLI, ou \textit{Command Line Interface}) de \textit{Kraken}, le contenu textuel d'une ligne de texte est divisé entre les mots et les caractères reconnus dans la ligne. Par conséquent, le pipeline ne peut pas chercher le contenu de la ligne de texte dans l'attribut \texttt{@CONTENT} de l'élément \texttt{<String>}. Il doit reconstruire le contenu de la ligne de texte à partir de plusieurs éléments \texttt{<String>} qui représentent les mots dans une ligne de texte, au lieu de la ligne de texte elle-même.
+
+\section{Réunir la transcription et les métadonnées}
+Jusqu'ici, le pipeline a récupéré les images numériques en format JPEG ou PNG depuis l'\Gls{iiifapi} et les traité avec les modèles \acrshort{HTR} en produisant des fichiers \acrshort{XML} \acrshort{ALTO}. Ensuite, le pipeline recherchera les métadonnées en plusieurs formats, y compris \acrshort{JSON}, \acrshort{XML}, et \acrshort{HTML}, depuis l'internet. Avec une telle diversité de structures de données, un format robuste est exigé pour tout rassembler et mettre en ordre. Le format choisi pour parvenir à ce défi est l'\acrshort{XML} \acrshort{TEI}. Ce format se réalise dans un fichier \acrshort{XML}, qui veut dire qu'il imbrique et les données dans une façon hiérarchisée. Mais contraire au schème \acrshort{XML} {ALTO}, le schème \acrshort{TEI} se spécialise dans l'édition numérique du texte. La communauté du \acrshort{TEI} décrit l'objectif du projet ainsi~:
+\begin{displayquote}
+The Text Encoding Initiative (TEI) is a consortium which collectively develops and maintains a standard for the representation of texts in digital form. Its chief deliverable is a set of Guidelines which specify encoding methods for machine-readable texts, chiefly in the humanities, social sciences and linguistics.\footcite{TEITextEncoding}
+\end{displayquote}
+En plus de la représentation du texte, le \acrshort{TEI} dispose aussi des éléments \acrshort{XML} qui conviennent bien à la représentation des transcriptions, y compris leurs données topologiques portant sur la mise en page. Le \acrshort{TEI} est donc un format idéal pour fusionner les transcriptions sorties des modèles \acrshort{HTR}, les métadonnées récupérées des sources en ligne, et le texte extrait des transcriptions. En plus, le \acrshort{TEI} est un format très utilisé et beaucoup d'outils numériques s'y adaptent déjà. 
+
+\subsection{L'extrait des données des fichiers \acrshort{ALTO}}
+Les données sorties du traitement \acrshort{HTR} sont du schème \acrshort{XML} \acrshort{ALTO}. L'un des objectifs du pipeline est de ne pas perdre aucune donnée produite par les modèles \acrshort{HTR}, c'est-à-dire une donnée encodée dans le schéma \acrshort{ALTO}. Il doit donc transformer la sortie des modèles en le format souhaité, le \acrshort{TEI}. Il faut modéliser la transformation d'\acrshort{ALTO} à \acrshort{TEI} et la justifier puisqu'il y a plusieurs traductions possibles entre l'\acrshort{ALTO} et le \acrshort{TEI}.
+
+Nous de l'équipe de \textit{Gallic(orpor)a} avons conclu que l'élément \acrshort{XML} \acrshort{TEI} \texttt{<sourceDoc>} convient bien à l'encodage de toute donnée des modèles \acrshort{HTR} portant sur le texte prédit et de la mise en page. Des autres chercheurs, tel que Hugo Scheithauer, Alix Chagué, et Laurent Romary, ont arrivés à la même conclusion.\footcite{scheithauerEScriptoriumTEIPublisher2021} Les guidelines de la \acrlong{TEI} définie l'élément \texttt{<sourceDoc>} ainsi~:
+\begin{displayquote}
+\texttt{<sourceDoc>} contains a transcription or other representation of a single source document potentially forming part of a dossier génétique or collection of sources.\footcite{TEIElementSourceDoc}
+\end{displayquote}
+Les données topologiques et linguistiques sont balisés dans les éléments \acrshort{XML} descendant du \texttt{<sourceDoc>}. Ces choix sont décrits et justifiés dans le chapitre~\ref{chap:xml}.
+
+\subsection{Le récupération des métadonnées}
+En plus de transformer les données des fichiers \acrshort{ALTO}, le pipeline récupère les métadonnées sur le fac-similé numérique et le document source physique, ainsi que créer les métadonnées sur la ressource lexicographique elle-même. Toutes ses métadonnées sont encodées dans l'élément \acrshort{XML} \acrshort{TEI} \texttt{<teiHeader>}. Cet élément est essentiel au schème \acrshort{TEI}, mais le pipeline réussit à construire ses descendants et les remplir avec les données si le fac-similé physique s'est trouvé dans la base de données Gallica. Sinon, le pipeline laisse vide la plupart des éléments obligatoires du \texttt{<teiHeader>}.
+
+Avec l'identifiant \acrshort{ARK}, qu'il prend du système de fichiers, le pipeline récupère les métadonnées du document source depuis les sources en ligne. Même pour les fac-similés hébergés par divers institutions, le pipeline récupère les métadonnées diffusées directement par l'\acrshort{API} \acrshort{IIIF}. Les métadonnées récupérés de l'\acrshort{API} \acrshort{IIIF}, géré par l'institution hôte du document numérique, sont liées---si possible---avec des autres sources de données. Dans l'exemple des documents numériques de la base de données Gallica, le pipeline récupère les métadonnées quant au document source depuis l'\acrshort{API} \acrshort{IIIF} que la \acrshort{BNF} met à disposition. Si cette requête a réussi, le pipeline va récupérer les données du catalogue général de la \acrshort{BNF} en passant une requête à l'\acrshort{API} \textit{SRU} de la \acrshort{BNF} qui veut dire, en anglais, le \textit{Search/Retrieve via URL}. Pour terminer, le pipeline recherche encore des métadonnées dans le catalogue du Système Universitaire de Documentation (SUDOC) qui portent sur les institutions patrimoniales en France qui hébergent les documents sources.
+
+\subsection{La construction du fichier préliminaire TEI}
+Les données produites par les modèles \acrshort{HTR} ainsi que les métadonnées récupérées depuis les sources en ligne sont réunies dans le fichier \acrshort{TEI}. Les premiers dans l'élément \texttt{<sourceDoc>} et les dernières dans l'élément \texttt{<teiHeader>}. Ensuite, le pipeline commence à traiter les données intégrées au document. D'abord, il extrait les lignes de texte qui font partie des régions de la page considérées comme les principaux. Cette sélection du texte est comme une transcription puisqu'il ignore les en-têtes, les numéros de pages, etc. La transcription est ainsi encodée dans l'élément \acrshort{XML} \acrshort{TEI} \texttt{<body>}.
+
+\section{L'analyse linguistique et le fichier final}
+L'avant dernier étape du pipeline est d'analyser le texte. D'abord, les mots sont lemmatisés et reconnu selon leur nature, tel que nom ou verbe. La reconnaissance de la nature d'un mot se connaît par le terme anglais \textit{part of speech} ou POS. La lemmatisation, un autre traitement lexical, divise un segment de texte en les parties et les indexer. Tout lexème pourrait ensuite être normalisé avec un modèle \acrshort{TAL} qui transforme le mot prédit par le modèle \acrshort{HTR} en sa version normalisée. Par exemple, un modèle \acrshort{TAL} peut transformer le mot prédit \textit{nostre} en le mot normalisé \textit{nôtre}.\footcite{bawdenAutomaticNormalisationEarly2022} En fin, un modèle \acrshort{TAL} NER (\textit{Named-Entity Recognition}) peut encore traiter le texte pour reconnaître les entités nommées, tel qu'une personne ou un lieu. Le pipeline met en œuvre plusieurs modèles \acrshort{TAL} afin d'analyser ses divers aspects linguistiques du texte.
+
+\subsection{L'ODD (One Document Does it all)}
+Un fichier \acrshort{TEI} se soumettent aux règles qui assurent l'uniformité. Afin de mettre en pratique les traitements à l'échelle pour tout document produit par le pipeline, il faut que tout élément du \acrshort{TEI} soit utilisé de la même manière. Pour parvenir à une telle régularisation, le \acrshort{TEI} dispose d'un document qui applique des règles personnalisées au produit souhaité du pipeline. Ce document se connaît par son acronyme \acrshort{ODD}, qui veut dire \textit{\Gls{odd}} ou un fichier qui tout fait. Dans le cadre du stage, j'ai aidé à la rédaction d'un \acrshort{ODD} qui explique en détail tout aspect du fichier \acrshort{TEI} sorti du pipeline.
+
+\section{L'exploitation des données}
+En fin, les données encodées dans le fichier enrichi et final \acrshort{TEI} peuvent être exploitées en tant qu'un fichier \acrshort{TEI} ainsi que dans divers formats secondaires. Le logiciel TEI Publisher, par exemple, peut aisément publier un fichier \acrshort{TEI} et permettre les utilisateurs de naviguer les données dans un visionneur de l'édition en ligne. Le fichier \acrshort{TEI} peut aussi être exploité par les fichiers de transformation XSL. Il y a plusieurs formats secondaires qui pourraient servir à l'exploitation des données encodées dans le fichier \acrshort{TEI}.
+
+L'équipe a envisagé trois formats secondaires par lesquels les données produites par le pipeline peuvent être exploitées. L'un de ses formats est l'\acrshort{IIIF}, le même qui a permis la construction du fichier \acrshort{TEI}. Dans le fichier \acrshort{TEI}, chaque attribut \texttt{@source} d'un élément \texttt{<zone>} descendant de l'élément \texttt{<sourceDoc>} contient un URI qui permet de visionner la partie de l'image concernée. Par exemple, si l'attribut \texttt{@source} descend d'un élément \texttt{<zone>} qui porte sur une ligne de texte, sa valeur donnerait dans un browser ou dans un visionneur uniquement la partie de l'image source qui contient cette ligne de texte. Ainsi les données du fichier final \acrshort{TEI} peuvent être exploitées afin de visionner les bloques de textes, lignes de textes, les mots, et les caractères transcrits. Les deux autres formats secondaires profitent plutôt des métadonnées du fichier \acrshort{TEI}~; ils sont le \acrshort{DTS} (\acrlong{DTS}) et le \acrshort{RDF} (\acrlong{RDF}).
 
 \end{document}
 \documentclass[../main.tex]{subfiles}

@@ -113,6 +113,28 @@ d’Écriture Manuscrite des Matériaux Anciens}
 
 \newacronym{TAL}{TAL}{Traitement automatique des langues}
 
+\newacronym{ARK}{ARK}{Archival Resource Key}
+
+\newacronym{DTS}{DTS}{Distributed Text Services}
+
+\newglossaryentry{iiifapi}
+{
+	name={IIIF Image API},
+	description={Un service de web qui renvoie une image suite à une requête standardisée HTTP(S). L'URI peut préciser la région, la taille, la rotation, la qualité, les caractéristiques, et le format de l'image demandée.}
+}
+\newacronym{API}{API}{Application Programming Interface}
+
+\newglossaryentry{odd}
+{
+	name={One Document Does it all},
+	description={Un fichier XML TEI qui précise les règles d'un schème TEI personnalisé.}
+}
+\newacronym{ODD}{ODD}{One Document Does it all}
+
+\newacronym{JSON}{JSON}{JavaScript Object Notation}
+
+\newacronym{HTML}{HTML}{HyperText Markup Language}
+
 %%%%%%%%%%%%%%%%%%%%%%%%
 %			DIAGRAM
 \usepackage{tikz}
@@ -120,6 +142,7 @@ d’Écriture Manuscrite des Matériaux Anciens}
 \usetikzlibrary{calc, matrix, shapes.geometric, arrows}
 \usepackage{pgfplots}
 \usepackage{array}
+\usepackage{tabularx}
 
 %si index, package pour index + makeindex
 
@@ -259,8 +282,11 @@ d’Écriture Manuscrite des Matériaux Anciens}
 	\chapter{Remerciements}
 	\lettrine{M}es remerciements vont tout d'abord à\dots
 	
-	%bibliographie ici
-	%\printbibliography{ref}
+	%bibliographie
+	\printbibliography{ref}
+	
+	%glossaire / acronymes
+	\printglossaries
 	
 	\chapter{Introduction}
 	\subfile{sections/intro/introduction.tex}
@@ -296,6 +322,7 @@ d’Écriture Manuscrite des Matériaux Anciens}
 	
 	\chapter{L'analyse des structures des données XML}
 	\subfile{sections/chap5/chap5.tex}
+	\label{chap:xml}
 	
 	\chapter{À la recherche des métadonnées}
 	\subfile{sections/chap6/chap6.tex}
@@ -329,10 +356,6 @@ d’Écriture Manuscrite des Matériaux Anciens}
 %%%%%%%%%%%%%%%%%%%%%%%%
 %			INDEX
 %	\printindex
-
-%%%%%%%%%%%%%%%%%%%%%%%%
-%			GLOSSAIRE
-	\printglossaries
 
 %%%%%%%%%%%%%%%%%%%%%%%%
 %			FIGURES
