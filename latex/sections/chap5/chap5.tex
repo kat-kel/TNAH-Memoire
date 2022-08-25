@@ -1,30 +1,466 @@
+% PREAMBULE
+
+% !BIB TS-program = biber
+% !TEX TS-program = xelatexmk
+% ITEX TS-program = latex
+
+% !TEX spellcheck = French
+
 \documentclass[class=article, crop=false]{standalone}
 \usepackage[subpreambles=true]{standalone}
 \usepackage{import}
 \usepackage{blindtext}
+\usepackage{fontspec}
+\usepackage[french]{babel}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{csquotes}
+\usepackage{url}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			DIAGRAM
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usetikzlibrary{calc, matrix, shapes.geometric, arrows}
+\usepackage{pgfplots}
+\usepackage{array}
+\usepackage{tabularx}
+
+
+%Example of code
+\usepackage{listings}
+\usepackage{color}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{cyan}{rgb}{0.0,0.6,0.6}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinelanguage{XML}{
+  backgroundcolor=\color{backcolour},  
+  basicstyle=\ttfamily\footnotesize,
+  morestring=[s]{"}{"},
+  moredelim=[s][\color{black}]{>}{<},
+  morecomment=[s]{!--}{--},
+  commentstyle=\color{codegreen},
+  moredelim=[s][\color{red}]{\ }{=},
+  stringstyle=\color{blue},
+  identifierstyle=\color{cyan},
+  numberstyle=\tiny\color{codegray},
+  breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+%Code listing style named "json"
+\lstdefinestyle{json}{
+  backgroundcolor=\color{backcolour}, 
+  basicstyle=\ttfamily\footnotesize,
+  commentstyle=\color{codegreen},
+  numberstyle=\tiny\color{codegray},
+  basicstyle=\ttfamily\footnotesize,
+  breakatwhitespace=false,         
+  breaklines=true,                 
+  captionpos=b,                    
+  keepspaces=true,                 
+  numbers=left,                    
+  numbersep=5pt,                  
+  showspaces=false,                
+  showstringspaces=false,
+  showtabs=false,                  
+  tabsize=2
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			REFERENCES
+% le package hyperref avec des options, si en local
+\usepackage[pdfusetitle, pdfsubject ={Mémoire TNAH}, pdfkeywords={les mots-clés}]{hyperref}
+\usepackage[backend=biber, sorting=nyt, style=verbose-ibid]{biblatex}
+\addbibresource{../../../bib.bib}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			GLOSSAIRE
+\usepackage[acronym]{glossaries}
+\makeglossaries
+\newglossaryentry{htr}
+{
+    name=Handwritten Text Recognition,
+    description={La reconnaissance du texte écrit sur une image numérique}
+}
+\newacronym{HTR}{HTR}{Handwritten Text Recognition}
+
+\newglossaryentry{ocr}
+{
+    name=Optical Character Recognition,
+    description={La reconnaissance des polices du texte sur une image numérique}
+}
+\newacronym{OCR}{OCR}{Optical Character Recognition}
+
+\newglossaryentry{Inria}
+{
+    name=Inria,
+    description={Institut national de recherche en sciences et technologies du numérique}
+}
+\newacronym{INRIA}{Inria}{Institut national de recherche en sciences et technologies du numérique}
+
+\newacronym{almanach}{ALMAnaCH}{Automatic Language Modelling and Analysis \& Computational Humanities}
+
+\newglossaryentry{enc}
+{
+    name=École nationale des chartes,
+    description={Grande école bla bla bla}
+}
+\newacronym{ENC}{ENC}{École nationale des chartes}
+
+\newglossaryentry{HTR-United}
+{
+    name=HTR-United,
+    description={HTR-United is a catalog and an ecosystem for sharing and finding ground truth for optical character or handwritten text recognition (OCR/HTR)}
+}
+
+\newglossaryentry{CLab}
+{
+	name=CREMMALab,
+	description={Consortium pour la reconnaissance
+d’'écriture manuscrite des matériaux anciens}
+}
+\newacronym{CREMMA}{CREMMA}{Consortium Reconnaissance
+d’Écriture Manuscrite des Matériaux Anciens}
+
+\newglossaryentry{tei}
+{
+	name={Text Encoding Initiative},
+	description={Normes internationales de l'encodage des documents texts}
+}
+\newacronym{TEI}{TEI}{Text Encoding Initiative}
+
+\newglossaryentry{iiif}
+{
+	name={International Image Interoperability Framework},
+	description={Normes internationales de l'exploitation des images numériques et de leurs métadonnées par API}
+}
+\newacronym{IIIF}{IIIF}{International Image Interoperability Framework}
+
+\newacronym{ALTO}{ALTO}{Analyzed Layout and Text Object}
+
+\newacronym{XML}{XML}{eXtensible Markup Language}
+
+\newacronym{BNF}{BnF}{Bibliothèque nationale de France}
+
+\newacronym{RDF}{RDF}{Resource Description Framework}
+
+\newacronym{TAL}{TAL}{Traitement automatique des langues}
+
+\newacronym{ARK}{ARK}{Archival Resource Key}
+
+\newacronym{DTS}{DTS}{Distributed Text Services}
+
+\newglossaryentry{iiifapi}
+{
+	name={IIIF Image API},
+	description={Un service de web qui renvoie une image suite à une requête standardisée HTTP(S). L'URI peut préciser la région, la taille, la rotation, la qualité, les caractéristiques, et le format de l'image demandée.}
+}
+\newacronym{API}{API}{Application Programming Interface}
+
+\newglossaryentry{odd}
+{
+	name={One Document Does it all},
+	description={Un fichier XML TEI qui précise les règles d'un schème TEI personnalisé.}
+}
+\newacronym{ODD}{ODD}{One Document Does it all}
+
+\newacronym{JSON}{JSON}{JavaScript Object Notation}
+
+\newacronym{HTML}{HTML}{HyperText Markup Language}
+
+\newacronym{METS}{METS}{Metadata Encoding and Transmission Standard}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			DOCUMENT
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
 
+\section{ALTO~: \textit{Analyzed Layout and Text Object}}
 
-\section{XML-ALTO}
+\subsection{Qu'est-ce qu'est l'ALTO ?}
 
-\subsection{Qu'est-ce qu'est le format ALTO ?}
+Le format \acrshort{XML} \acrshort{ALTO} s'est évolué à partir du projet européen METAe en 2003. Le projet qui a conditionné la création d'\acrshort{ALTO} s'occupait du développement des logiciels dont des institutions patrimoniales pourraient servir à la création et à l'exploitation des fac-similés numériques de leur fonds. Le but du projet était d'extraire à partir des pages numérisées les informations portant sur la mise en page et les autres données structurelles. D'ici 2003, les logiciels \acrshort{OCR} étaient déjà bien mis en pratique. L'enjeu à l'époque était d'élaborer un schème de données qui soumettrait le texte extrait à la logique structurelle de la page et du document. Tandis qu'un logiciel \acrshort{OCR} reconnaître le texte du titre d'un chapitre et le texte de son sous-titre, un nouveau format devrait pouvoir distinguer les deux lignes de texte que le logiciel a reconnues et les hiérarchiser, en disant que le sous-titre est subordonné au titre du chapitre. 
 
-Décrire la création, le suivi, et l'objectif du format XML ALTO : enregistrer les infos sur la structure d'une image segmentée. 
+Le projet METAe a donc développé un format \acrshort{METS} (\textit{\acrlong{METS}}) qui avait pour but d'augmenter les données textuelles extraites par un logiciel \acrshort{OCR} avec la logique de la mise en page et du document. Bien que les logiciels \acrshort{OCR} aient souvent exporté leurs prédictions dans un format du texte brut, le format \acrshort{METS} visait à hiérarchiser le mélange des diverses données dans un format \acrshort{XML}. Par exemple, à travers d'un arbre \acrshort{XML}, le texte d'un sous-titre descendrait de la région dans laquelle les caractères de cette ligne de texte s'encadrent sur la page numérisée. De plus, au moins l'un d'eux, soit la donnée sur le texte du sous-titre, soit les données sur l'emplacement, porterait quelque chose pour dire que dans la logique du document il est un sous-titre.
 
-\subsection{La structure des fichiers XML-ALTO}
+Le schème \acrshort{METS} a réussi à combiner les métadonnées de la ressource numérique ainsi que de l'objet text qui a été transcrit avec les données structurelles et textuelles de l'objet grâce au format hiérarchisé de l'\acrshort{XML}. Mais le format primordial \acrshort{METS} n'avait pas répondu à la question de comment bien structurer les dernières données, celles qui sont produites par un logiciel \acrshort{OCR} ou \acrshort{HTR}. Les créateurs du format \acrshort{ALTO} ont décrit son prédécesseur comme un \og{}emballage\fg{} (\textit{wrapper}) pour la structure de données \acrshort{ALTO}.\footcite[81]{stehnoMETAeAutomatedEncoding2003} Tandis que le format \acrshort{METS} organise les métadonnées et la logique du document, telles que l'occurence et l'ordre des pages, le format \acrshort{ALTO} s'insère sous l'arbre de chaque page afin de décrire la transcription produite pour l'image numérique.
 
-Montrer la structure des données d'un fichier ALTO dans les deux formats qui sortent de Kraken : (1) ligne de texte encodé dans la balise \texttt{<TextLine>}, qui sort de Kraken via l'interface d'eScriptorium, et (2) ligne de texte encodé au niveau du glyph, qui sort directement de la ligne de commande de Kraken.
+Normalement, un fichier \acrshort{XML} \acrshort{ALTO} décrit une page (ou une image) d'un document. Mais, comme se voit dans l'exemple donné dans l'exposition du schème quand il était nouveau en 2003, modélisé dans la Figure~\ref{fig:oldalto}, l'élément \texttt{<Layout>} peut en fait contenir plusieurs éléments \texttt{<Page>}.\footcite{stehnoMETAeAutomatedEncoding2003} Néanmoins, la plupart de logiciels \acrshort{HTR} qui utilisent le format \acrshort{ALTO} crée un fichier per page numérisée.
 
-\section{XMl-TEI}
+\begin{figure}[htp]
+\begin{lstlisting}[language=XML]
+<Layout>
+	<Page ID="XXX" PHYSICAL_IMG_NR="000" HEIGHT="000" WIDTH="000" STYLEREFS="XXX">
+		<PrintSpace ID="XXX" HPOS="000" VPOS="000" HEIGHT="000" WIDTH="000">
+			<TextBlock ID="XXX" HPOS="000" VPOS="000" HEIGHT="000" WIDTH="000">
+				<TextLine ID="XXX" HPOS="000" VPOS="000" HEIGHT="000" WIDTH="000">
+					<String ID="XXX" HPOS="000" VPOS="000" HEIGHT="000" WIDTH="000" CONTENT="XXX"/>
+					<Sp ID="XXX" HPOS="000" VPOS="000" HEIGHT="000" WIDTH="000"/>
+					<String ID="XXX" HPOS="000" VPOS="000" HEIGHT="000" WIDTH="000" CONTENT="XXX"/>
+				</TextLine>
+				<TextLine ID="XXX" HPOS="000" VPOS="000" HEIGHT="000" WIDTH="000">
+					<String ID="XXX" HPOS="000" VPOS="000" HEIGHT="000" WIDTH="000" CONTENT="XXX"/>
+					<Sp ID="XXX" HPOS="000" VPOS="000" HEIGHT="000" WIDTH="000"/>
+					<String ID="XXX" HPOS="000" VPOS="000" HEIGHT="000" WIDTH="000" CONTENT="XXX"/>
+				</TextLine>
+			</TextBlock>
+		</PrintSpace>
+	</Page>
+	<Page ID="XXX" PHYSICAL_IMG_NR="000" HEIGHT="000" WIDTH="000" STYLEREFS="XXX">
+		<PrintSpace ID="XXX" HPOS="000" VPOS="000" HEIGHT="000" WIDTH="000">
+<!-- ... -->
+</Layout>
+\end{lstlisting}
+\caption{La structure ALTO version 1, circa 2003}
+\label{fig:oldalto}
+\end{figure}
+
+Le format \acrshort{ALTO} est dans sa quatrième version, mais la structure actuelle ressemble bien au modèle qu'ont présenté les auteurs Birgit Stephno, Alexader Egger, et Gregor Retti en 2003. Dans sa première version, montrée dans la Figure~\ref{fig:oldalto}, les éléments les plus petits étaient les segments de texte (\texttt{<String>}) et les espaces entre mots (\texttt{<Sp>}), balisés dans une ligne de texte (\texttt{<TextLine>}) qui appartient à un bloque de texte (\texttt{<TextBlock>}). Tous ces éléments \acrshort{XML} porte un identifiant unique (\texttt{@ID}) et quatre coordonnées portant sur le rectangle dans lequel s'encadre le contenu de l'élément. Le contenu textuel est représenté dans l'attribut \texttt{@CONTENT} de l'élément \texttt{<String>}. 
+
+\subsection{La structure actuelle des fichiers XML ALTO}
+Aujourd'hui, l'élément le plus petit d'une structure de données \acrshort{ALTO} est un glyphe (\texttt{<Glyph>}), au lieu d'un segment de caractères (\texttt{<String>}). Par conséquent, dans le nouveau format, le contenu textuel est représenté deux fois, une fois comme l'attribut \texttt{@CONTENT} de l'élément classique \texttt{<String>} et une deuxième comme le même attribut de l'élément \texttt{<Glyph>}. Un comparaison entre les deux arborescences est visualisé dans la Figure~\ref{fig:textlocation}. Comme montre la sous-figure~\ref{fig:newstructure}, la nouvelle architecture se permet d'aller en plus de détail. Certains logiciels, tel que l'interface \textit{eScriptorium}, produisent toujours les fichiers \acrshort{ALTO} avec une variation de l'ancienne structure où l'élément \texttt{<String>} n'est pas répétable et représente le contenu textuel de la ligne.
+
+En général, toute donnée portant sur la mise en place de la page se dispose de quatre coordonnées qui ensemble tracent un rectangle. Les valeurs des attributs \texttt{@HPOS} et \texttt{@VPOS} font les coordonnées x,y du point le plus haut à gauche du rectangle, comme se voit dans la Figure~\ref{fig:coordinates}. La valeur de l'attribut \texttt{@HEIGHT} compte la différence entre la coordonnée y du point le plus haut et la coordonnée y du point le plus bas. La valeur de l'attribut \texttt{@WIDTH} calcule aussi la différence entre le côté gauche du carré et son côté droit. Ces quatre attributs sont attribués aux éléments \texttt{<PrintSpace>}, \texttt{<TextBlock>}, \texttt{<TextLine>}, \texttt{<String>}, \texttt{<Sp>}, et \texttt{<Glyph>}.
+
+\begin{figure}[htp]
+\centering
+\begin{tikzpicture}[node distance=0.5cm]
+\draw[step=1cm,gray,very thin] (0,0) grid (10,5);
+\draw[thick,->] (0,5) -- (10,5) node[anchor=north west] {x axis};
+\draw[thick,->] (0,5) -- (0,0) node[anchor=south east] {y axis};
+\fill[red!40!white] (1,1) rectangle (9,4);
+\draw[red,thick,dashed] (1,1) rectangle (9,4);
+\node[anchor= east, text width = 1.25cm, text centered] (VPOS) at (1,4) {\texttt{VPOS = 1}};
+\node[anchor= south, text width = 1.25cm, text centered] (HPOS) at (1,4) {\texttt{HPOS = 1}};
+\node[anchor=north west] (top) at (1,4) {(1,1)};
+\node[anchor= west, text width = 1.25cm, text centered] (HEIGHT) at (9,1) {\texttt{WIDTH = 8}};
+\node[anchor= north east, text width = 1.25cm, text centered] (WIDTH) at (9,1) {\texttt{HEIGHT = 3}};
+\node[anchor= south east] (bottom) at (9,1) {(9,4)};
+\end{tikzpicture}
+\caption{Les coordonnées d'un masque en rectangle}
+\label{fig:coordinates}
+\end{figure}
+
+L'arborescence actuelle du format \acrshort{ALTO} diffère de l'original car, aujourd'hui, elle peut préciser les coordonnées d'un polygone en plus d'un rectangle. Cela est un développement dans la technologie des logiciels \acrshort{OCR} et \acrshort{HTR}. La visualisation dans la Figure~\ref{fig:newstructure} montre le nouvel élément \texttt{<Polygon>} qui descend directement d'un élément (\texttt{<Shape>}) qui lui-même ne porte pas d'attribut ni d'intérêt dans l'arborescence que de baliser les informations du polygone. Le contenu textuel est toujours balisé dans l'élément \texttt{<String>}, qui porte sur un segment ou mot d'une ligne de texte (\texttt{<TextLine>}). Mais en allant jusqu'au détail du glyphe dans l'arborescence actuelle, l'élément \texttt{<Glyph>} représente tout caractère composant un mot (\texttt{<String>}).
+
+\begin{figure}[htp]
+\centering
+\tikzstyle{empt} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=gray!30, text width=3cm]
+\tikzstyle{cont} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=yellow!30, text width=3cm]
+\tikzstyle{elem} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=green!30, text width=3cm]
+\tikzstyle{arrow} = [thick,>=stealth]
+
+\begin{subfigure}[b]{0.5\textwidth}
+\centering
+\begin{tikzpicture}[node distance=0.5cm]
+\node[elem] (PrintSpace) {<PrintSpace>};
+\node[elem, below = of PrintSpace] (TextBlock) {<TextBlock>};
+\node[elem, below = of TextBlock] (TextLine) {<TextLine>};
+\node[cont, below left = of TextLine] (String) {<String>};
+\node[elem, below right = of TextLine] (Sp) {<Sp>};
+\draw[arrow] (PrintSpace) -- (TextBlock);
+\draw[arrow] (TextBlock) -- (TextLine);
+\draw[arrow] (TextLine) -- (String);
+\draw[arrow] (TextLine) -- (Sp);
+\end{tikzpicture}
+\caption{Ancienne structure}
+\label{fig:oldstructure}
+\end{subfigure}
+
+\hspace{5cm}%
+
+\begin{subfigure}[b]{\textwidth}
+\centering
+\begin{tikzpicture}[node distance=0.5cm]
+\node[elem] (PrintSpace) {<PrintSpace>};
+\node[elem, below = of PrintSpace] (TextBlock) {<TextBlock>};
+\node[elem, below = of TextBlock] (TextLine) {<TextLine>};
+\node[empt, below left = of TextLine] (shape1) {<Shape>};
+\node[elem, below = of shape1] (polygon1) {<Polygon>};
+\node[cont, below right = of TextLine] (String) {<String>};
+\node[empt, below left = of String] (shape2) {<Shape>};
+\node[elem, below = of shape2] (polygon2) {<Polygon>};
+\node[cont, below = of String] (Glyph) {<Glyph>};
+\node[empt, below = of Glyph] (shape3) {<Shape>};
+\node[elem, below = of shape3] (polygon3) {<Polygon>};
+\node[elem, below right = of String] (Sp) {<Sp>};
+\draw[arrow] (PrintSpace) -- (TextBlock);
+\draw[arrow] (TextBlock) -- (TextLine);
+\draw[arrow] (TextLine) -- (String);
+\draw[arrow] (TextLine) -- (shape1);
+\draw[arrow] (shape1) -- (polygon1);
+\draw[arrow] (String) -- (shape2);
+\draw[arrow] (shape2) -- (polygon2);
+\draw[arrow] (String) -- (Glyph);
+\draw[arrow] (Glyph) -- (shape3);
+\draw[arrow] (shape3) -- (polygon3);
+\draw[arrow] (String) -- (Sp);
+\end{tikzpicture}
+\caption{Nouvelle structure}
+\label{fig:newstructure}
+\end{subfigure}
+
+\caption{Modélisation des formats ALTO}
+\label{fig:textlocation}
+\end{figure}
+
+Certains attributs actuels dans l'arborescence, l'attribut \texttt{@BASELINE} de l'élément \texttt{<TextLine>} et l'attribut \texttt{@POINTS} de tout élément \texttt{<Polygon>}, prennent comme valeur une chaîne d'entiers. Montrée dans la Figure~\ref{fig:newalto}, cette chaîne veut représenter des pairs de coordonnées x,y. Chaque point articule une extrémité soit d'une ligne qui trace le baseline de la ligne de texte (\texttt{@BASELINE}) soit une ligne qui encadre la région reconnue par un modèle de segmentation (\texttt{@POINTS}). Le format \acrshort{ALTO} encode chaque entier dans une chaîne dont les composants sont séparés par espace, où la valeur de l'axe des x précède la valeur de l'axe des y. Un polygone (\texttt{@POINTS}) peut avoir plusieurs points tout le long de son périmètre. Par contre, le baseline d'une ligne de texte (\texttt{@BASELINE}) compte toujours quatre entiers puisqu'il n'a qu'un début et une fin.
+
+\begin{figure}[htp]
+\begin{lstlisting}[language=XML]
+<Layout>
+	<Page ID="XXX" PHYSICAL_IMG_NR="000" WIDTH="000" HEIGHT="000">
+		<PrintSpace HPOS="000" VPOS="000" HEIGHT="000" WIDTH="000">
+			<TextBlock ID="XXX">
+				<TextLine ID="XXX" HPOS="000" VPOS="000" HEIGHT="000" WIDTH="000" BASELINE="1 2 3 4">
+					<Shape>
+						<Polygon POINTS="1 2 3 4 5 6 7 8"/>
+					</Shape>
+					<String ID="XXX" CONTENT="AB" HPOS="000" VPOS="000" WIDTH="000" HEIGHT="000" WC="1.0">
+						<Shape>
+							<Polygon POINTS="1 2 3 4 5 6 7 8 9 10"/>
+						</Shape>
+						<Glyph ID="XXX" CONTENT="A" HPOS="000" VPOS="000" WIDTH="000" HEIGHT="000" GC="1.0">
+							<Shape>
+								<Polygon POINTS="1 2 3 4 5 6 7 8"/>
+							</Shape>
+						</Glyph>
+						<Glyph ID="XXX" CONTENT="B" HPOS="000" VPOS="000" WIDTH="000" HEIGHT="000" GC="1.0">
+							<Shape>
+								<Polygon POINTS="1 2 3 4 5 6 7 8"/>
+							</Shape>
+						</Glyph>
+					</String>
+				</TextLine>
+<!-- ... -->
+			</TextBlock>
+		</PrintSpace>
+	</Page>
+</Layout>
+\end{lstlisting}
+\caption{La structure ALTO version 4, circa 2022}
+\label{fig:newalto}
+\end{figure}
+
+\section{TEI~: \textit{Text Encoding Initiative}}
+
+La raison pour laquelle la \acrshort{TEI} a été choisie pour fusionner toute donnée du pipeline \textit{Gallic(orpor)a} est parce qu'elle est un format \acrshort{XML} souple, qui peut s'adapter facilement à plusieurs types de document et d'édition numérique. Cela veut dire qu'une exposition détaillée du schème \acrshort{TEI} n'est pas possible. La manière pour encoder une ligne de texte n'est pas aussi fixée que cela du schème \acrshort{ALTO}, par exemple.
+
+Tandis qu'une ligne de texte dans un fichier \acrshort{ALTO} est balisée dans l'élément \texttt{<TextLine>}, une ligne de texte dans un document \acrshort{TEI} peut être encodée dans plusieurs façons. Elle peut suivre l'élément vide \texttt{<lb/>} ou elle peut être à côté d'autres lignes de texte, toutes balisées ensemble dans un élément tel que \texttt{<p>} ou \texttt{<div>}. De plus, parce que la \acrshort{TEI} permet de classer les composants d'une ligne de texte selon la logique du document ou de la langue, certains mots ou phrases peuvent être balisés dans d'autres éléments, tel que l'élément \texttt{<date>} pour encoder une année. Dans le même ordre des idées, une ligne de texte peut aussi être balisée dans les éléments qui expliquent sa fonction dans le document. Par exemple, une ligne de texte peut être un item dans une liste (\texttt{<item>}) ou la salutation à la fin d'une lettre (\texttt{<salute>}).
+
+\begin{figure}[htp]
+\begin{subfigure}[b]{\textwidth}
+\centering
+\parbox{0.4\textwidth}{
+\begin{flushright}
+12 août 2022
+\end{flushright}
+\begin{flushleft}
+\textit{
+\noindent Coucou~! J'ai fait une réservation pour ton anniversaire.
+}\\
+\end{flushleft}
+\begin{flushright}
+\textit{
+À demain ma chérie,
+}
+\end{flushright}
+}
+\caption{L'exemple d'une lettre}
+\label{fig:lettre}
+\end{subfigure}
+\hfill%
+
+\begin{subfigure}[b]{\textwidth}
+\centering
+\begin{lstlisting}[language=XML]
+<TextLine ID="line1" HPOS="0" VPOS="0" HEIGHT="40" WIDTH="200" BASELINE="0 40 200 40">
+	<Shape>
+		<Polygon POINTS="...."/>
+	</Shape>
+	<String ID="seg1" CONTENT="À" HPOS="..." VPOS="..." WIDTH="..." HEIGHT="..." WC="1.0">
+	<!-- ... -->
+	<String ID="seg2" CONTENT="demain" HPOS="..." VPOS="..." WIDTH="..." HEIGHT="..." WC="0.888">
+	<!-- ... -->
+	<String ID="seg3" CONTENT="ma" HPOS="..." VPOS="..." WIDTH="..." HEIGHT="..." WC="0.9">
+	<!-- ... -->
+	<String ID="seg3" CONTENT="chérie," HPOS="..." VPOS="..." WIDTH="..." HEIGHT="..." WC="0.91">
+	<!-- ... -->
+</TextLine>
+\end{lstlisting}
+\caption{La dernière ligne de la lettre encodée dans le schème ALTO}
+\label{fig:linealto}
+\end{subfigure}
+\hfill%
+
+\begin{subfigure}[b]{\textwidth}
+\centering
+\begin{lstlisting}[language=XML]
+<salute>À <date when="2022-08-13">demain</date> ma <name ref="#Kelly" type="person">chérie</name>,</salute>
+\end{lstlisting}
+\caption{La dernière ligne de la lettre encodée dans le schème TEI}
+\label{fig:linetei}
+\end{subfigure}
+\hfill%
+
+\caption{Le comparaison de l'encodage d'une ligne de texte en ALTO et TEI}
+\label{fig:compareligne}
+\end{figure}
+
+Prenant l'exemple d'une lettre, la Figure~\ref{fig:compareligne} montre l'encodage de sa salutation dans les deux schèmes, \acrshort{ALTO} et \acrshort{TEI}. On voit que l'\acrshort{ALTO} excelle à préciser l'emplacement des mots (et des caractères) sur la page d'un document. Mais après la reconnaissance du lettre, dont la certitude du modèle se représente par l'attribut \texttt{@WC}, le schème \acrshort{ALTO} ne donne pas d'autre information. L'encodage dans le format \acrshort{TEI}, par contre, enrichit la ligne de texte avec beaucoup d'information. Grâce à l'élément \acrshort{TEI} \texttt{<salute>} on sait que la ligne de texte est la salutation d'une lettre ou quelque autre forme de communication. De plus, l'encodage appuie sur la date en-tête pour attribuer au mot \textit{demain} une date précise qui est encodée dans l'attribut \texttt{@when}. En fin, le schème \acrshort{TEI} dispose d'un système pour réunir les occurrences du même concept dans un texte, tel qu'une personne. L'encodage dans la Figure~\ref{fig:linetei} utilise l'attribut \texttt{@ref} pour dire que l'occurence du mot \textit{chérie} fait référence à une personne à laquelle a été donnée, dans les métadonnées du document \acrshort{TEI}, l'identifiant \texttt{"Kelly"}.\footnotemark{}\footnotetext{Dans le TEI, les identifiants n'ont pas de mot-dièse, mais quand ils sont référencés dans le document la référence en porte un.}
 
 \subsection{Qu'est-ce qu'est la TEI ?}
+Comme montrent les exemples de la Figure~\ref{fig:compareligne}, le schème \acrshort{TEI} se spécialise à la représentation d'un texte et à son édition numérique. Il facilite l'enrichissement du texte avec les métadonnées, telles que les références aux autres endroits dans le document ainsi que la classification de la nature d'un mot ou d'une phrase. Les normes de la \acrshort{TEI} sont souples à exprès, afin de permettre les encodages personnalisés qui se focalisent sur les aspects différents d'un texte. Le même texte peut donc être encodé en \acrshort{TEI} dans plusieurs manières, selon les besoins et les objectifs des personnes qui se chargent de l'encodage.
 
-Décrire la création, le suivi, et l'objectif de la TEI.
+Les normes de la \acrshort{TEI} sont maintenues par une communauté internationale et leur usage est très répandu dans le monde. L'association est soutenue par le financement des institutions patrimoniales qui comptent sur ses \textit{guidelines} et contribuent des cas d'utilisation. Sur son site web, l'association explique qu'elle continue à modifier ses normes selon les besoins des utilisateurs.
+\begin{displayquote}
+The scope of the TEI is constantly expanding and the Guidelines are in steady ongoing development to keep pace with the emerging needs of the TEI community.\footcite{TEITextEncodinga}
+\end{displayquote}
+La croissance de la \acrshort{TEI} rend le schème très approprié à l'édition et à l'échange puisque beaucoup d'institutions ont développé des outils numériques qui l'utilisent.
+
+La souplesse de la \acrshort{TEI} est à la fois un avantage et un défi à surmonter. Puisque le schème permet de plusieurs encodages du même document, il est donc possible de réaliser plusieurs transformations d'un encodage en \acrshort{ALTO} vers un encodage en \acrshort{TEI}. Mais pour mettre en œuvre une transformation automatique à l'échelle, il faut une seule modélisation qui s'adapte à tout type de document dont la transcription est encodée en \acrshort{ALTO}. En outre, l'enrichissement du texte possible dans la \acrshort{TEI} est compliqué à réaliser par ordinateur. Tandis qu'un humain pourrait voir la date en-tête sur la lettre dans la Figure~\ref{fig:lettre} et puis savoir que la date référencée dans la salutation est le jour suivant, le 13 août, un logiciel ne pourrait pas faire le liaison entre les deux données si facilement. Donc, bien qu'il puisse savoir, grâce au \acrshort{TAL}, que le mot \textit{demain} veut parler d'une date, il ne saurait pas de quelle date parle la lettre~; par contre, une lectrice ou un lecteur humain la saurait avec facilité. Voici quelques défis d'une transformation d'\acrshort{ALTO} à \acrshort{TEI}.
 
 \subsection{Les éléments de base de la TEI}
 
-Expliquer qu'il y a deux éléments essentiels de la racine, le \texttt{<teiHeader>} et le \texttt{<body>}. Ensuite expliquer l'utilité de l'élément facultatif \texttt{<sourceDoc>} et expliquer pourquoi il convient bien aux données de structure d'un fichier ALTO. 
+La \acrshort{TEI} peut s'adapter à plusieurs types de documents mais elle exige toujours certains éléments de la racine qui donnent au schème son arborescence générale. Depuis la racine \texttt{<TEI>} d'un document \acrshort{TEI}, il faut au moins ces deux descendants~: le \texttt{<teiHeader>} et le \texttt{<body>}. Comme le schème \acrshort{ALTO}, le schème \acrshort{TEI} a besoin des métadonnées à propos du document encodé et de l'encodage lui-même. Le document \acrshort{TEI} imbrique les métadonnées dans l'élément \texttt{<teiHeader>}. L'élément \texttt{<body>} porte sur les données qui constituent la transcription ou la représentation du document ou des documents~; le dernier sera le cas où le document \acrshort{TEI} réalise une édition critique qui ressemblent plusieurs exemplaires d'une œuvre, par exemple. Pour résumer, la \acrshort{TEI} a besoin d'au moins les métadonnées, encodées dans le \texttt{<teiHeader>}, et les données qui représentent le texte, encodées dans le \texttt{<body>}.
 
+Après ces deux éléments obligatoires, le schème \acrshort{TEI} autorise d'autres éléments facultatifs de descendre directement de la racine \texttt{<TEI>}. L'un d'eux est l'élément \texttt{<sourceDoc>} dont nous parlons dans la section~\ref{firstMentionSourceDoc}. La \acrshort{TEI} définit le \texttt{<sourceDoc>} comme un élément qui peut contenir \textit{une transcription ou une représentation d'un seul document source, qui se réserve le pouvoir à faire partie d'un dossier génétique ou d'une collection d'autres sources}.\footcite{TEIElementSourceDoc} (traduction par l'autrice) Comme se justifie dans la section~\ref{firstMentionSourceDoc}, le projet \textit{Gallic(orpor)a} a choisi d'encoder toute donnée du fichier \acrshort{ALTO} dans l'élément \acrshort{TEI} \texttt{<sourceDoc>}. Le schème \acrshort{TEI} destine l'élément \texttt{<sourceDoc>} à la transcription d'un document source. Un fichier \acrshort{ALTO} contient une telle transcription, produite par un logiciel \acrshort{OCR} ou \acrshort{HTR}. Le \texttt{<sourceDoc>} convient bien aux données d'un fichier \acrshort{ALTO} car les éléments qui descendent du \texttt{<sourceDoc>} portent sur la mise en page ainsi que sur la transcription des images de texte.
+
+Un autre élément facultatif qui descend de la racine \texttt{<TEI>} est l'élément \texttt{<standOff>}. Le projet \textit{Gallic(orpor)a} s'appuyait aussi sur cet élément parce qu'il est destiné à la représentation des annotations au texte. L'avant dernière étape du pipeline du projet est l'analyse linguistique du texte prédit par le logiciel \acrshort{HTR}. Le résultat de cette analyse est une version du texte annotée qui pourrait se différer sensiblement da la transcription. Selon les \textit{guidelines} de la \acrshort{TEI}~:
+\begin{displayquote}
+The \texttt{standOff} element is intended to hold content that does not fit well in the \texttt{text} (e.g. because it is not transcribed from the source), nor in the \texttt{teiHeader} (e.g. because it is not metadata about the source or transcription). Examples include [...] annotations indicating the morphosyntactic features of a text, and annotations commenting on or associating parts of a text with additional information.\footcite{16LinkingSegmentation}
+\end{displayquote}
+Comme s'est révélé par les \textit{guidelines}, l'élément \texttt{<standOff>} convient bien au texte annoté et normalisé. Ainsi, la transcription du texte tel qu'il s'apparaît dans le document source, avec toute saute de ligne et faute d'orthographe, se trouvera dans les éléments \texttt{<sourceDoc>} et \texttt{<text>}, qui descend du \texttt{<body>}. Par contre, la version du texte qui n'existe pas dans le document source mais qui sert bien à l'analyse du document se trouvera dans l'élément facultatif \texttt{<standOff>}. Pour résumer, les quatre éléments pertinents qui descendent de la racine \texttt{<TEI>} sont visualisés dans la Figure~\ref{4elements}.
+
+\begin{figure}[htp]
+\centering
+\begin{lstlisting}[language=XML]
+<TEI>
+	<teiHeader><!-- métadonnées --></teiHeader>
+	<sourceDoc><!-- transcription --></sourceDoc>
+	<body>
+		<text><!-- texte pré-éditorialisé --></text>
+	</body>
+	<standOff><!-- texte annoté --></standOff>
+</TEI>
+\end{lstlisting}
+\caption{Les éléments de base du schème TEI}
+\label{4elements}
+\end{figure}
 
 \end{document}
 \documentclass[../main.tex]{subfiles}
