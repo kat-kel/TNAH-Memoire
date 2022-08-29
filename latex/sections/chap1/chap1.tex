@@ -66,15 +66,33 @@
     1.00	& 12  \\
     }\mydata
 
-Qu'est-ce qu'est l'\textit{\Gls{htr}} ou la reconnaissance automatique d’écriture manuscrite~? L'\textit{\acrlong{HTR}} (\acrshort{HTR}) est l'une des meilleurs approches aujourd'hui pour prédire du texte à partir d'une image numérique, y compris les manuscrits et les imprimés. Le développement de cette technologie occupe les chercheurs depuis plus d'un siècle. 
-Pour expliquer comment l'\acrshort{HTR} fonctionne, il faut comprendre dans un premier temps ce qu'est une image numérique et comment les différents éléments qui la compose~: la mise en page (telle que les zones de textes et les illustrations), les lignes, ainsi que le texte proprement dit.
+Qu'est-ce qu'est l'\textit{\Gls{htr}} ou la reconnaissance automatique d’écriture manuscrite~? L'\textit{\acrlong{HTR}} (\acrshort{HTR}) est l'approche que l'équipe de \textit{Gallic(orpor)a} a choisi pour prédire le texte écrit sur les fac-similés numériques de Gallica, y compris les manuscrits et les imprimés. À partir des pages numérisées, un logiciel \acrshort{HTR} peut décomposer l'image en segments et en lignes de texte ainsi que reconnaître l'écriture dedans. Dit simplement, l'\acrshort{HTR} parvenir à réaliser un texte bien structuré selon la logique de la page à partir des images numériques du texte. Cette technologie était utile au projet \textit{Gallic(orpor)a} dont le pipeline avait pour but de saisir les images numériques et d'arriver à une transcription ainsi qu'aux versions du texte pré-éditorialisés et annotées.
 
+\section{Les origines de l'HTR}
+L'\textit{\acrlong{HTR}} a évolué à partir des recherches sur l'\textit{\Gls{ocr}}.\footcite{impedovoMoreTwentyYears2014} Depuis ses origines, cette technologie précédente, l'\acrshort{OCR}, avait pour but la reconnaissance du texte imprimé, y compris la police du texte. N'étant pas développé pour l'écriture manuscrite, l'\acrshort{OCR} ne convient pas assez bien à la prédiction du texte sur les documents manuscrits. Par conséquent, la technologie de l'\acrshort{HTR} a été développé, afin de surmonter les polices qui imposent des limites à l'\acrshort{OCR}. La première conférence Frontiers in Handwriting Recognition a eu lieu en 1990 et aujourd'hui, le champs de recherche de l'\acrshort{HTR} est en plein développement. Bien qu'il se soit développé en parallèle avec l'\acrshort{OCR} depuis quelques décennies, le dernier l'a précédé et a préparé le terrain pour les nouveautés dans l'\acrshort{HTR} à la fin du siècle précédent.
+
+Les origines de l'\acrshort{OCR} remontent au dix-neuvième siècle. Les progrès les plus importants de cette technologie ont eu lieu il y a plus d'un demi-siècle aux États-Unis. En effet, le développement des logiciels \acrshort{OCR} a été réalisé dans le cadre de l'amélioration du traitement en masse des données numérisées. Dans les années soixante, le besoin de gérer et traiter de grandes quantités de données est devenu de plus en plus pressant notamment dans les grandes entreprises, dont les banques.\footcite{berchmansOpticalCharacterRecognition2014} La numérisation des journaux et le traitement en masse des lettres à la poste furent aussi l'un des contextes importants du développement de la reconnaissance automatique du texte sur des images.
+
+Dans les années 1960, de plus en plus de sociétés souhaitaient adopter les méthodes de traitement des données assisté par ordinateur. Ce traitement a exigé l'encodage des données dans un format directement exploitable par ordinateur. Il y avait alors deux moyens pour la saisie des données : (i) la carte perforée dans laquelle une machine faisait des trous qu'un ordinateur savait lire, et (ii) la bande magnétique sur laquelle une machine imprimait des bytes, la plus petite unité exploitable par ordinateur. Dans les deux cas, le matériel a changé, du carton à la bande magnétique, mais le mécanisme binaire d'analyse restait~: plein ou vide pour le carton, positif ou négatif pour la bande. Ni l'un ni l'autre technologie a permis de traiter les données qu'ils ont enregistrés.
+
+L'\textit{\acrlong{OCR}} s'appuyait sur la bande magnétique mais il a ajouté la possibilité de traiter les données enregistrées. Le scanner saisit un objet, tel qu'une page, et renvoie une image numérique qui sert à la saisie du logiciel \acrshort{OCR}. Cette acquisition des données automatique est différente que l'acquisition manuelle des méthodes d'encodage précédentes, qui comptaient sur un individu (souvent une femme) à saisir des données en tapant le texte à la perforatrice ou par le clavier du \textit{Magnetic Tape/Selectric Typewriter} (MT/ST).\footcite[85-87]{misaGenderCodesWhy2011} L'automatisation d'acquisition des données, grâce au scanner, est un point important dans l'évolution de la reconnaissance du texte.
+
+En 1971, le chercheur Ben R. Schneider a comparé l'\acrshort{OCR} et les deux autres moyens courants de l'encodage du texte dans les années 1960~: le MT/ST et la carte perforée.\footcite{schneiderProductionMachinereadableText1971} Schneider a déterminé que l'\acrshort{OCR} n'avait pas encore surpassé l'appareil MT/ST d'IBM parce que, malgré sa saisie automatique des données, il exigeait toujours beaucoup de correction à la main, car contrairement aux deux autres méthodes, les données d'entrée du traitement \acrshort{OCR} n'étaient pas créées par un humain mais par un scanner. L'appareil MT/ST avait donc une exactitude supérieure à l'\acrshort{OCR} à l'époque.
+
+En outre, un logiciel \acrshort{OCR} était limité par son jeu de données de polices, puisqu'il prédit du texte en faisant un comparaison entre un caractère qu'il a mémorisé et le motif qu'il a reconnu sur l'image. Même aujourd'hui l'\acrshort{OCR} se distingue du champs parallèle de l'\acrshort{HTR} par le fait qu'il compte sur une base de données des polices. Contraire à l'\acrshort{OCR} dans les années 1960, l'appareil MT/ST pouvait encoder des documents des diverses polices en comptant sur le discernement d'un être humain lors de la saisie des données.
+
+En 1977, Gian Piero Zarri, en résumant l'état de l'art de l'\acrshort{OCR}, a remarqué que la reconnaissance du texte sur les manuscrits n'était pas encore faisable.
+\begin{displayquote}
+Rappelons que la reconnaissance optique des caractères permet la lecture directe du texte par un \og{}scanner~\fg{} qui se charge d'effectuer le transfert sur bande magnétique~; le texte doit être composé avec des caractères de type \og{}imprimerie~\fg{} ou \og{}machine à écrire~\fg{}, car la lecture de caractères \og{}manuels~\fg{} ne semble pas encore actuellement complètement sortie de la phase expérimentale.~\autocite{zarriQuelquesAspectsTechniques1977}
+\end{displayquote}
+Dans les mêmes années, le chercheur américain Ray Kurzweil fait le même constat: \textit{Kurzweil} ou le \textit{Kurzweil Reading Machine} (KRM).\footcite{goodrichKurzweilReadingMachine1979} L'\acrshort{OCR} peut reconnaître plusieurs polices. Cependant, comme l'indique Zarri, l'\acrshort{OCR} reste sous la dépendance de la reconnaissance des polices et donc ne peut pas encore parvenir à la prédiction de l'écriture manuscrite.
 
 
 \section{Le fonctionnement général de l'HTR}
-%déplacer la section \section{Les origines de l'HTR} sous forme de sous-section ici
+
+
 \subsection{L'image numérique}
-L'un des objectifs de l'\acrshort{HTR} est d'imiter l'œil humain et reconnaître les lignes et les points d'une écriture sur une image numérisée contenant du texte. Une image numérique consiste en un quadrillage qui se compose de petits carrés qui s'appellent des pixels. Issu de l'anglais, le mot pixel veut dire \textit{picture element} et désigne l'élément minimal d'une image numérique. Les pixels sont stockés sous le format \textit{bitmap} ou BMP et chaque pixel peut compter 1 bit, 4 bits, 8 bits, ou 24 bits selon l'encodage de l'image. Quelque soit l'encodage, chaque pixel n'a qu'une seule couleur composée des degrés du rouge, vert, et bleu (système RVB). Vu ensemble, un groupe de pixels peut donner l'impression des courbes d'un objet ou d'un caractère. L'exemple de figure~\ref{fig:pixel1} montre la diagonale de la lettre \og{}A~\fg{} écrite en crayon rouge.
+L'un des objectifs de l'\acrshort{HTR} est d'imiter l'œil humain et de reconnaître les lignes et les points d'une écriture sur une image numérisée contenant du texte. Une image numérique consiste en un canevas (\textit{canvas}) qui se compose de petits carrés apellés des pixels. Issu de l'anglais, le mot pixel signifie \textit{picture element} et désigne l'élément minimal d'une image numérique. Les pixels sont stockés sous le format \textit{bitmap} ou BMP et chaque pixel peut compter 1 bit, 4 bits, 8 bits, ou 24 bits selon l'encodage de l'image. Vus ensemble, un groupe de pixels peut donner l'impression des courbes d'un objet ou d'un caractère. L'exemple de figure~\ref{fig:pixel1} montre la diagonale de la lettre \og{}A~\fg{} écrite en crayon rouge.
 
 \definecolor{5}{RGB}{255,0,0} % 5
 \definecolor{4}{RGB}{255,75,75} % 4
@@ -104,7 +122,7 @@ L'un des objectifs de l'\acrshort{HTR} est d'imiter l'œil humain et reconnaîtr
 \label{fig:pixel1}
 \end{figure}
 
-Un scanner encode l'image en décomposant une image en unités de pixel et en donnant à chaque pixel un tableau de trois entiers du système RVB (cf.~Figure~\ref{fig:pixel2}). Le premier entier qui se trouve dans la donnée tripartite d'un pixel défini l'intensité de la couleur rouge; le deuxième entier celle de la couleur vert et le troisième celle de la couleur bleu. Avec un peu de distance, l'œil humain, à partir de ce quadrillage, distingue les formes qui constituent une image. L'\acrshort{HTR} vise à identifier et reconnaître les points contiguës d'un caractère. 
+Un système informatique stock une image numérique dans un format qui la décompose en unités de pixel. Chaque pixel se compose de la superposition de l'intensité de trois couches de couleur~: rouge, vert, et bleu. (cf.~Figure~\ref{fig:pixel2}). Le premier entier qui se trouve dans la donnée tripartite d'un pixel défini l'intensité de la couleur rouge; le deuxième entier celle de la couleur vert et le troisième celle de la couleur bleu. Le système s'appelle donc \og{}RVB\fg{} puisqu'en effet, chaque pixel est une liste des trois couches des couleurs rouge, vert, et bleu. Avec un peu de distance, l'œil humain distingue les formes qui composent une image à partir de ce canevas. L'\acrshort{HTR} a besoin des algorithmes pour identifier et reconnaître les pixels contigus formant un caractère ou un mot, ce que l'œil fait avec facilité.
 
 \begin{figure}[hbt!]
 \centering
@@ -137,63 +155,17 @@ Un scanner encode l'image en décomposant une image en unités de pixel et en do
 \label{fig:pixel2}
 \end{figure}
 
-\subsection{Les tâches d'un logiciel HTR}
-Pour aboutir à une prédiction \acrshort{HTR}, la tâche consiste en trois étapes~: la reconnaissance des différentes zones de la page, la reconnaissance des lignes où se trouve du texte, et la transcription du texte.
-L'analyse de la mise en page n'est pas obligatoire, mais les deux autres tâches sont essentielles à l'\acrshort{HTR}. Chacune exige son propre modèle entraîné spécifiquement pour sa tâche. (cf. Figure~\ref{fig:flow})
+\subsection{Le \textit{preprocessing}}
+Avant de faire des prédictions sur une image de texte, tout logiciel \acrshort{HTR} ou \acrshort{OCR} a besoin des étapes préliminaires qui sont connus ensemble sous le nom anglais \textit{preprocessing}. L'une des étapes est souvent le redressement de l'image dans laquelle l'image s'ajuste jusqu'a les lignes de texte sont perpendiculaires. Tels traitements incluent le \textit{dewarping}, que le projet \textit{AGODA} a utilisé afin de corriger les courbes sur les pages numérisées des journaux pour que les lignes de texte soient toutes horizontales.\footcite{pelletProjetAGODAOcerisation2022}
 
-\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=6cm, minimum height=1cm,text centered, draw=black, fill=red!30]
-\tikzstyle{process} = [rectangle, minimum width=6cm, minimum height=1cm, text centered, draw=black, fill=orange!30]
-\tikzstyle{arrow} = [thick,->,>=stealth]
+Avant le redressement de l'image, une étape qui se fait souvent est la binarisation. Depuis quelques années, cette étape n'est plus nécessaire pour l'\acrshort{HTR} dont les logiciels réussissent à redresser et segmenter l'image en traitant directement les pixels RVB. Cependant, la binarisation est toujours courante pour les logiciels \acrshort{OCR} contemporains.\footcite{jentschTextDataDigitization2021} Comme expliquent Patrick Jentsch et Stephan Porada, \og{}\textit{The idea is to only extract the pixels which actually belong to the characters and discard any other pixel information which, for example, is part of the background}.\footcite[107]{jentschTextDataDigitization2021}\fg{} La binarisation trie les pixels d'une image en deux classes~: l'arrière-plan (\textit{background} en anglais) et le premier plan (\textit{foreground} en anglais).
 
-\begin{figure}
-\centering
-\begin{tikzpicture}[node distance=2cm]
-\node (start) [startstop] {Données d'entrée (image numérique)};
-\node (seg) [process, below of=start] {Segmentation des lignes de texte};
-\node (mise) [process, below of=seg] {Analyse de la mise en page};
-\node (tran) [process, below of=mise] {Transcription du texte segmenté};
-\node (stop) [startstop, below of=tran] {Données de sortie};
-
-\draw [arrow] (start) -- (seg);
-\draw [arrow] (seg) -- (mise);
-\draw [arrow] (mise) -- (tran);
-\draw [arrow] (tran) -- (stop);
-\end{tikzpicture}
-\caption{Processus d'un logiciel HTR}
-\label{fig:flow}
-\end{figure}
-
-\subsubsection{La segmentation des zones de la page}
-La première tâche de la reconnaissance du texte est de localiser l'emplacement du texte. Cette étape s'appelle souvent la segmentation et elle est indispensable.\footcite{chagueHTRUnitedMutualisonsVerite2021} Selon son entraînement, un modèle de segmentation recherche les espaces entre les contours d'un caractère ou entre les lignes de texte. Si le modèle est entraîné pour reconnaître du texte écrit en japonais, par exemple, il rechercherait l'ensemble de caractères bordés à gauche et à droit de l'espace et les reconnaîtrait comme étant une ligne de texte. Ainsi que tracer la limite d'une ligne de texte, il faut aussi tracer la limite d'un caractère. L'ensemble de coordonnées qui encadre une telle entité s'appelle un \og{}masque\fg{}.\autocite{coquenetHandwrittenTextRecognition2021} Cet objet contiguë permet au modèle de reconnaître du texte.
-
-\subsubsection{La transcription}
-La transcription du texte est l'étape fondamentale de l'\acrshort{HTR}. Cette dernière s'effectue à partir des données encadrées dans les masques. Il faut ce qu'on appelle un modèle \acrshort{HTR} \footnote{l'acronyme \acrshort{HTR} peut soit renvoyer uniquement à cette étape, soit plus généralement au processus complet qui comprend la reconnaîssance du texte, mais aussi la segmentation des zones et des lignes}. La sortie d'un logiciel \acrshort{HTR} peut être enrichie et inclure, en plus du texte brut reconnu, les données de la segmentation. En tout cas, la phase de transcription est essentielle dans un protocol de reconnaissance automatique du texte.
-
-\subsection{Les origines de l'HTR}
-L'\textit{\acrlong{HTR}} a évolué à partir des recherches sur l'\textit{\Gls{ocr}}. Les origines de cette dernière méthode remontent au dix-neuvième siècle. Les progrès les plus importants de cette technologie ont eu lieu il y a plus qu'un demi-siècle aux États-Unis. Le développement des logiciels \acrshort{OCR} a été réalisé dans le cadre de l'amélioration du traitement en masse des données numérisées. Dans les années soixante, le besoin de gérer et traiter de grandes quantités de données est devenu de plus en plus pressant notamment dans les grandes entreprises, dont les banques. La numérisation des journaux et le traitement en masse des lettres à la poste furent aussi l'un des contextes importants du développement de la reconnaissance automatique du texte sur des images.
-
-Dans les années mille neuf cent soixante, de plus en plus de sociétés souhaitaient adopter les méthodes de traitement des données assisté par ordinateur. Ce traitement a exigé l'encodage des données dans un format directement exploitable par ordinateur. Il y avait alors deux moyens pour la saisie des données : (i) la carte perforée dans laquelle une machine faisait des trous qu'un ordinateur savait lire. En deuxième temps, (ii) la bande magnétique sur laquelle une machine imprimait des bytes, la plus petite unité exploitable par ordinateur.
-
-L'\textit{\acrlong{OCR}} comptait sur ce dernier moyen, ainsi que sur une autre technologie, la numérisation des images par scanner. L'atout de l'\acrshort{OCR} est qu'en principe la saisie de données se fait automatiquement. À l'époque, les autres moyens d'encoder les données textuelles exigeaient leur saisie manuelle. Dans le cas des cartes perforées, un individu lisait un document et tapait le texte à la perforatrice. Le \textit{Magnetic Tape/Selectric Typewriter} (MT/ST), développé par l'entreprise américaine IBM en 1964, comptait également sur la saisie manuelle des données, mais les encodait sur une bande magnétique au lieu d'une carte perforée.
-
-En 1971, le chercheur Ben R. Schneider a comparé l'\acrshort{OCR} et ces deux autres moyens d'encodage du texte.~\autocite{schneiderProductionMachinereadableText1971} Schneider a déterminé que l'\acrshort{OCR} n'avait pas encore surpassé l'appareil MT/ST d'IBM parce que, malgré sa saisie automatique de données, il exigeait toujours beaucoup de correction à la main, car contrairement aux deux autres méthodes, les données d'entrée du traitement \acrshort{OCR} n'étaient pas créées par un humain mais par un scanner. L'appareil MT/ST avait donc une exactitude supérieure à l'\acrshort{OCR} à l'époque.
-
-En outre, un logiciel \acrshort{OCR} était limité par son jeu de données de polices, puisqu'il prédit du texte en faisant un comparaison entre un caractère qu'il a mémorisé et le motif qu'il a reconnu sur l'image. Même aujourd'hui l'\acrshort{OCR} se distingue de son successeur l'\acrshort{HTR} par le fait qu'il compte sur une base de données des polices. Contraire à l'\acrshort{OCR} dans les années soixante-dix, l'appareil MT/ST pouvait encoder des documents des diverses polices en comptant sur le discernement d'un être humain lors de la saisie des données.
-
-En 1977, Gian Piero Zarri, en résumant l'état de l'art de l'\acrshort{OCR}, a remarqué que la reconnaissance du texte sur les manuscrits n'était pas encore faisable.
-\begin{displayquote}
-Rappelons que la reconnaissance optique des caractères permet la lecture directe du texte par un \og{}scanner~\fg{} qui se charge d'effectuer le transfert sur bande magnétique~; le texte doit être composé avec des caractères de type \og{}imprimerie~\fg{} ou \og{}machine à écrire~\fg{}, car la lecture de caractères \og{}manuels~\fg{} ne semble pas encore actuellement complètement sortie de la phase expérimentale.~\autocite{zarriQuelquesAspectsTechniques1977}
-\end{displayquote}
-Dans les mêmes années, le chercheur américain Ray Kurzweil fait le même constat: \textit{Kurzweil} ou le \textit{Kurzweil Reading Machine} (KRM). L'\acrshort{OCR} peut reconnaître plusieurs polices.~\autocite{goodrichKurzweilReadingMachine1979} Cependant, comme dit Zarri, l'\acrshort{OCR} reste sous la dépendance de la reconnaissance des polices et donc ne peut pas encore parvenir à la prédiction du texte écrit, ce qui a amené au développement de l'\textit{\acrlong{HTR}}.
-
-\subsection{La binarisation}
-Afin de reconnaître la police d'un caractère, les logiciels \acrshort{OCR} du XXe siècle avaient besoin d'un processus préliminaire qui s'appelle la binarisation. Depuis quelques années, cette étape n'est plus nécessaire pour l'\acrshort{HTR}, mais il est toujours courant pour les logiciels \acrshort{OCR} contemporains.\footcite{jentschTextDataDigitization2021} Comme expliquent Patrick Jentsch et Stephan Porada, \og{}The idea is to only extract the pixels which actually belong to the characters and discard any other pixel information which, for example, is part of the background\footcite[107]{jentschTextDataDigitization2021}.\fg{} La binarisation trie les pixels d'une image en deux classes~: l'arrière-plan (\textit{background} en anglais) et le premier plan (\textit{foreground} en anglais).
-
+\subsubsection{Le niveau de gris}
 Normalement pour binariser une image, on veut remplacer la valeur composée d'un pixel, c'est-à-dire les trois degrés du rouge, du vert, et du bleu, avec la valeur simple d'un décimal. Ce décimal veut représenter l'échelle des gris dans le pixel. En anglais, ce traitement s'appelle le \textit{grayscale} ou le niveau de gris en français. Aujourd'hui les langages de programmation ont souvent des librairies qui fournissent des méthodes pour rendre une image en niveau de gris automatiquement. Mais dans la figure~\ref{fig:pixelMath}, nous donnons un calcul simple qui permet le traitement des niveaux de gris. On commence toujours avec la donnée tripartite du pixel, qu'on veut remplacer par une seule valeur. Représentons chaque partie de la donnée du pixel par les variables \(p\)~:
 \[ p_1, p_2, p_3 \]
-En premier temps, on prend la moyenne des degrés de la couleur, c'est-à-dire la moyenne de \(p\) ou \(\bar{p}\). La Figure~\ref{fig:pixelMoyenne} montre le résultat de ce calcul superposé à l'image originale.
+Dans un premier temps, on prend la moyenne des degrés de la couleur, c'est-à-dire la moyenne de \(p\) ou \(\bar{p}\). La Figure~\ref{fig:pixelMoyenne} montre le résultat de ce calcul superposé à l'image originale.
 \[ \bar{p} = \sum_{i=1}^3 \frac{1}{3} p_i = \frac{1}{3} (p_1 + p_2 + p_3) \]
-Ensuite, on récupère \(\bar{p}\) et la divise par la valeur maximale du \(p\), qui est 255 parce que le degré du rouge, vert, ou bleu d'un pixel ne monte qu'à 255. La Figure~\ref{fig:grayscale} montre le résultat de ce calcul.
+Ensuite, on récupère \(\bar{p}\) et la divise par la valeur maximale du \(p\), qui est 255 parce que le degré du rouge, vert, ou bleu d'un pixel ne monte qu'à 255.
 
 \begin{figure}[hbt!]
 \centering
@@ -221,6 +193,7 @@ Donnée tripartite du pixel & Moyenne du pixel & Valeur niveau de gris du pixel 
 \label{fig:pixelMath}
 \end{figure}
 
+\subsubsection{Le seuil}
 Il y a plusieurs techniques de binarisation mais toute a besoin d'un seuil (\textit{threshold} en anglais). Le seuil nous permet à trier les pixels en les deux classes~: le \textit{background} et le \textit{foreground}. Nos yeux font cette étape facilement, mais un ordinateur a besoin d'un algorithme. L'un des algorithmes les plus courant pour définir le seuil a été élaboré en 1979 par le chercheur Nobuyuki Otsu.~\autocite{otsuThresholdSelectionMethod1979}
 
 La méthode Otsu de seuillage reste toujours courante dans l'\acrshort{HTR}~\autocite{siddiqiWritingPropertyDescriptors2011} et elle fait partie de la librairie Python \texttt{numpy}.~\autocite{NumpyNumPyFundamental}. Elle examine la variance entre les deux classes (\textit{background} et \textit{foreground}) pour déterminer un seuil idéal pour le jeu de données. Visualisées dans un histogramme, comme on voit dans la figure~\ref{fig:histogram}, les données d'un jeu de pixels devraient se lever dans deux sommets et, idéalement, une baisse profonde devrait les diviser. Cette variance veut dire qu'il y a dans l'image une distinction importante entre les contours d'un caractère et l'arrière-plan de l'image. La méthode de seuillage examine la variance entre ces deux classes, le contour et l'arrière-plan, pour générer un seuil adapté aux données.
@@ -231,10 +204,17 @@ La méthode Otsu de seuillage reste toujours courante dans l'\acrshort{HTR}~\aut
 \begin{axis}[
             ybar,
             bar width=30pt,
-            width=.66\textwidth,
+            width=0.66\textwidth,
             symbolic x coords={0.33,0.53,0.66,0.86,0.99,1.00},
             xtick=data]
         \addplot table[x=interval,y=count]{\mydata};
+        
+        \coordinate (1A) at (axis cs:0.86,0);
+        \coordinate (1B) at (axis cs:0.86,13);
+        \coordinate(1middle) at (axis cs:0.66, 9);
+        \draw [black,sharp plot] (1A) -- (1B);
+        \draw[black] (1middle) circle (0pt) node[anchor=south]{$<$ 0.86};
+        \draw[black] (1middle) circle (0pt) node[anchor=north]{\textit{foreground}};
     \end{axis}
 \end{tikzpicture}
 \caption{Histogramme des valeurs niveau de gris des pixels}
@@ -336,6 +316,41 @@ La méthode Otsu de seuillage reste toujours courante dans l'\acrshort{HTR}~\aut
 
 Le seuil sert à transformer la valeur numérique de chaque pixel soit en 0, soit en 1. Les pixels dont la valeur tombe au-dessous du seuil prennent la valeur 0~; les autres, étant déterminés de faire partie du contour du caractère, prennent la valeur 1. La Figure~\ref{fig:binarisation} montre un exemple du résultat de ce triage. Ainsi, les logiciels \acrshort{OCR} et \acrshort{HTR} peuvent analyser les valeurs identiques et contiguës dans les données de l'image. Mais le logiciel n'est pas encore prêt à percevoir l'occurence d'un caractère.
 
+\subsection{Les tâches d'un logiciel HTR}
+Pour aboutir à une prédiction, le système d'HTR passe par trois étapes~: la reconnaissance des différentes zones de la page, la reconnaissance des lignes où se trouve du texte, et la transcription du texte.
+L'analyse de la mise en page n'est pas obligatoire, mais les deux autres tâches sont essentielles. Chacune exige son propre modèle entraîné spécifiquement pour sa tâche. (cf. Figure~\ref{fig:flow})
+
+\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=6cm, minimum height=1cm,text centered, draw=black, fill=red!30]
+\tikzstyle{process} = [rectangle, minimum width=6cm, minimum height=1cm, text centered, draw=black, fill=orange!30]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+\begin{figure}
+\centering
+\begin{tikzpicture}[node distance=2cm]
+\node (start) [startstop] {Données d'entrée (image numérique)};
+\node (seg) [process, below of=start] {Segmentation des lignes de texte};
+\node (mise) [process, below of=seg] {Analyse de la mise en page};
+\node (tran) [process, below of=mise] {Transcription du texte segmenté};
+\node (stop) [startstop, below of=tran] {Données de sortie};
+
+\draw [arrow] (start) -- (seg);
+\draw [arrow] (seg) -- (mise);
+\draw [arrow] (mise) -- (tran);
+\draw [arrow] (tran) -- (stop);
+\end{tikzpicture}
+\caption{Processus d'un logiciel HTR}
+\label{fig:flow}
+\end{figure}
+
+\subsubsection{La segmentation des zones de la page}
+La première tâche de la reconnaissance du texte est de localiser l'emplacement du texte. Cette étape s'appelle souvent la segmentation et elle est indispensable.\footcite{chagueHTRUnitedMutualisonsVerite2021} 
+Selon son entraînement, un modèle de segmentation recherche les espaces entre les contours d'un caractère ou entre les lignes de texte. 
+Si le modèle était entraîné pour reconnaître du texte écrit en japonais, par exemple, il rechercherait l'ensemble de caractères bordés à gauche et à droit de l'espace et les reconnaîtrait comme étant une ligne de texte. 
+Le terme \og{}masque\fg{} signifie l'ensemble des pixels qui contient une ligne de texte ou un caractère.\footcite{coquenetHandwrittenTextRecognition2021} Du point de vue du système informatique, un masque est un ensemble de coordonnées signifiant un objet contigu qui encadre une ligne de texte ou un caractère. Cet objet contigu est la base à partir de laquelle le modèle \acrshort{HTR} peut reconnaître le texte dedans.
+
+\subsubsection{La transcription}
+La transcription du texte est l'étape fondamentale de l'\acrshort{HTR}. Elle s'effectue à partir des données encadrées dans les masques et en appliquant un modèle de reconnaissance, parfois appelé le modèle HTR.\footnote{L'acronyme \acrshort{HTR} peut soit renvoyer uniquement à cette étape, soit plus généralement au processus complet qui comprend la reconnaîssance du texte, mais aussi la segmentation des zones et des lignes}. La transcription du texte consiste à faire produire, par le modèle, une suite de caractères à partir de l'extrait de l'image qui lui est fourni en entrée et encadrée dans un objet \og{} masque\fg{}. Pour résumer les deux étapes décrites ci-dessus, la sortie d'un logiciel \acrshort{HTR} peut se constituer soit simplement du texte brut, soit d'un fichier hiérarchisé où le texte prédit et les données de la segmentation sont alignés. En tout cas, la phase de transcription est essentielle dans un protocole de reconnaissance automatique du texte.
+
 \subsection{L'algèbre linéaire, les matrices, et l'intelligence artificielle}
 
 On transforme les pixels d'un caractère en une matrice, telle que celle présentée dans la figure~\ref{fig:matrix}. Pourquoi ? À la base, l'ordinateur est une calculatrice. Les logiciels \acrshort{OCR} et \acrshort{HTR} décomposent une image numérique en représentations mathématiques, les matrices. Ainsi, les matrices permettent aux logiciels de faire des calculs probabilistes et de prédire quel caractère correspond à quelle représentation. Mais pour faire des prédictions, un logiciel a besoin d'une intelligence artificielle.
@@ -394,46 +409,51 @@ On transforme les pixels d'un caractère en une matrice, telle que celle présen
 \end{figure}
 
 \subsubsection{\textit{Template matching}}
-Pendant la dernière moitié du XXe siècle, la reconnaissance du texte et l'intelligence artificielle ont connu des progrès importants. En 1950, il y a plus que soixante-dix ans, Alan Turing a publié sa théorisation de l'IA\autocite{turingComputingMachineryIntelligence1950}. Pendant les années soixante, au début de l'\acrshort{OCR}, l'IA a rendu possible la prédiction du texte représenté par les matrices en correspondant la représentation qu'un logiciel a reconnue à la représentation d'un caractère qu'il avait dans sa base de données. Cette technique primitive est le \textit{template matching} ou le filtrage par modèle. Elle n'est pas le moyen le plus pratique. Les chercheurs V.~K. Govindan et A.~P. Shivaprasad l'ont apprécié en 1990, après qu'elle a été dépassée par le \textit{feature analysis}.
+Pendant la dernière moitié du XXe siècle, la reconnaissance du texte et l'intelligence artificielle ont connu des progrès importants. En 1950, il y a plus que soixante-dix ans, Alan Turing a publié sa théorisation de l'IA\autocite{turingComputingMachineryIntelligence1950}. Pendant les années soixante, au début de l'\acrshort{OCR}, l'IA a rendu possible la prédiction du texte représenté par les matrices en faisant le lien entre deux entités~: (1) la représentation qu'un logiciel a reconnue et (2) la représentation d'un caractère qu'il avait dans sa base de données. Cette technique initiale est le \textit{template matching} ou le filtrage par modèle. Elle n'est pas le moyen le plus pratique. Les chercheurs V.~K. Govindan et A.~P. Shivaprasad l'ont revu en 1990, après qu'elle a été dépassée par le \textit{feature analysis}.
 \begin{displayquote}
-{[Template matching]} directly compares an input character to a standard set of prototypes stored {[\textit{modèles stockés}]}. The prototype that matches most closely provides recognition. {[\ldots]} This type of technique suffers from sensitivity  to noise and is not adaptive to differences in writing style.\autocite{govindanCharacterRecognitionReview1990}
+\textit{{[Template matching]} directly compares an input character to a standard set of prototypes stored {[\textit{modèles stockés}]}. The prototype that matches most closely provides recognition. {[\ldots]} This type of technique suffers from sensitivity  to noise and is not adaptive to differences in writing style}.\autocite{govindanCharacterRecognitionReview1990}
 \end{displayquote}
 Sous la dépendance du \textit{template matching}, un logiciel \acrshort{OCR} ne parviendra pas à préduire un caractère si la totalité de sa représentation en matrice n'est pas assez proche du modèle stocké lors de sa programmation.
 
 \subsubsection{\textit{Feature analysis}}
-Les progrès dans le domaine de l'IA pendant les années soixante-dix et quatre-vingt ont rendu possible le développement d'une nouvelle technique dont profite toujours les logiciels \acrshort{OCR}, quoique avec beaucoup d'élaboration depuis. Au lieu de faire correspondre la représentation d'un caractère à une autre, les logiciels \acrshort{OCR} décomposent un caractère en ses \textit{features} ou ses aspects. En 1990, Govindan et Shivaprasad ont résumé l'état de cette technique.
+Les progrès dans le domaine de l'IA pendant les années 1970 et 1980 ont rendu possible le développement d'une nouvelle technique dont profite toujours les logiciels \acrshort{OCR}, bien qu'elles aient été améliorées depuis. Au lieu de faire correspondre la représentation d'un caractère à une autre, les logiciels \acrshort{OCR} décomposent un caractère en ses \textit{features} ou ses aspects. En 1990, Govindan et Shivaprasad ont résumé l'état de cette technique.
 \begin{displayquote}
-The features may represent global and local properties of the characters. These include strokes, and bays in various directions, end points, intersections of line segments, loops {[\ldots]}, and stroke relations, angular properties, sharp protrusions {[\ldots]}. These features have high tolerances to distortions and style variations, and also tolerate a certain degree of translation and rotation. However, the extraction processes are in general very complex and it is difficult to generate masks for these types of features.\autocite{govindanCharacterRecognitionReview1990}
+\textit{The features may represent global and local properties of the characters. These include strokes, and bays in various directions, end points, intersections of line segments, loops {[\ldots]}, and stroke relations, angular properties, sharp protrusions {[\ldots]}. These features have high tolerances to distortions and style variations, and also tolerate a certain degree of translation and rotation. However, the extraction processes are in general very complex and it is difficult to generate masks for these types of features}.\autocite{govindanCharacterRecognitionReview1990}
 \end{displayquote}
-Ainsi, le logiciel \acrshort{OCR} essaie de faire correspondre l'ensemble de certains aspects d'une représentation à l'ensemble des mêmes aspects aux lesquels le logiciel associe un caractère. Selon Govindan et Shivaprasad, un aspect peut être un trait, le croisement des lignes, une boucle, la relation entre plusieurs traits, la caractéristique des angles, ou une saillie.
+Ainsi, le logiciel \acrshort{OCR} essaie de faire correspondre l'ensemble de certains aspects d'une représentation à l'ensemble des mêmes aspects auxquels le logiciel associe un caractère. Selon Govindan et Shivaprasad, un aspect peut être un trait, le croisement des lignes, une boucle, la relation entre plusieurs traits, la caractéristique des angles, ou une saillie.
 
-Grâce à la technique de \textit{feature analysis}, un logiciel \acrshort{OCR} moderne parvient à prendre une décision quant à la représentation d'un caractère bien qu'il n'ait pas trouvé le caractère de la même police, ayant la même représentation, dans sa base de données. \textit{L'\acrlong{HTR}} utilise aussi du \textit{feature analysis}. Mais à la place de produire les métadonnées sur la police du caractère segmenté et reconnu ainsi que la langue du texte, l'\acrshort{HTR} analyse les aspects d'un caractère simplement pour prédire le texte. Cependant, cette analyse n'est pas plus simple que celle réalisée par un logiciel \acrshort{OCR}.
+Grâce à la technique de \textit{feature analysis}, un logiciel \acrshort{OCR} moderne parvient à prendre une décision quant à la représentation d'un caractère bien qu'il n'ait pas trouvé le caractère de la même police, ayant la même représentation, dans sa base de données. \textit{L'\acrlong{HTR}} utilise aussi du \textit{feature analysis}. Mais au lieu de produire les métadonnées sur la police du caractère ainsi que la langue du texte, l'\acrshort{HTR} analyse les aspects d'un caractère simplement pour prédire le texte. Cependant, cette analyse n'est pas plus simple que celle réalisée par un logiciel \acrshort{OCR}.
 
-Le logiciel \acrshort{HTR} a besoin d'associer beaucoup d'aspects d'une variété immense à un seul caractère puisqu'une main peut écrire un caractère par plusieurs moyens, selon la position de la lettre dans un mot. %proposition d'ajout et le ductus, ou encore le type d'écriture. 
-En outre, l'écriture d'une main peut varier et une page peut avoir plusieurs mains. Dit simplement, l'\acrshort{OCR} analyse les aspects d'un caractère du point de vue d'une langue et d'une police attendue. L'\acrshort{HTR} se focalise uniquement sur les aspects topologiques d'un caractère, sans avoir besoin de savoir la langue ni d'avoir appris la police du texte. 
+Le logiciel \acrshort{HTR} a besoin d'associer beaucoup d'aspects d'une variété immense à un seul caractère. Une même main peut écrire une même lettre de plusieurs façons, qui produit une variation \og{}intra-classe\fg{}.\footnotemark{}\footnotetext{Une même lettre écrite de la même manière par plusieurs mains produit une variation \og{}inter-classe\fg{}.}
+En outre, l'écriture d'une main peut varier et une page peut avoir plusieurs mains. Dit simplement, l'\acrshort{OCR} analyse les aspects d'un caractère du point de vue d'une langue et d'une police attendue. L'\acrshort{HTR} se focalise uniquement sur les aspects topologiques d'un caractère, sans avoir besoin d'identifier la langue ni d'avoir appris la police du texte. 
 
 \subsubsection{\textit{Deep learning}}
-Aujourd'hui l'\acrshort{HTR} profite du \textit{feature analysis} ainsi que d'un développement plus récent dans l'intelligence artificielle qui s'appelle le \textit{deep learning} ou l'apprentissage profond. Pouvant s'améliorer grâce aux réseaux neurones, un logiciel \acrshort{OCR} ou \acrshort{HTR} moderne peut prendre les décisions de plus en plus pertinente quand il essaie de prédire du texte à partir de l'analyse des aspects (\textit{feature analysis}). L'une des premieres mises en œuvre des reseaux neurones pour \textit{l'\acrlong{HTR}} était le projet european \textit{Transkribus}\autocite{muehlbergerTransformingScholarshipArchives2019}. Un autre projet européen a suivi \textit{Transkribus} et, contrairement au premier, laisse ses données et les architectures de ses modèles ouvertes~: \textit{Kraken}\autocite{kiesslingKrakenUniversalText2019}. Élaboré dans l'esprit de la science ouverte, le projet \textit{Gallic(orpor)a} a choisi d'utiliser \textit{Kraken} et une interface de transcription, elle aussi ouverte, \textit{eScriptorium}.
+Aujourd'hui l'\acrshort{HTR} profite du \textit{feature analysis} ainsi que d'un développement plus récent dans l'intelligence artificielle qui s'appelle le \textit{deep learning} ou l'apprentissage profond. Pouvant s'améliorer grâce aux réseaux neurones, un logiciel \acrshort{OCR} ou \acrshort{HTR} moderne peut prendre des décisions de plus en plus pertinentes quand il essaie de prédire du texte à partir de l'analyse des aspects (\textit{feature analysis}). L'une des premières mises en œuvre des réseaux neurones pour \textit{l'\acrlong{HTR}} était le projet européen \textit{Transkribus} qui a aussi mis au point l'\acrshort{OCR}.\footcite{muehlbergerTransformingScholarshipArchives2019}.
+Un autre projet européen a suivi \textit{Transkribus} et, contrairement au premier, laisse ses données et les architectures de ses modèles ouvertes~: \textit{Kraken}\autocite{kiesslingKrakenUniversalText2019}. Élaboré dans l'esprit de la science ouverte, le projet \textit{Gallic(orpor)a} a choisi d'utiliser \textit{Kraken} et une interface de transcription, ouverte elle aussi, \textit{eScriptorium}.
 
 \section{Le modèle HTR}
-Puisque \textit{Transkribus} et \textit{Kraken} profitent tous les deux de l'apprentissage profond, les processus mis en œuvre par les interfaces graphiques \textit{Transkribus} et \textit{eScriptorium} ressemblent généralement à la même description. Ils commencent avec l'entraînement d'un modèle \acrshort{HTR}. Ensuite, ils appliquent le modèle entraîné aux données d'entrées, c'est-à-dire l'image d'un page numérisée. Le taux de réussite se calcule par le pourcentage des caractères que le modèle n'a jamais vus mais qui étaient bien prédits.
+Puisque \textit{Transkribus} et \textit{Kraken} profitent tous les deux de l'apprentissage profond, les processus mis en œuvre par les interfaces graphiques \textit{Transkribus} et \textit{eScriptorium} ressemblent généralement à la même description. Ils commencent avec l'entraînement d'un modèle \acrshort{HTR}. Ensuite, ils appliquent le modèle entraîné aux données d'entrées, c'est-à-dire l'image d'un page numérisée. Le le taux de réussite du processus est calculé en fonction du pourcentage des caractères que le modèle n'a jamais vus mais qui étaient bien prédits.
 
 \subsection{Les données d'entrée}
-En premier temps, avant de penser à l'entraînement d'un modèle, il faut bien connaître sa saisie des données. Les données d'entrée d'un modèle vont être les images numériques, composées des pixels. En général, leurs contenus textuels devraient se ressembler afin que le modèle se spécialise dans une écriture particulière. Il est pourtant possible d'entraîner un modèle très généraliste, mais il nécessite un très large corpus d'entraînement.
+Dans un premier temps, avant de penser à l'entraînement d'un modèle, il faut bien connaître la saisie des données. Les données d'entrée d'un modèle vont être les images numériques, composées des pixels. En général, leurs contenus textuels devraient être similaires afin que le modèle se spécialise dans une écriture particulière. Il est possible d'entraîner un modèle très généraliste, mais cela nécessite alors un très large corpus d'entraînement.
 
 \subsection{Les données d'entraînement}
-Le premier défi de l'entraînement d'un modèle \acrshort{HTR} est la création des données d'entraînement. Ces données sont des transcriptions annotées et corrigées à la main à partir des images. La paire formée par une image et sa transcription s'appelle une vérité de terrain ou \textit{ground truth} en anglais, puisque la transcription doit être parfaite ou \textit{vraie}\footcite{lassnerPublishingOCRGround2021}. Afin d'entraîner un modèle \acrshort{HTR}, il faut un jeu des vérités de terrain. Alix Chagué décrit les vérités de terrain comme,
+Le premier défi de l'entraînement d'un modèle \acrshort{HTR} est la création des données d'entraînement. Ces données sont des transcriptions annotées et corrigées à la main à partir des images.
+L'ensembles des paires formées par une image et sa transcription s'appelle une vérité de terrain ou \textit{ground truth} en anglais, puisque les transcriptions doivent être parfaites ou \textit{vraies}\footcite{lassnerPublishingOCRGround2021}.
+Afin d'entraîner un modèle \acrshort{HTR}, il faut un jeu des vérités de terrain. Alix Chagué décrit les vérités de terrain comme,
 \begin{displayquote}
-des ensembles de données annotées et corrigées de manière à fournir au modèle des paires composées d'une part d'une image ou d'une portion d'image (entrée) et d'autre part de l’annotation attendue (sortie), qui peut être des coordonnées dans le cas de la segmentation ou un ensemble de caractères pour la transcription.\footcite{chagueHTRUnitedMutualisonsVerite2021}
+\og{}des ensembles de données annotées et corrigées de manière à fournir au modèle des paires composées d'une part d'une image ou d'une portion d'image (entrée) et d'autre part de l’annotation attendue (sortie), qui peut être des coordonnées dans le cas de la segmentation ou un ensemble de caractères pour la transcription.\fg{}\footcite{chagueHTRUnitedMutualisonsVerite2021}
 \end{displayquote}
-Lors de l'apprentissage, les vérités de terrain fournissent au modèle en cours son résultat souhaité pour qu'il puisse savoir comment s'améliorer afin de produire les bonnes prédictions ou les prédictions \textit{vraies}. Les données produites reproduire au plus près la prédiction idéale des vérités de terrain. Grâce à l'apprentissage profonde, un modèle peut apprendre comment arriver à la prédiction souhaitée à partir de données d'entraînement.
+Lors de l'apprentissage, les vérités de terrain fournissent au modèle fournissent au modèle le texte attendu à partir d'un segment d'image pour qu'il puisse savoir comment s'améliorer afin de produire les bonnes prédictions ou les prédictions \textit{vraies}. Les données générées reproduisent au plus près la prédiction idéale des vérités de terrain. Grâce à l'apprentissage profond, un modèle peut apprendre comment arriver à la prédiction souhaitée à partir de données d'entraînement.
 
 \subsection{L'entraînement}
-Lors de l'entraînement, le modèle \acrshort{HTR} (comme un modèle \acrshort{TAL})) s'évalue périodiquement et une dernière fois quand l'entraînement est terminié. La dernière évaluation s'appelle le \textit{score}. Afin d'obtenir un meilleur \textit{score}, on peut optimiser l'entraînement du modèle en appuyant sur plusieurs paramètres.
+Lors de l'entraînement, le modèle \acrshort{HTR} (comme un modèle \acrshort{TAL})) s'évalue périodiquement et une dernière fois quand l'entraînement est terminié. La dernière évaluation s'appelle le \textit{score}. Afin d'obtenir un meilleur \textit{score}, on peut optimiser l'entraînement du modèle en jouant sur plusieurs paramètres.
 
-Par exemple, on peut modifier le nombre de fois que le modèle révise sa manière de faire ses tâches de prédiction. Chaque essaie s'appelle un époch, dérivé de l'anglais \textit{epoch}, et un plus grand nombre d'époch donne au modèle plus d'essais à s'améliorer. Cependant, plus d'époch pèse plus sur le budget d'un projet puisqu'il consomme plus de puissance de calcul et plus de temps. En outre, on ne veut pas faire passer trop d'époch et risquer le sur-apprentissage d'un modèle, qui s'appelle le \textit{overfitting} en anglais. Cela veut dire que la fonction prédictive du modèle s'est trop bien adaptée à ses données d'entraînement, y compris tout le bruit des données, et elle n'est pas suffisamment généraliste pour réussir sur des données que le modèle n'avais jamais vues. On peut également régler la taille du pas d'apprentissage après chaque époch, c'est à dire son \textit{learning rate}. 
+Par exemple, on peut modifier le nombre de fois que le modèle révise sa manière de faire ses tâches de prédiction. Chaque essaie s'appelle une époque, dérivé de l'anglais \textit{epoch}, et un plus grand nombre d'époque donne au modèle plus de chances de s'améliorer. Cependant, plus d'époque pèse plus sur le budget d'un projet puisqu'il consomme plus de puissance de calcul et prend plus de temps. En outre, on ne veut pas faire passer trop d'époque et risquer le sur-apprentissage d'un modèle, qui s'appelle le \og{}sur-apprentissage\fg{} (\textit{overfitting} en anglais). Cela veut dire que la fonction prédictive du modèle s'est trop bien adaptée à ses données d'entraînement, y compris tout le bruit des données, et elle n'est pas suffisamment généraliste pour réussir sur des données que le modèle n'aurait jamais vues. On peut également régler la taille du pas d'apprentissage après chaque époque, c'est à dire son \textit{learning rate}. 
 
-On peut aussi modifier la composition du jeu de données traitée lors d'un époch. Ce dernier paramètre s'appelle un \textit{batch size}, et il est aussi un entier, comme l'époch. Disons qu'on veut entraîner notre modèle sur 400 images. Un époch prendrait trop de temps et trop de puissance de calcul s'il essayait de traiter toutes les images de notre jeu de données au même temps. Du coup, on veut le diviser selon notre paramètre \textit{batch size}. Si on déclarait un \textit{batch size} de 100 images, on dirait au modèle qu'il faut itérer sur son jeu de données 4 fois afin de compléter un époch, en rappelant qu'un époch est égal à une passe complète sur le jeu de données d'entraînement, voir la figure~\ref{fig:epoch}. Ce qu'on appelle l'erreur, soit la différence entre la prédiction du modèle et la vérité de terrain, se calcule à chaque itération d'un \textit{batch} dans un époch. On veut que cette valeur diminue, c'est à dire que la prédiction du modèle se rapproche de plus en plus à la vérité de terrain. Pour optimiser le modèle, on peut choisir entre plusieurs fonctions pour calculer l'erreur, ce qu'on appelle une \textit{loss function}. Dans l'exemple de la Figure~\ref{fig:epoch}, on pourrait appliquer une \textit{loss function}, telle que le \textit{mean squared error} (MSE), aux toutes les prédiction d'un \textit{batch} afin de connaître l'érreur ou le \textit{loss} du modèle à ce point de l'entraînement.
+On peut aussi modifier la composition du jeu de données traité lors d'une époque. Ce dernier paramètre s'appelle un \textit{batch size}, et il est aussi un entier, comme l'époque. Disons qu'on veut entraîner notre modèle sur 400 images. Une époque prendrait trop de temps et trop de puissance de calcul s'il essayait de traiter toutes les images de notre jeu de données au même temps. Du coup, on veut le diviser selon notre paramètre \textit{batch size}. Si on déclarait un \textit{batch size} de 100 images, on dirait au modèle qu'il faut itérer sur son jeu de données 4 fois afin de compléter une époque, en rappelant qu'une époque est égale à une passe complète sur le jeu de données d'entraînement, voir la figure~\ref{fig:epoch}.
+
+Ce qu'on appelle l'erreur, soit la différence entre la prédiction du modèle et la vérité de terrain, se calcule à chaque itération d'un \textit{batch} dans une époque. On veut que cette valeur diminue, c'est à dire que la prédiction du modèle se rapproche de plus en plus à la vérité de terrain. Pour optimiser le modèle, on peut choisir entre plusieurs fonctions pour calculer l'erreur, ce qu'on appelle une \textit{loss function}. Dans l'exemple de la Figure~\ref{fig:epoch}, on pourrait appliquer une \textit{loss function}, telle que le \textit{mean squared error} (MSE), à toutes les prédiction d'un \textit{batch} afin de connaître l'erreur ou le \textit{loss} du modèle à ce point de l'entraînement.
 
 \begin{figure}
 \tikzstyle{epoch} = [rectangle, rounded corners, minimum width=2cm, minimum height=1cm,text centered, draw=black, fill=yellow!30]
@@ -463,11 +483,11 @@ On peut aussi modifier la composition du jeu de données traitée lors d'un épo
 \draw [arrow] (b4) -- (loss4);
 \draw [dotted] (ep1) -- (ep2);
 \end{tikzpicture}
-\caption{La visualisation d'époch~1}
+\caption{La visualisation d'époque~1}
 \label{fig:epoch}
 \end{figure}
 
-Dans le cadre du projet \textit{Gallic(orpor)a}, Ariane Pinche a entraîné des modèles \acrshort{HTR} sur le corpus gold, que l'équipe a fait à la main et qu'elle et Simon Gabay ont vérifié. Pinche l'a scindé en trois, comme la Figure~\ref{fig:division} visualise. Une majorité des images (80\%) compose le jeu d'entraînement (\textit{training set}). Une petite partie (10\%) compose le jeu de validation (\textit{development set}). Et la dernière partie (10\%) compose le jeu de test (\textit{testing set}). Les données du \textit{training set} sont ceux qui se divisent en \textit{batch}~; chacune est traitée une fois lors d'un époch. En prenant compte du taux de réussite du modèle sur les données du \textit{training set}, le réseau neural fait des ajustements aux connexions entre ses neurones. Après quelques ajustements, l'entraînement s'arrête pour évaluer le modèle en cours de développement. Les données du \textit{development set} sont utilisées pour donner au réseau une évaluation impartiale de son succès puisqu'elles sont les données qu'il n'a jamais vues. Après chaque moment de validation, le réseau neural oublie les données du \textit{development set}, afin qu'il ne s'apprenne pas par eux, et reprend son entraînement avec les données du \textit{training set}. En fin, les données du \textit{testing set} sont utilisées à la fin de l'entraînement pour donner un \textit{score} final au modèle sur les données qu'il n'a jamais vues.
+Dans le cadre du projet \textit{Gallic(orpor)a}, Ariane Pinche a entraîné des modèles \acrshort{HTR} sur le corpus \textit{gold}, que l'équipe a fait à la main et qu'elle et Simon Gabay ont vérifié. Pinche l'a scindé en trois, comme la Figure~\ref{fig:division} visualise. Une majorité des images (80\%) compose le jeu d'entraînement (\textit{training set}). Une petite partie (10\%) compose le jeu de validation (\textit{development set}). Et la dernière partie (10\%) compose le jeu de test (\textit{testing set}). Les données du \textit{training set} sont ceux qui se divisent en \textit{batches}~; chacune est traitée une fois lors d'une époque. En prenant compte du taux de réussite du modèle sur les données du \textit{training set}, le réseau neuronal fait des ajustements à la nature des connexions entre ses neurones, spécifiquement comment chaque connexion pèse sur le réseau. Après quelques ajustements, l'entraînement s'arrête pour évaluer le modèle en cours de développement. Les données du \textit{development set} sont utilisées pour donner au réseau une évaluation impartiale de son succès puisqu'elles sont des données qu'il n'a pas pris en compte lors de l'ajustement des poids des connexions. Enfin, les données du \textit{testing set} sont utilisées à la fin de l'entraînement pour donner un \textit{score} final au modèle sur les données qu'il n'a jamais vues.
 
 \tikzstyle{training} = [rectangle, minimum width=8cm, minimum height=1.25cm, text centered, draw=black, fill=red!40!white, text width = 1cm]
 \tikzstyle{development} = [rectangle, minimum width=1cm, minimum height=1.25cm, text centered, draw=black, fill=blue!40!white, text width=1cm]
@@ -487,8 +507,7 @@ Dans le cadre du projet \textit{Gallic(orpor)a}, Ariane Pinche a entraîné des 
 
 
 \subsection{Le résultat de l'entraînement}
-Le résultat de l'entraînement s'appelle un modèle. L'un des buts du projet \textit{Gallic(orpor)a} était de proposer pour tous les documents du XVe au XIXe siècle deux modèles généralistes. Un se spécialisera dans l'écriture des manuscrits et des incunables. Un autre modèle s'entraînera pour les imprimés.
-
+Le résultat de l'entraînement s'appelle un modèle. L'un des buts du projet \textit{Gallic(orpor)a} était de proposer pour tous les documents du XVe au XIXe siècle deux modèles généralistes. Un se spécialisera dans l'écriture des manuscrits et des incunables et l'autre sur les imprimés.
 
 \end{document}
 \documentclass[../main.tex]{subfiles}
