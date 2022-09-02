@@ -69,3 +69,6 @@ latex/sections/*/*.toc
 
 latex/*.sta
 latex/sections/*/*.sta
+
+latex/*-blx.bib
+latex/sections/*/*-blx.bib

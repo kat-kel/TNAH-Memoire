@@ -24,7 +24,7 @@
 %			REFERENCES
 % le package hyperref avec des options, si en local
 \usepackage{hyperref}
-\usepackage[backend=biber, sorting=nyt, style=verbose-ibid]{biblatex}
+\usepackage[backend=bibtex, sorting=nyt, style=verbose-ibid]{biblatex}
 \addbibresource{../bib.bib}
 
 %%%%%%%%%%%%%%%%%%%%%%%%
@@ -212,6 +212,28 @@ d’Écriture Manuscrite des Matériaux Anciens}
   	tabsize=2
 	}
 
+%Code listing style named "python"
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+
+\lstdefinestyle{python}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
 %%%%%%%%%%%%%%%%%%%%%%%%
 %			IMAGES
 \usepackage{graphicx}
@@ -333,6 +355,7 @@ d’Écriture Manuscrite des Matériaux Anciens}
 
 	\chapter{Un pipeline visant à tout rassembler}
 	\subfile{sections/chap4/chap4.tex}
+	\label{chap:pipeline}
 	
 	\chapter{L'analyse des structures des données XML}
 	\subfile{sections/chap5/chap5.tex}
@@ -340,6 +363,7 @@ d’Écriture Manuscrite des Matériaux Anciens}
 	
 	\chapter{À la recherche des métadonnées}
 	\subfile{sections/chap6/chap6.tex}
+	\label{chap:metadata}
 	
 %%%%%%%%%%%%%%%%%%%%%%%%
 %			PARTIE III.

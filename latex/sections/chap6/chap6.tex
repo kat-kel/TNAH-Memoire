@@ -1,13 +1,149 @@
+% PREAMBULE
+
+% !BIB TS-program = biber
+% !TEX TS-program = xelatexmk
+% ITEX TS-program = latex
+
+% !TEX spellcheck = French
+
 \documentclass[class=article, crop=false]{standalone}
 \usepackage[subpreambles=true]{standalone}
-\usepackage{fontspec}
-\usepackage{hyperref}
 \usepackage{import}
 \usepackage{blindtext}
+\usepackage{fontspec}
+\usepackage[french]{babel}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{csquotes}
+\usepackage{url}
 
-% !TEX TS-program = xelatex
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			REFERENCES
+% le package hyperref avec des options, si en local
+\usepackage[pdfusetitle, pdfsubject ={Mémoire TNAH}, pdfkeywords={les mots-clés}]{hyperref}
+\usepackage[backend=bibtex, sorting=nyt, style=verbose-ibid]{biblatex}
+\addbibresource{../../../bib.bib}
 
-%Example of code
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			GLOSSAIRE
+\usepackage[acronym]{glossaries}
+\newglossaryentry{htr}
+{
+    name=Handwritten Text Recognition,
+    description={La reconnaissance du texte écrit sur une image numérique}
+}
+\newacronym{HTR}{HTR}{Handwritten Text Recognition}
+
+\newglossaryentry{ocr}
+{
+    name=Optical Character Recognition,
+    description={La reconnaissance des polices du texte sur une image numérique}
+}
+\newacronym{OCR}{OCR}{Optical Character Recognition}
+
+\newglossaryentry{Inria}
+{
+    name=Inria,
+    description={Institut national de recherche en sciences et technologies du numérique}
+}
+\newacronym{INRIA}{Inria}{Institut national de recherche en sciences et technologies du numérique}
+
+\newacronym{almanach}{ALMAnaCH}{Automatic Language Modelling and Analysis \& Computational Humanities}
+
+\newglossaryentry{enc}
+{
+    name=École nationale des chartes,
+    description={Grande école bla bla bla}
+}
+\newacronym{ENC}{ENC}{École nationale des chartes}
+
+\newglossaryentry{HTR-United}
+{
+    name=HTR-United,
+    description={HTR-United is a catalog and an ecosystem for sharing and finding ground truth for optical character or handwritten text recognition (OCR/HTR)}
+}
+
+\newglossaryentry{CLab}
+{
+	name=CREMMALab,
+	description={Consortium pour la reconnaissance
+d’'écriture manuscrite des matériaux anciens}
+}
+\newacronym{CREMMA}{CREMMA}{Consortium Reconnaissance
+d’Écriture Manuscrite des Matériaux Anciens}
+
+\newglossaryentry{tei}
+{
+	name={Text Encoding Initiative},
+	description={Normes internationales de l'encodage des documents texts}
+}
+\newacronym{TEI}{TEI}{Text Encoding Initiative}
+
+\newglossaryentry{iiif}
+{
+	name={International Image Interoperability Framework},
+	description={Normes internationales de l'exploitation des images numériques et de leurs métadonnées par API}
+}
+\newacronym{IIIF}{IIIF}{International Image Interoperability Framework}
+
+\newacronym{ALTO}{ALTO}{Analyzed Layout and Text Object}
+
+\newacronym{XML}{XML}{eXtensible Markup Language}
+
+\newacronym{BNF}{BnF}{Bibliothèque nationale de France}
+
+\newacronym{RDF}{RDF}{Resource Description Framework}
+
+\newacronym{TAL}{TAL}{Traitement automatique des langues}
+
+\newacronym{ARK}{ARK}{Archival Resource Key}
+
+\newacronym{DTS}{DTS}{Distributed Text Services}
+
+\newglossaryentry{iiifapi}
+{
+	name={IIIF Image API},
+	description={Un service de web qui renvoie une image suite à une requête standardisée HTTP(S). L'URI peut préciser la région, la taille, la rotation, la qualité, les caractéristiques, et le format de l'image demandée.}
+}
+\newacronym{API}{API}{Application Programming Interface}
+
+\newglossaryentry{odd}
+{
+	name={One Document Does it all},
+	description={Un fichier XML TEI qui précise les règles d'un schème TEI personnalisé.}
+}
+\newacronym{ODD}{ODD}{One Document Does it all}
+
+\newacronym{JSON}{JSON}{JavaScript Object Notation}
+
+\newacronym{HTML}{HTML}{HyperText Markup Language}
+
+\newacronym{METS}{METS}{Metadata Encoding and Transmission Standard}
+
+\newacronym{YAML}{YAML}{Yet Another Markup Language}
+
+\newacronym{SRU}{SRU}{Search/Retrieve via URL}
+
+\newglossaryentry{unimarc}
+{
+	name={UNIMARC},
+	description={Une référence pour l’échange de données en format XML}
+}
+
+\newacronym{SUDOC}{SUDOC}{Système Universitaire de Documentation}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			DIAGRAM
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usetikzlibrary{calc, matrix, shapes.geometric, arrows}
+\usepackage{pgfplots}
+\usepackage{array}
+\usepackage{tabularx}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			CODE
 \usepackage{listings}
 \usepackage{color}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
@@ -58,140 +194,377 @@
   tabsize=2
 }
 
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			DOCUMENT
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
+Tout document \acrshort{TEI} doit porter des métadonnées qui renseignent sur la ressource \acrshort{TEI} elle-même et le texte qu'elle représente. Si le texte est la transcription d'un document source numérisé, qui est le cas pour tout document du projet \textit{Gallic(orpor)a}, trois objets sont concernés. En plus de la ressource créée, il y a le document source physique qui a été numérisé ainsi que la numérisation elle-même qui a été traitée par les modèles \acrshort{HTR}. Pour le projet \textit{Gallic(orpor)a} qui avait pour but le traitement automatisé des fac-similés numériques, les métadonnées du document \acrshort{TEI} portent sur les trois objets de texte suivants~:
+\begin{enumerate}
+\item la ressource lexicographique numérique, c'est-à-dire le document \acrshort{TEI} lui-même que le pipeline \textit{Gallic(orpor)a} produit
+\item la numérisation du document source, c'est-à-dire le fac-similé numérique stocké dans la base de données Gallica
+\item le document source physique, qui appartient du fonds de la \acrlong{BNF} et a été numérisé
+\end{enumerate}
 
-\section{Uniquement l'essentiel}
 
-\subsection{Documents de divers types et de plusieurs époques}
+Ce chapitre explique de quoi consistent les métadonnées de ces trois objets de texte ainsi que le format par lequel elles sont accédées. Malgré la diversité de la portée du projet \textit{Gallic(orpor)a}, chaque document traité concerne ces trois objets puisque chacun est un fac-similé numérique, dérivé d'un document source physique et transformé en ressource lexicographique par le pipeline. Pour être faites à l'échelle, les métadonnées doivent être les mêmes pour tout type de document. Un manuscrit écrit par plusieurs mains et apparu sans éditeur, issue d'un scriptorium à une date approximative, doit se disposer de mêmes types de métadonnées qu'un imprimé écrite par une autrice et publiée par un éditeur. Une solution pour surmonter ce défi est de minimiser les métadonnées portant sur le document source et d'encoder uniquement \textit{l'essentiel}. Au sein de cette solution est la sélection d'en quoi constitue l'essentiel.
 
-Expliquer le défi de modéliser un \texttt{<teiHeader>} qui est à la fois assez généralisé pour convenir aux divers documents et assez précisé pour servir aux utilisateurs et à la recherche.
+\subsubsection{La structure du \texttt{<teiHeader>}}
+Les métadonnées de la ressource lexicographique du pipeline \textit{Gallic(orpor)a} sont toutes encodées dans un élément \acrshort{XML} que le schème \acrshort{TEI} exige~: le \texttt{<teiHeader>}. Dans le cadre du projet \textit{Gallic(orpor)a}, le \texttt{<teiHeader>} servait à enrichir l'exploitation de la ressource numérique ainsi qu'à faciliter l'échange de ses données. Selon les normes de la \acrshort{TEI}, trois parties peuvent constituer le \texttt{<teiHeader>}~: une description bibliographique de l'encodage (\texttt{<fileDesc>}), une description des aspects non bibliographiques tel qu'un classement du contenu textuel qui appartiennent au texte représenté (\texttt{<profileDesc>}), et une description technique de l'encodage et/ou l'appareil qui l'a fait (\texttt{<encodingDesc>}).
 
-\subsection{Exemples des métadonnées souhaitées}
 
-Donner un exemple des métadonnées d'un imprimé (cf.\,fig.~\ref{fig:metadata-print}) :
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			description bibliographique
+\section{La description bibliographique (\texttt{<fileDesc>})}
+La première chose sur laquelle la ressource numérique doit renseigner est elle-même. Ces informations sont organisées dans l'élément \texttt{<fileDesc>}. Traduit littéralement en français comme \textit{la description du fichier}, le \texttt{<fileDesc>} décrit le document \acrshort{TEI} lui-même. Au moins, cette description doit porter sur les trois aspects suivants~:
+\begin{enumerate}
+\item le titre et la responsabilité de la ressource numérique (\texttt{<titleStmt>})
+\item la distribution de la ressource, y compris les droits d'utilisation (\texttt{<publicationStmt>})
+\item le document source dont le texte la ressource numérique représente (\texttt{<sourceDesc>})
+\end{enumerate}
+Un document \acrshort{TEI} peut présenter d'autres éléments dans le \texttt{<teiHeader>} afin d'apporter encore plus de détail bibliographique. Par exemple, le \texttt{<editionStmt>} précise l'édition de l'œuvre que la ressource représente. Les documents \acrshort{TEI} produits par le pipeline \textit{Gallic(orpor)a} ne profitent pas de cet élément parce que certains documents du corpus traité, tel que les manuscrits, n'ont pas d'édition et on veut que chaque document \acrshort{TEI} ait les mêmes types de métadonnées dans le \texttt{<teiHeader>}. Au contraire, d'autres éléments facultatifs, tel que le \texttt{<extent>}, sont produits par le pipeline. L'élément \texttt{<extent>} est utile parce qu'il porte sur la taille de la ressource, tel comme le nombre de pages transcrites qu'elle compte. La ressource lexicographique n'est pas toujours une transcription du document complet. Il faut préciser la quantité des pages transcrites.
 
-\begin{figure}[ht]
+\subsection{Le titre et la responsabilité (\texttt{<titleStmt>})}
+Le titre et la responsabilité de la ressource numérique sont tous les deux représentés dans l'élément \texttt{<titleStmt>}. Cet élément descendant du \texttt{<fileDesc>} peut avoir plusieurs descendants mais il faut au moins un titre. Après le titre (\texttt{<title>}) il est recommandé d'indiquer l'individu ou les individus qui sont responsables pour la création du texte représenté et/ou de la ressource numérique. Dans le cadre du projet \textit{Gallic(orpor)a}, nous avons conçu un schème \texttt{<titleStmt>} simple qui porte sur le titre, l'auteur ou les auteurs du texte, et les personnes du projet responsables pour la création de la ressource numérique.
+
+\subsubsection{La responsabilité}
+Entre les lignes 4 et 21 de la Figure~\ref{fig:titleStmt} on voit l'élément \texttt{<respStmt>} qui contient des informations sur l'équipe du projet \textit{Gallic(orpor)a}. Tout document encodé par le pipeline s'informe sur le titre (\texttt{<title>}), la personne ou les personnes auxquels est attribuée la responsabilité du texte (\texttt{<author>}), et la responsabilité de notre équipe qui a conçu le pipeline et l'application \texttt{alto2tei} (\texttt{<respStmt>}). La déclaration de responsabilité peut être personnalisée selon le projet ou selon l'équipe qui utilise le pipeline \textit{Gallic(orpor)a} ou l'application \texttt{alto2tei} pour créer la ressource numérique. En général, elle devrait contenir une phrase qui résume la nature de la création de la ressource, telle que la phrase \og{}Transformation from ALTO4 to TEI by\fg{}, balisée dans l'élément \texttt{<resp>}. Ensuite, elle devrait contenir des éléments \texttt{<persName>} qui renseignent sur les individus responsables, surtout en indiquant leurs noms.
+
+\begin{figure}[htp]
 \centering
 \begin{lstlisting}[language=XML]
-<sourceDesc>
-	<biblStruct>
-		<monogr>
-			<author xml:id="author">
-				<persName>
-					<surname>Balzac</surname> <!-- auteur -->
-					<forename>Honoré</forename>
-				</persName>
-			</author>
-			<title>The Wild Ass's Skin</title> <!-- titre -->
-			<editor role="translator">Ellen Marriage</editor>
-			<editor role="preface">George Saintsbury</editor>
-			<pubPlace key="FR">Paris</pubPlace>
-			<imprint>
-				<pubPlace>London</pubPlace> <!-- lieu de publication -->
-				<publisher>Dent</publisher> <!-- éditeur -->
-				<date when="1906">1906</date> <!-- date de publication -->
-			</imprint>
-		</mongr>
-	</biblStruct>
+<titleStmt>
+	<title>Titre du document source traité</title>
+	<author>Auteur</author>
+	<respStmt>
+		<resp>Transformation from ALTO4 to TEI by</resp>
+		<persName>
+			<forename>Kelly</forename>
+			<surname>Christensen</surname>
+			<ptr type="orcid" target="000000027236874X"/>
+		</persName>
+		<persName>
+			<forename>Simon</forename>
+			<surname>Gabay</surname>
+			<ptr type="orcid" target="0000000190944475"/>
+		</persName>
+		<persName>
+			<forename>Ariane</forename>
+			<surname>Pinche</surname>
+			<ptr type="orcid" target="0000000278435050"/>
+		</persName>
+	</respStmt>
+</titleStmt>
 \end{lstlisting}
-\caption{Exemple des métadonnées d'un imprimé encodées en TEI}
-\centering
-(emprunté de \texttt{teibyexample.org} -- à changer)
-\label{fig:metadata-print}
+\caption{Les informations sur le titre de la ressource}
+\label{fig:titleStmt}
 \end{figure}
 
-Et donner un exemple d'un incunable (cf.\,fig.~\ref{fig:metadata-incunable})  :
+\subsubsection{Le titre}
+La ressource produite par le pipeline \textit{Gallic(orpor)a} a besoin d'un titre par lequel elle peut être exploitée. L'application \texttt{alto2tei} que j'ai créée lui attribue le nom du document source dont le texte la ressource représente. Le schème \acrshort{TEI} permet de construire un nouveau titre lors de l'encodage ou d'associer plusieurs titres au document \acrshort{TEI}. Cependant, nous avons pris la décision d'emprunter le titre du document source tel qu'il se donne par les sources externes des métadonnées. Au lieu d'aller en détail, dont la \acrshort{TEI} se permet, le pipeline simplifie sa manière d'intituler l'encodage en utilisant le même nom associé au document qu'il transcrit.
+
+Dans le schème \acrshort{TEI} plusieurs titres peuvent être indiqués dans le \texttt{<titleStmt>} afin de détailler plusieurs aspects de l'encodage. Par exemple, le projet \textit{The Bodelian First Folio} a encodé les premières éditions des drames de Shakespeare en \acrshort{TEI} et chacun porte plusieurs types de titre.\footcite{BodelianFirstFolio} L'encodage de la comédie \textit{Twelfth Night} possède un titre du type ``\textit{statement}'' qui représente le titre tel qu'il se trouve sur l'imprimé historique (ligne 2, Fig.~\ref{fig:printTitle}). Il donne aussi une variante du titre qui se trouve également dans la source (ligne 2, Fig.~\ref{fig:printTitle}). Enfin, l'encodage présente le titre qui sert à identifier la source aux archives, \og{}Bodelian First Folio, Arch. G c.7\fg{} (ligne 4, Fig.~\ref{fig:printTitle})
 
 \begin{figure}[ht]
 \centering
 \begin{lstlisting}[language=XML]
+<titleStmt>
+	<title type="statement">Twelfe Night, or What You Will from Mr. William Shakespeares comedies, histories, &amp; tragedies. Published according to the true originall copies.</title>
+	<title type="variant">Mr. VVilliam Shakespeares comedies, histories, &amp; tragedies</title>
+	<title type="distinctive">Bodleian First Folio, Arch. G c.7</title>
+<!-- ... -->
+</titleStmt>
+\end{lstlisting}
+\caption{Les informations sur le titre d'un imprimé \protect\footnotemark}
+\label{fig:printTitle}
+\end{figure}
+\footnotetext{\cite{BodelianFirstFolio}}
+
+Pour un manuscrit, l'attribution d'un titre pourrait obliger la création d'un titre qui ne se trouve pas sur le document source. Par exemple, le projet \textit{CatCor} qui a encodé des lettres écrites par Catherine II de la Russie a choisi d'attribuer aux encodages un titre qui s'appuie sur l'identifiant du document source. Dans l'encodage d'une lettre destinée à Fréderick II le 21 juillet 1744, le \texttt{<title>} dans le \texttt{<titleStmt>} est un titre qui n'apparaît nulle parte sur la source (ligne 2, Fig.~\ref{fig:manuTitle}).\footcite{catcorprojectLetter02633Frederick2021} Contrairement à l'encodage de l'imprimé de Shakespeare, l'encodage de la lettre manuscrite ne donne pas de type au titre. La classification d'un élément \texttt{<title>} avec l'attribut \texttt{@type} n'est pas nécessaire mais elle est recommandée s'il y a plusieurs titres.
+
+\begin{figure}[ht]
+\centering
+\begin{lstlisting}[language=XML]
+<titleStmt>
+	<title>CatCor Project: letter-02633</title>
+<!-- ... -->
+</titleStmt>
+\end{lstlisting}
+\caption{Les informations sur le titre d'un manuscrit \protect\footnotemark}
+\label{fig:manuTitle}
+\end{figure}
+\footnotetext{\cite{catcorprojectLetter02633Frederick2021}}
+
+Afin d'encoder les éléments \texttt{<title>} à l'échelle, il faut qu'un logicielle (1) ait d'accès aux métadonnées et (2) sache la nature des titres associés au document source. Certains corpus auront d'accès aux métadonnées déjà classifiées. Le catalogue général de la \acrshort{BNF}, par exemple, organise ses métadonnées dans une structure de données \acrshort{XML} \Gls{unimarc}. Chaque titre associé au document est balisé dans des éléments \acrshort{XML} qui portent sur le type du titre. Par exemple, l'\Gls{unimarc} présente le type \og{}titre uniforme\fg{} dans l'élément \texttt{<mxc:datafield tag="500">} et le type \og{}titre de forme\fg{} dans l'élément \texttt{<mxc:datafield tag="503">}. En récupérant les métadonnées depuis une source ainsi organisée, un logiciel pourrait attribuer un type à l'élément \texttt{<title>}. Cependant, ce qui est le cas pour le corpus du projet \textit{Gallic(orpora)}, si certains documents traités n'ont pas de métadonnées accessibles dans un tel format, un logiciel ne peut pas parvenir au tel détail dans le \texttt{<titleStmt>}.
+
+\subsubsection{L'auteur}
+Après le titre, le \texttt{<titleStmt>} renseigne sur l'individu ou les individus aux lesquels la propriété intellectuelle du document source est attribuée. Cette donnée est encodée dans l'élément \texttt{<author>}. L'encodage peut être si minimal que l'élément \texttt{<author>} ne contient que du texte ou de l'élément simple \texttt{<name>} qui ensuite contiendrait du texte non annoté. (cf. Figure~\ref{fig:authorsimple}) Sinon d'autres éléments \acrshort{TEI} peuvent baliser et apporter plus de détail sur les composants du nom de l'auteur. (cf. Figure~\ref{fig:authorcomplex})
+
+\begin{figure}[ht]
+\centering
+\begin{lstlisting}[language=XML]
+<author>
+	<name>Donatien Alphonse François de Sade</name>
+</author>
+\end{lstlisting}
+\caption{L'auteur simple}
+\label{fig:authorsimple}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\begin{lstlisting}[language=XML]
+<author xmlid="Sa1">
+	<persName>
+		<forename>Donatien Alphonse François</forename>
+		<nameLink>de</nameLink>
+		<surname>Sade</surname>
+		<ptr type="isni" target="0000000084961458"/>
+	</persName>
+</author>
+\end{lstlisting}
+\caption{L'auteur enrichi}
+\label{fig:authorcomplex}
+\end{figure}
+
+\noindent Un élément qui descend souvent du \texttt{<author>} est le \texttt{<ptr>} qui veut dire \textit{pointer} en anglais. Il indique une ressource ou une donnée externe, tel que l'identifiant ISNI, afin d'enrichir les informations de l'objet auquel il est attaché. On voit un exemple du \textit{pointer} sur les lignes 9, 14, et 19 de la Figure~\ref{fig:titleStmt} où l'élément indique l'ORCID unique de l'individu responsable pour la création de la ressource numérique.
+
+La Figure~\ref{fig:authorcomplex} montre l'exemple d'un document réel \acrshort{TEI} produit par le pipeline \textit{Gallic(orpor)a}. Le nom de l'auteur est divisé en trois composants, selon les données \Gls{unimarc} fournies par le catalogue général de la \acrshort{BNF}. Le catalogue désigne \textit{Donatien Alphonse François de} comme la \og{}partie du nom autre que l’élément d’entrée\fg{}. L'\Gls{unimarc} balise cette partie secondaire dans l'élément \texttt{<mxc:subfield code="b">} de l'élément \texttt{<mxc:datafield tag="700">} ou \texttt{<mxc:datafield tag="701">}.\footcite{ManuelUNIMARCFormat} Mon application \texttt{alto2tei}, que j'ai développée pour le pipeline \textit{Gallic(orpor)a}, a ensuite tiré la partie \textit{de} du nom puisqu'elle est un lien entre ses composants et peut donc être encodé dans l'élément \acrshort{TEI} \texttt{<nameLink>}. Le catalogue général a reconnu le nom \textit{Sade} comme le nom d'entrée de l'auteur, que l'\Gls{unimarc} balise dans l'élément \texttt{<mxc:subfield code="a">}. Le document \acrshort{TEI} du pipeline \textit{Gallic(orpor)a} a donc balisé cette donnée dans l'élément \texttt{<surname>}, c'est-à-dire le nom de famille.
+
+Un défi de l'application \texttt{alto2tei} était la présentation des données portant sur les auteurs, surtout quand il y en avait plusieurs. Dans le schème \acrshort{TEI}, le \texttt{<titleStmt>} peut renseigner sur plusieurs auteurs en répétant l'élément comme dans la Figure~\ref{fig:multipleauthors}. Le schème \acrshort{TEI} permet d'indiquer le rôle de chaque auteur listé dans un \texttt{<titleStmt>}. Mais, défaut de métadonnées, l'application \texttt{alto2tei} et le pipeline \textit{Gallic(orpor)a} ne s'appuient pas sur cette donnée. Même s'il serait intéressant, toute autrice nommée et tout auteur nommé dans le \texttt{<teiHeader>} n'a pas de relation détaillée au document source.
+
+Il y a deux raisons pour ainsi modéliser les données sur les auteurs. Dans un premier temps, l'application \texttt{alto2tei} recherche la catégorie d'auteur dans les données renvoyées par l'\acrshort{API} \acrshort{IIIF} dans ce qui s'appelle le \textit{manifest}. Renvoyées en format \acrshort{JSON}, les données du \textit{manifest} sont souvent très minimales, n'ayant que le nom de l'autrice ou de l'auteur. De temps en temps les données du \textit{manifest} \acrshort{IIIF} ont des dates de l'individu. Mais le seul aspect sur lequel on peut compter est le nom. Après l'\acrshort{API} \acrshort{IIIF}, l'application recherche les données dans le catalogue général de la \acrshort{BNF} en utilisant son \acrshort{API} \acrshort{SRU}. Les données du catalogue sont bien plus détaillées, mais le schème \Gls{unimarc} ne permet pas d'enregistrer de l'égalité entre plusieurs auteurs ni préciser la nature de leur contribution au document. Dans l'exemple de la Figure~\ref{fig:multipleauthors}, les données \Gls{unimarc} de la \acrshort{BNF} n'indiqueraient pas que Giacomo Meyerbeer est le compositeur de l'opéra \textit{Les Huguenots} ni que lui et le librettiste Eugène Scribe partagent en parts égales la responsabilité pour l'œuvre.
+
+\begin{figure}[ht]
+\centering
+\begin{lstlisting}[language=XML]
+<titleStmt>
+	<title>Les Huguenots</title>
+	<author xml:id="Me1">
+		<persName>
+			<forename>Giacomo</forename>
+			<surname>Meyerbeer</surname>
+			<ptr type="isni" target="0000000122817116"/>
+		</persName>
+	</author>
+	<author xml:id="Sc1">
+		<persName>
+			<forename>Eugène</forename>
+			<surname>Scribe</surname>
+			<ptr type="isni" target="000000012122970X"/>
+		</persName>
+	</author>
+	<author xml:id="De1">
+		<persName>
+			<forename>Émile</forename>
+			<surname>Deschamps</surname>
+			<ptr type="isni" target="0000000122807567"/>
+		</persName>
+	</author>
+	<author xml:id="Ro1">
+		<persName>
+			<forename>Gaetano</forename>
+			<surname>Rossi</surname>
+			<ptr type="isni" target="0000000121219499"/>
+		</persName>
+	</author>
+<!-- ... -->
+</titleStmt>
+\end{lstlisting}
+\caption{Plusieurs auteurs dans un \texttt{<titleStmt>}}
+\label{fig:multipleauthors}
+\end{figure}
+
+
+\subsection{La taille de la ressource numérique (\texttt{<extent>})}
+Lors de la reconnaissance du texte, les modèles \acrshort{HTR} génèrent un certain nombre de fichier \acrshort{ALTO}. Grâce à l'unité indiqué comme \og{}images\fg{} dans l'élément \texttt{<measure>}, la taille est calculée facilement à partir du compte de fichiers \acrshort{ALTO} produits et ensuite traités pour que leurs données soient contenues dans l'élément \texttt{<sourceDoc>} de la ressource numérique. 
+\begin{figure}[htp]
+\centering
+\begin{lstlisting}[language=XML]
+<extent>
+	<measure unit="images" n="20"/>
+</extent>
+\end{lstlisting}
+\caption{La taille de la ressource}
+\label{fig:extent}
+\end{figure}
+
+\subsection{La distribution de la ressource numérique (\texttt{<publicationStmt>})}
+L'élément \texttt{<publicationStmt>} contient des données importantes qui renseignent sur la distribution et les droits d'utilisation de la ressource numérique. Toute métadonnée contenue dedans porte sur le contexte de la création de la ressource, aucune sur le document source représenté. Pour toute ressource produite par le pipeline, les données du \texttt{<publicationStmt>} ne doivent pas changer si le projet qui a démarré le pipeline. L'exception est la date de la création de la ressource, que l'application \texttt{alto2tei} génère automatiquement.
+
+Comme montre la Figure~\ref{fig:pubStmt}, trois données du \texttt{<publicationStmt>} peuvent être personnalisées. L'entité reconnu comme l'éditeur (\textit{publisher}) de la ressource peut être changé selon le projet. Dans l'exemple de la Figure~\ref{fig:pubStmt}, le \textit{publisher} est \og{}Gallic(orpor)a\fg{}. L'autorité qui l'a financé et qui est civilement responsable pour la ressource est le DataLab de la \acrshort{BNF}, que l'élément \texttt{<authority>} indique. Enfin, les droits d'utilisation de la ressource sont indiquées par les éléments \texttt{<availability>} et \texttt{<licence>}.
+
+\begin{figure}[htp]
+\centering
+\begin{lstlisting}[language=XML]
+<publicationStmt>
+	<publisher>Gallic(orpor)a</publisher>
+	<authority>BnF DATALab</authority>
+	<availability status="restricted" n="cc-by">
+		<licence target="https://creativecommons.org/licenses/by/4.0/"/>
+	</availability>
+	<date when="2022-07-29"/>
+</publicationStmt>
+\end{lstlisting}
+\caption{Plusieurs auteurs dans un \texttt{<publicationStmt>}}
+\label{fig:pubStmt}
+\end{figure}
+
+
+\subsection{Le document source (\texttt{<sourceDesc>})}
+Le dernier aspect de la description bibliographique du \texttt{<teiHeader>} porte sur le document source dont le texte est représenté. Cet aspect se balise dans l'élément \texttt{<sourceDesc>} qui est le dernier élément du \texttt{<fileDesc>} que l'application \texttt{alto2tei} génère. Cet élément compte sur le plus grand nombre de sources externes afin d'informer une diversité des métadonnées. La description bibliographique de la source porte sur sa création et sur sa conservation actuelle.
+
+\subsubsection{La citation bibliographique (\texttt{<bibl>})}
+Dans un premier temps, la description de la source s'appuie sur les aspects de sa création. En répétant certaines informations du \texttt{<titleStmt>}, l'élément  \texttt{<bibl>} présente (1) les individus auxquels est attribuée la propriété intellectuelle du document, (2) le titre du document source, (3) son lieu de publication, (4) l'éditeur, et (5) la date de publication. L'arborescence du \texttt{<bibl>} est montrée dans la Figure~\ref{fig:bibl}.
+
+Puisque la notice du catalogue pour le document source montré dans l'exemple de la Figure~\ref{fig:bibl} peut être trouvée par l'application \texttt{alto2tei}, les données du \texttt{<bibl>} sont plus complète qu'elle auraient été si l'application avait besoin de compter uniquement sur le \textit{manifest} \acrshort{IIIF}. La date de publication ou d'apparition, par exemple, représentée dans l'élément \texttt{<date>}, porte des attributs bien détaillés. Les données \Gls{unimarc} du catalogue général de la \acrshort{BNF} indiquent la certitude qu'a la bibliothèque quant à la date déclarée. Au lieu d'extraire uniquement la date des données \Gls{unimarc}, l'application \texttt{alto2tei} traite ces autres données et détermine la certitude de la date, \og{}low\fg{}, \og{}medium\fg{}, ou \og{}high\fg{}.
+
+L'exemple de la Figure~\ref{fig:bibl} est d'un imprimé du XVIIIe siècle. Il a donc été publié par un éditeur. L'éditeur, par contre, est indiqué dans les données \Gls{unimarc} de la \acrshort{BNF} comme \og{}s.n.\fg{} qui indique que la bibliothèque n'est pas certain de l'éditeur. L'application \texttt{alto2tei} ne peut pas traiter les données dont elle ne se dispose pas ni veut elle transformer la donnée \og{}s.n.\fg{} dans un autre format au cas où elle corrompt la signification. Par conséquent, l'élément \texttt{<publisher>} contient la donnée du catalogue même si elle indique une manque d'information.
+
+Le \texttt{<bibl>} d'un manuscrit contient les mêmes éléments que celui d'un imprimé. Même si un manuscrit n'a pas d'éditeur ni n'est pas publié de la même manière qu'un imprimé, sa citation bibliographique porte les mêmes éléments \texttt{<pubPlace>} et \texttt{<publisher>}. Normalement, le catalogue général de la \acrshort{BNF} n'indiquera pas de donnée pour ces aspects. Quand la donnée n'est pas disponible, l'application \texttt{alto2tei} garde toujours l'arborescence généralisée de la ressource numérique, mais elle indique dans l'élément que la donnée n'était pas trouvée.
+
+\begin{figure}[htp]
+\centering
+\begin{lstlisting}[language=XML]
 <sourceDesc>
+	<bibl>
+		<ptr target="http://catalogue.bnf.fr/ark:/12148/cb30369299r"/>
+		<author ref="#Re1">
+			<persName>
+				<forename>Jean-François</forename>
+				<surname>Regnard</surname>
+				<ptr type="isni" target="000000012118509X"/>
+			</persName>
+		</author>
+		<author ref="#Du2">
+			<persName>
+				<forename>Charles</forename>
+				<surname>Du Fresny</surname>
+				<ptr type="isni" target="0000000140935001"/>
+			</persName>
+		</author>
+		<title>Scènes françoises de la comédie italienne intitulée "la Foire S.-Germain" , comme elles ont paru dans les premières représentations</title>
+		<pubPlace key="FR">Grenoble</pubPlace>
+		<publisher>[s.n.]</publisher>
+		<date when="1696" cert="high" resp="BNF">1696</date>
+	</bibl>
 	<msDesc>
-		<msContents>
-			<biblStruct>
-				<monogr>
-					<author xml:id="author">
-						<persName>
-							<surname>Tory</surname> <!-- auteur -->
-							<forename>Geoffroy</forename>
-						<persName>
-					</author>
-					<title>Champ fleury</title> <!-- titre -->
-					<imprint>
-						<pubPlace>Paris</pubPlace> <!-- lieu de publication / lieu d'apparition -->
-						<publisher>
-							<persName>
-								<surname>Gourmont</surname> <!-- éditeur -->
-								<forename>Gilles de</forename>
-							</persName>
-						</publisher>
-					</imprint>
-				</mongr>
-			</biblStruct>			
+<!-- ... -->
+	</msDesc>
+</sourceDesc>
+
 \end{lstlisting}
-\caption{Exemple des métadonnées d'un incunable encodées en TEI}
-\centering
-(emprunté du cours TEI de J-B Camps 2015 -- à changer)
-\label{fig:metadata-incunable}
+\caption{La citation bibliographique (\texttt{<bibl>})}
+\label{fig:bibl}
 \end{figure}
 
-Expliquer comment l'objectif du projet \textit{Gallic(orpor)a} de traiter des documents d'une diachronie longue pose un défi à la récupération et encodage généralisée des métadonnées.
 
-\section{Où se trouvent les métadonnées des sources de Gallica}
+\subsubsection{La description de la source physique (\texttt{<msDesc>})}
+Dernièrement, le document source physique et son fac-similé numérique sont tous les deux indiqués dans l'élément \texttt{<msDesc>}. Tandis que la citation bibliographique (\texttt{<bibl>}) porte sur le document en tant qu'une œuvre littéraire créée, la \textit{description du manuscrit} (\texttt{<msDesc>}) porte sur le document en tant qu'un objet réel dans le monde. Il a deux enfants principaux qui sont montrés dans la Figure~\ref{fig:msDesc}. Premièrement, l'élément \texttt{<msIdentifier>} sert à identifier le document physique ou le fac-similé numérique dans un catalogue quelque part. Deuxièmement, l'élément \texttt{<physDesc>} sert à décrire le type du document, soit manuscrit soit imprimé.
 
-Présenter les deux sources de métadonnées ciblées par l'application \texttt{alto2tei}.
+L'identification du document traité et encodé est très importante. Par exemple, un imprimé aura plusieurs exemplaires~; chacun pourrait avoir des différences et produirait une transcription distincte. Afin de bien indiquer quel objet de texte a été traité par le pipeline \textit{Gallic(orpor)a}, il faut identifier le document source physique dont le fac-similé numérique les modèles \acrshort{HTR} ont saisi. Les éléments \texttt{idno} dans le \texttt{<msDesc>} indiquent l'identifiant d'un document. L'identifiant du document source physique est l'élément principal descendant du \texttt{<msIdentifier>}. L'identifiant du fac-similé numérique de la base de données Gallica est indiqué dans le \texttt{<altIdentifier>} puisque le fac-similé est le document dérivé du document source et donc n'est pas le document indiqué par le \texttt{<idno>} principal. Le \texttt{<idno>} alternatif est l'\acrshort{ARK} du fac-similé numérique sur Gallica. Le \texttt{<idno>} principal du \texttt{<msDesc>} est le cote du document physique selon le catalogue de la \acrlong{BNF}.
 
-\subsection{L'IIIF Image API}
 
-L'API du manifest IIIF contient des données rudimentaires sur le document. Elles sont envoyées dans un format JSON. Donner un exemple (cf.\,fig.~\ref{fig:metadata-yaml}) :
-
-\begin{figure}[ht]
-\centering
-\lstset{style=json}
-\begin{lstlisting}[language=Python]
-{"Metadata":
-		{
-		"Label": "Title",
-		"Value": "The Wild Ass's Skin", # titre
-		
-		"Label": "Creator",
-		"Value": "Honoré Balzac" # auteur
-		}
-}
-\end{lstlisting}
-\caption{Exemple des métadonnées envoyées par l'API IIIF}
-\label{fig:metadata-yaml}
-\end{figure}
-
-\subsection{L'API SRU de la BnF}
-
-L'API du catalogue général de la BnF contient des données bien précises sur le document. Elles sont envoyées dans un format XML-Unimarc. Donner un exemple (cf.\,fig.~\ref{fig:metadata-unimarc}).
-
-\begin{figure}[ht]
+\begin{figure}[htp]
 \centering
 \begin{lstlisting}[language=XML]
-	<mxc:datafield tag="200" ind1="1" ind2=" ">
-		<mxc:subfield code="a">The Wild Ass's Skin</mxc:subfield> <!-- titre -->
-		<mxc:subfield code="b">Texte imprimé</mxc:subfield>
-	</mxc:datafield>
-	<mxc:datafield tag="210" ind1=" " ind2=" ">
-		<mxc:subfield code="a">Londres</mxc:subfield> <!-- lieu de publication -->
-		<mxc:subfield code="c">Dent</mxc:subfield> <!-- éditeur -->
-		<mxc:subfield code="d">1906</mxc:subfield> <!-- date de publication -->
-	</mxc:datafield>
-[...]
-	<mxc:datafield tag="700" ind1=" " ind2="|">
-		<mxc:subfield code="a">Balzac</mxc:subfield> <!-- auteur -->
-		<mxc:subfield code="b">Honoré</mxc:subfield>
-	</mxc:datafield>
+<sourceDesc>
+	<bibl>
+<!-- ... -->
+	</bibl>
+	<msDesc>
+		<msIdentifier>
+			<country key="FR"/>
+			<settlement>Paris</settlement>
+			<repository>Bibliothèque nationale de France</repository>
+			<idno>YF-5877</idno>
+			<altIdentifier>
+				<idno type="ark">bpt6k1281160s</idno>
+			</altIdentifier>
+		</msIdentifier>
+		<physDesc>
+			<objectDesc>
+				<p>Texte imprimé</p>
+			</objectDesc>
+		</physDesc>
+	</msDesc>
+</sourceDesc>
+
 \end{lstlisting}
-\caption{Exemple des métadonnées envoyées par l'API SRU de la BnF}
-\label{fig:metadata-unimarc}
+\caption{La description de la source (\texttt{<msDesc>})}
+\label{fig:msDesc}
 \end{figure}
 
-\section{Une solution}
+\section{La description non bibliographique (\texttt{<profileDesc>})}
+Après la description du fichier (\texttt{<fileDesc>}) qui porte sur les détails bibliographiques de la ressource numérique, les métadonnées du \texttt{<teiHeader>} renseignent sur une description non bibliographique de la ressource. Normalement la description non bibliographique s'informe des langues utilisées dans le texte représenté. Elle peut aussi s'informer des lieux ou personnages référencés dans le texte. Mais ces détails exigent une analyse linguistique, sinon littéraire, du texte. Un jour l'analyse linguistique du pipeline, en particulier la reconnaissance des entités nommées, sera si perfectionnée et si fiable que le \texttt{<profileDesc>} de la ressource numérique contiendra les listes de lieux et de noms dans le texte. Actuellement, le \texttt{<profileDesc>} renseigne simplement sur la langue du texte, et l'application \texttt{alto2tei} que j'ai créée ne peut porter que sur une seule langue. Il est normal que les ingénieurs qui reprennent ce travail après mon stage aillent évoluer notre modélisation actuelle du \texttt{<profileDesc>} pour qu'elle ait des données portant sur plusieurs langues du texte ainsi que sur les noms propres et les lieux nommés dans le texte.
 
-Présenter les métadonnées du document qu'on a déterminé d'être essentielle / assez généralisées parmi les divers types de document.
+La Figure~\ref{fig:profileDesc} montre l'exemple d'un \texttt{<profileDesc>} complété par l'application \texttt{alto2tei} dans le cadre du projet \textit{Gallic(orpor)a}. En prenant le même document dont les autres parties de l'encodage se voient dans les Figures~\ref{fig:bibl} et \ref{fig:msDesc}, la langue identifiée est français. Cette langue a été récupérée du \textit{manifest} \acrshort{IIIF} du fac-similé numérique sur Gallica. Mais quand l'application \texttt{alto2tei} peut aussi accéder aux données du catalogue général de la \acrshort{BNF}, l'identifiant de la langue est souvent disponible dans les données \Gls{unimarc}. L'identifiant \og{}fre\fg{} indique le français moderne. Même si la langue identifiée dans le \textit{manifest} \acrshort{IIIF} était encore français, les données \Gls{unimarc} du catalogue de la \acrshort{BNF} pourrait préciser qu'il est du moyen français, qui est représenté par l'identifiant \og{}frm\fg{}.
+
+\begin{figure}[htp]
+\centering
+\begin{lstlisting}[language=XML]
+<profileDesc>
+	<langUsage>
+		<language ident="fre">français</language>
+	</langUsage>
+</profileDesc>
+\end{lstlisting}
+\caption{La description non bibliographique de la source (\texttt{<profileDesc>})}
+\label{fig:profileDesc}
+\end{figure}
+
+
+\section{La description technique (\texttt{<encodingDesc>})}
+Le dernier composant du \texttt{<teiHeader>} est une description technique de l'encodage. Balisée dans l'élément \texttt{<encodingDesc>}, la description technique informe de la manière par laquelle l'encodage a été produit. Tout projet scientifique devrait pouvoir reproduire ses résultats. La ressource doit donc attester à la manière par laquelle les résultats de ses prédictions \acrshort{HTR} a été faits. L'élément \acrshort{TEI} \texttt{<appInfo>} renseigne sur le logiciel \acrshort{HTR} qui prédit du segment et du texte sur les images numériques. De l'information sur les images et leur origine sont décrites dans les autres éléments du \texttt{<teiHeader>}. L'information sur l'appareil qui les a traité est contenu dans le \texttt{<appInfo>}.
+
+En plus du logiciel, le \texttt{<encodingDesc>} informe du syntaxe par lequel le texte a été encodé en utilisant l'élément \texttt{<classDecl>}. La \textit{déclaration des classes} (\texttt{<classDecl>}) porte sur les classes visées à structurer et organiser le texte prédit. Dans le cadre du projet \textit{Gallic(orpor)a}, les classes du vocabulaire \textit{SegmOnto} sont attribuées aux lignes de texte et aux zones dans lesquels le texte s'est trouvé. Puisque les lignes de texte et les zones portent les noms du vocabulaire \textit{SegmOnto}, le \texttt{<classDecl>} explique fournit une description de chaque classe. La Figure~\ref{fig:profileDesc} montre comment la description de classe est balisé dans l'élément \texttt{<catDesc>} qui lui-même se trouve balisé dans la catégorie (\texttt{<category>}) de la classe, soit la ligne soit la zone.
+
+\begin{figure}[htp]
+\centering
+\begin{lstlisting}[language=XML]
+<encodingDesc>
+	<appInfo>
+		<application ident="Kraken" version="3.0.13">
+			<label>Kraken</label>
+			<ptr target="https://github.com/mittagessen/kraken"/>
+		</application>
+	</appInfo>
+	<classDecl>
+		<taxonomy xml:id="SegmOnto">
+			<bibl>
+				<title>SegmOnto</title>
+				<ptr target="https://github.com/segmonto"/>
+			</bibl>
+			<category xml:id="SegmOntoZones">
+				<catDesc xml:id="MainZone">
+					<title>MainZone</title>
+					<ptr target="https://segmonto.github.io/gd/gdZ/MainZone"/>
+				</catDesc>
+				<catDesc xml:id="TitlePageZone">
+					<title>TitlePageZone</title>
+					<ptr target="https://segmonto.github.io/gd/gdZ/TitlePageZone"/>
+				</catDesc>
+<!-- more SegmOnto Zones --->
+			</category>
+			<category xml:id="SegmOntoLines">
+				<catDesc xml:id="DefaultLine">
+					<title>DefaultLine</title>
+					<ptr target="https://segmonto.github.io/gd/gdL/DefaultLine"/>
+				</catDesc>
+				<catDesc xml:id="HeadingLine">
+					<title>HeadingLine</title>
+					<ptr target="https://segmonto.github.io/gd/gdL/HeadingLine"/>
+				</catDesc>
+<!-- more SegmOnto Lines --->
+			</category>
+		</taxonomy>
+	</classDecl>
+</encodingDesc>
+\end{lstlisting}
+\caption{La description non bibliographique de la source (\texttt{<profileDesc>})}
+\label{fig:profileDesc}
+\end{figure}
 
 \end{document}
 \documentclass[../main.tex]{subfiles}

@@ -1,0 +1,291 @@
+\documentclass[class=article, crop=false]{standalone}
+\usepackage[subpreambles=true]{standalone}
+\usepackage{fontspec}
+\usepackage{hyperref}
+\usepackage{import}
+\usepackage{blindtext}
+
+% !TEX TS-program = xelatex
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			CODE
+\usepackage{listings}
+\usepackage{color}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{cyan}{rgb}{0.0,0.6,0.6}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinelanguage{XML}{
+  backgroundcolor=\color{backcolour},  
+  basicstyle=\ttfamily\footnotesize,
+  morestring=[s]{"}{"},
+  moredelim=[s][\color{black}]{>}{<},
+  morecomment=[s]{!--}{--},
+  commentstyle=\color{codegreen},
+  moredelim=[s][\color{red}]{\ }{=},
+  stringstyle=\color{blue},
+  identifierstyle=\color{cyan},
+  numberstyle=\tiny\color{codegray},
+  breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			DOCUMENT
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\begin{lstlisting}[language=XML]
+<teiHeader>
+        <fileDesc>
+            <titleStmt>
+                <title type="statement">The third Part of Henry the Sixt, with the death of the Duke of Yorke from Mr. William Shakespeares comedies, histories, &amp; tragedies.
+                    Published according to the true originall copies.</title>
+                <title type="variant">Mr. VVilliam Shakespeares comedies, histories, &amp;
+                    tragedies</title>
+                <title type="distinctive">Bodleian First Folio, Arch. G c.7</title>
+                <author key="LCCNn78095332">Shakespeare, William, 1564-1616.</author>
+                <editor>Heminge, John, approximately 1556-1630</editor>
+                <editor>Condell, Henry, -1627</editor>
+                <respStmt>
+                    <persName>Droeshout, Martin, 1601-</persName>
+                    <resp>engraver</resp>
+                </respStmt>
+                <!-- ... -->
+            </titleStmt>
+            <editionStmt>
+                <edition n="first"> First publication edition. <date when="2014-04-23">23 April
+                    2014</date>
+                </edition>
+            </editionStmt>
+            <publicationStmt>
+                <publisher>
+                    <orgName ref="http://www.bodleian.ox.ac.uk/">Bodleian Libraries</orgName>,
+                    <orgName ref="http://www.ox.ac.uk">University of Oxford</orgName>
+                </publisher>
+                <date when="2014-09-11">11 September 2014</date>                 
+                <authority>
+                    <orgName ref="http://www.bodleian.ox.ac.uk/bdlss" xml:id="bdlss">Bodleian Digital
+                        Library Systems and Services</orgName>
+                </authority>
+                <address>
+                  <addrLine>Osney One Building</addrLine>
+                  <addrLine>Osney Mead</addrLine>
+                  <addrLine>Oxford</addrLine>
+                    <postCode>OX2 0EW</postCode>
+               </address>
+                <availability>
+                    <p> Available for reuse, according to the terms of the <ref target="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 Unported</ref>.</p>
+                </availability>
+                <idno type="url">http://firstfolio.bodleian.ox.ac.uk/</idno>
+                <idno type="url">http://solo-aleph.bodleian.ox.ac.uk/?func=direct&amp;doc_number=011814163&amp;format=999&amp;local_base=HOL60</idno>
+            </publicationStmt>
+            
+            <sourceDesc>
+                <bibl>
+                    <author key="LCCNn78095332">Shakespeare, William, 1564-1616.</author>
+                    <title type="statement"> Mr. William Shakespeares comedies, histories, &amp;
+                        tragedies.: Published according to the true originall copies.</title>
+                    <title type="variant">Mr. VVilliam Shakespeares comedies, histories, &amp;
+                        tragedies</title>
+                    <title type="distinctive">First Folio</title>
+                    <pubPlace>
+                        <settlement>London</settlement>, <country>England</country>
+                    </pubPlace>:
+                    <publisher>
+                        <persName>William Jaggard</persName>, <persName>Edward
+                            Blount</persName>, <persName>John Smethwicke</persName>
+                    </publisher>
+                    <date type="canonical" when="1623">1623</date>
+                    <date type="entry" when="1623-11-08">8 November 1623 (entered)</date>
+                    <idno type="shelfmark">Bodleian Library, Arch. G c.7</idno>
+                    <idno type="estcCitationNo">S111228</idno>
+                    <idno type="alephSysNo">015592789</idno>
+                    <note type="citation">ESTC, S111228</note>
+                    <note type="citation">Greg, III, p. 1109-12</note>
+                    <note type="citation">Pforzheimer, 905</note>
+                    <note type="citation">STC (2nd ed.), 22273</note>
+                    <note type="citation">Rasmussen, E. &amp; West, A.J. "The Shakespeare First Folios a
+                        descriptive catalogue", Palgrave Macmillan, 2012.</note>
+                    <note type="citation">Hinman, C. The printing and proof-reading of the First Folio of
+                        Shakespeare, Oxford, 1963, p.30</note>
+                    <note type="citation">West, A.J. A Model for Describing Shakespeare First Folios,
+                        With Descriptions of Selected Copies, in The Library, v. s6-21, Issue 1 (March
+                        1999), p.1-19</note>
+                </bibl>
+                <msDesc>
+                    <msIdentifier>
+                        <country>United Kingdom</country>
+                        <settlement>Oxford</settlement>
+                        <institution>University of Oxford</institution>
+                        <repository>Bodleian Library</repository>
+                        <idno type="shelfmark">Bodleian Library, Arch. G c.7</idno>
+                        <altIdentifier type="previous">
+                            <idno type="shelfmark">S 2.17 Art. [first Bodleian shelfmark,
+                                1624-1664?]</idno>
+                        </altIdentifier>
+                        <altIdentifier type="previous">
+                            <idno type="shelfmark">Arch. F c.13 [superscript z?] [second Bodleian
+                                shelfmark, 1906-?]</idno>
+                        </altIdentifier>
+                    </msIdentifier>
+                    <msContents>
+                        <titlePage>
+                            <docTitle>
+                                <titlePart>M<hi rend="superscript">r</hi> VVILLIAM <lb/>
+                                    <hi rend="large">SHAKESPEARES</hi>
+                                    <lb/>COMEDIES, <lb/>HISTORIES, &amp; <lb/>TRAGEDIES. </titlePart>
+                                <titlePart>Publiſhed according to the True Originall Copies.</titlePart>
+                                
+                            </docTitle>
+                            
+                            <docImprint>London : Printed by Isaac Iaggard, and Ed. Blount [at the charges
+                                of W. Iaggard, Ed. Blount, I. Smithweeke, and W. Aspley].,
+                                <docDate>1623</docDate>.</docImprint>
+                        </titlePage>
+                    </msContents>
+                    <physDesc>
+                        <objectDesc form="codex">
+                            <supportDesc>
+                                <support>
+                                    <dimensions>
+                                        <height unit="mm">349</height>
+                                        <width unit="mm">323</width>
+                                    </dimensions>
+                                </support>
+                                <foliation>
+                                    <p>[18], 303, [1], 46, 49-100, [2], 69-232, [2], 79-80, [26], 76,
+                                        79-82, 80-98, [2], 109-156, 257-993 [i.e. 399], [1] p.; fol.</p>
+                                    <p>Numbering peculiarities: 1st count: p.50 misnumbered 58; p.59
+                                        misnumbered 51; p.86 misnumbered 88; p.153 misnumbered 151; p.161
+                                        misnumbered] 163; p.164 misnumbered 162; p. 165 misnumbered 163; p.
+                                        189 misnumbered 187; p. 249 misnumbered 251; p.250 misnumbered 252; p.
+                                        265 misnumbered 273 -- 2nd count: p.37 misnumbered 39 in some copies;
+                                        p.89 misnumbered 91; p. 90 misnumbered 92 -- 3rd count: p.165-166
+                                        numbered 167 and 168 respectively; p. 216 numbered 218 -- 5th count:
+                                        p. 279 misnumbered 259; p. 282 misnumbered 280; p.308 misnumbered 38;
+                                        p. 379 misnumbered 389; p. 399 misnumbered 993.</p>
+                                </foliation>
+                                <collation>
+                                    <p>The signatures varies between sources, with the most commonly
+                                        cited being Hinman's and West's: 1. Hinman: πA⁶ (πA1+1) [πB²], ²A-2B⁶
+                                        2C² a-g⁶ χgg⁸ h-v⁶ x⁴ χ1.2 [para.]-2[para.]⁶ 3[para]¹ aa-ff⁶ gg² Gg⁶
+                                        hh⁶ kk-bbb⁶; 2. West: πA⁶ (πA1+1, πA5+1.2)²A-2B⁶ 2C² a-g⁶ ²g⁸ h-v⁶ x⁴
+                                        'gg3.4' (±'gg3') [para.]-2[para.]⁶ 3[para]¹ 2a-2f⁶ 2g² 2G⁶ 2h⁶ 2k-2v⁶
+                                        x⁶ 2y-3b⁶.</p>
+                                    <p>Mis-signed leaves: a3 mis-signed Aa3; ³gg1 mis-signed Gg; nn1-nn2
+                                        mis-signed Nn and Nn2 and oo1 mis-signed Oo.</p>
+                                    <p>"The life and death of King Iohn" begins new pagination on leaf a1
+                                        recto; "The tragedy of Coriolanus" begins new pagination on leaf aa1
+                                        recto.</p>
+                                </collation>
+                                <condition>Lacks A1, the letterpress frontispiece entitled "To the reader".
+                                    The title page is trimmed and mounted, with a section of the mount
+                                    towards the foot of the leaf mutilated resulting in the loss of some the
+                                    Droechout imprint at the bottom left hand corner of the portrait and the
+                                    central section of an early MS note. For a full condition report,
+                                    including a full survey of damage and repairs, please contact Rare
+                                    Books.</condition>
+                                
+                            </supportDesc>
+                            <layoutDesc>
+                                <layout>
+                                    <p>Predominantly printed in double columns.</p>
+                                    <p>Text within simple lined frame.</p>
+                                    <p>Colophon reads: "Printed at the charges of W. Iaggard, Ed. Blount, I.
+                                        Smithweeke, and W. Aspley. 1623.".</p>
+                                    <p>Editors’ dedication signed: Iohn Heminge. Henry Condell.</p>
+                                </layout>
+                                
+                            </layoutDesc>
+                        </objectDesc>
+                        <decoDesc>
+                            <decoNote>Head- and tail- pieces; initials.</decoNote>
+                            <decoNote>With an engraved title-page portrait of the author signed: "Martin-
+                                Droeshout: sculpsit· London.". The plate exists in 2 states: 1. The earlier
+                                state has lighter shading generall ; 2. Later state has heavier shading,
+                                especially around the collar, and minor differences particularly with the
+                                jawline and moustache. The vast majority of surviving copies have the plate
+                                in the second state which has led some scholars to conclude that the earlier
+                                state was a proof. The portrait in this copy is the second state.
+                            </decoNote>
+                        </decoDesc>
+                        <additions>
+                            <p>Two MS verses on first endpaper verso: 1. 9 lines of verse by an
+                                unknown author, first line reads "An active swain to make a leap was seen".
+                                2. A copy of Ben Jonson’s printed "To the Reader"; MS note on t.p.
+                                (mutilated) appears to read "Honest [Shakes]peare". Minor annotations on
+                                leaf 2n4 (Macbeth). All in an early English hand, presumably added after
+                                leaving the Library.</p>
+                        </additions>
+                        <bindingDesc>
+                            <p>Seventeenth-century (1624) English (Oxford) smooth calf. Bound for the
+                                Bodleian Library by William Wildgoose, with evidence of two cloth ties, red
+                                sprinkled edge. Formerly chained, with evidence of chain staple at the head
+                                of the upper cover. Remains of paper label at the head of the spine.
+                                Enclosed in 20th century book box by Maltby of Oxford. See S. Gibson in
+                                Original Bodleian Copy of First Folio, p. 12-13. One of four items sent out
+                                on 17th February 1624 for binding by Wildgoose containing printed waste from
+                                a copy of Cicero’s "De Officiis, et al." [Deventer: Richard Pafraet, between
+                                1480 and 1485] as paste-downs. For more information on this work see: Bod.
+                                Inc. Cat., C-322.</p>
+                        </bindingDesc>
+                    </physDesc>
+                    <history>
+                        <origin>
+                            <p>For further details on the printing of this item see Hinman, Charleton. The
+                                printing and proof-reading of the First Folio of Shakespeare: Oxford, 1963.
+                            </p>
+                        </origin>
+                        <acquisition>
+                            <p>Acquired by the Bodleian in 1623, presumably in sheets. It
+                                was sent out to <persName>William Wildgoose</persName> on <date when="1624-02-17">17 February 1624</date> for binding (see: Library
+                                Records e.258, fol. 48r) and upon its return chained in Duke Humfrey at
+                                shelfmark S 2.17 Art. It is listed in the Bodleian’s <date when="1635">1635</date> catalogue of printed books but was gone by the publication
+                                of the next catalogue in <date when="1674">1674</date>, replaced by the
+                                newer <bibl>
+                                    <title>Third Folio</title> (<date when="1664">1664</date>)</bibl>. There is no explicit reference in Library Records
+                                to the disposal of this copy, but there is a record of a sale of
+                                "superfluous library books" to <persName>Richard Davis</persName>, a
+                                bookseller in Oxford, in <date when="1664">1664</date> for the sum of <num value="24">£24</num>.</p>
+                            <p>After leaving the Bodleian this copy entered
+                                the collection of <persName>Richard Turbutt</persName> of Ogston Hall,
+                                Derbyshire at some point in the early 18th century. It stayed in the
+                                family’s possession until <date when="1906">1906</date>, when it was
+                                reacquired by the Bodleian for the sum of <num value="3000">£3000</num>,
+                                raised by public subscription. For a full discussion of the rediscovery and
+                                purchase of this copy see: F. Madan, G. M. R. Turbutt and S. Gibson, The
+                                Original Bodleian Copy of the First Folio of Shakespeare (theTurbutt
+                                Shakespeare) (Oxford, 1905)</p>
+                            <p>For a full discussion of this copy and the
+                                digital version see http://shakespeare.bodleian.ox.ac.uk/ and West and
+                                Rasmussen (2011), 31.</p>
+                        </acquisition>
+                    </history>
+                    <additional>
+                        <surrogates>
+                            <listBibl>
+                                <bibl type="digitalFacsimile">Digital facsimile images available at: <ref target="http://firstfolio.bodleian.ox.ac.uk/">http://firstfolio.bodleian.ox.ac.uk/</ref>.</bibl>
+                            </listBibl>
+                        </surrogates>
+                    </additional>
+                </msDesc>
+            </sourceDesc>
+        </fileDesc>
+\end{lstlisting}
+
+\end{document}
+\documentclass[../sections/chap6/chap6.tex]{subfiles}

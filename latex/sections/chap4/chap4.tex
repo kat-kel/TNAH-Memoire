@@ -83,7 +83,7 @@
 %			REFERENCES
 % le package hyperref avec des options, si en local
 \usepackage[pdfusetitle, pdfsubject ={Mémoire TNAH}, pdfkeywords={les mots-clés}]{hyperref}
-\usepackage[backend=biber, sorting=nyt, style=verbose-ibid]{biblatex}
+\usepackage[backend=bibtex, sorting=nyt, style=verbose-ibid]{biblatex}
 \addbibresource{../../../bib.bib}
 
 %%%%%%%%%%%%%%%%%%%%%%%%
@@ -192,6 +192,7 @@ Le pipeline du projet \textit{Gallic(orpor)a} se déroule dans cinq étapes. En 
 L'accès aux pages numérisées d'un document source est une condition essentielle à toute étape du pipeline de \textit{Gallic(orpor)a}. Afin de transcrire le document et produire la ressource lexicographique du format \acrshort{TEI}, il faut d'abord dire au logiciel comment il peut accéder au fac-similé numérique. De plus, les images doivent être d'une qualité aussi bonne, sans être pourries par trop de bruit, que le logiciel \acrshort{HTR} peut bien reconnaître le texte et les segments dedans. Et en fin, bien qu'il ne soit pas essentiel à l'étape de la transcription de l'image, l'image devrait s'associer aux métadonnées qui porte sur le document pour que le pipeline puisse enrichir la ressource lexicographique avec les informations portant sur le document transcrit.
 
 \subsection{\acrlong{ARK} (\acrshort{ARK})}
+\label{structure-fichier}
 Deux solutions existent pour répondre aux questions d'accès et de métadonnées. En premier temps, il existe dans le monde archivistique une espèce de clef numérique qui se connaît par l'acronyme \acrshort{ARK}, qui veut dire en anglais \textit{\acrlong{ARK}}. Cette clef est un identifiant unique qui indique une ressource, soit numérique soit physique, dont la conservation une institution, telle que la \acrlong{BNF}, se charge. Le schème \acrshort{ARK} est actuellement maintenu par la communauté ARK Alliance.\footcite{allianceCommunity2020} L'identifiant unique facilite la récupération d'une ressource en particulière, sans la confondre avec d'autres exemplaires du même document. La précision qu'accorde l'\acrshort{ARK} améliore l'exactitude d'un processus de traitement automatique.
 
 \subsubsection{La mise en place d'un système de fichiers}

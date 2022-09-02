@@ -21,7 +21,7 @@
 %			REFERENCES
 % le package hyperref avec des options, si en local
 \usepackage[pdfusetitle, pdfsubject ={Mémoire TNAH}, pdfkeywords={les mots-clés}]{hyperref}
-\usepackage[backend=biber, sorting=nyt, style=verbose-ibid]{biblatex}
+\usepackage[backend=bibtex, sorting=nyt, style=verbose-ibid]{biblatex}
 \addbibresource{../../../bib.bib}
 
 %%%%%%%%%%%%%%%%%%%%%%%%
@@ -463,7 +463,7 @@ Ce qu'on appelle l'erreur, soit la différence entre la prédiction du modèle e
 
 \centering
 \begin{tikzpicture}[node distance=2cm]
-\node (ep1) [epoch] {Époch 1};
+\node (ep1) [epoch] {Époque 1};
 \node (b1) [batch, below, right = of ep1, text width=4cm] {Traitement de \textit{batch}~1 (images 1-100)};
 \node (loss1) [loss, right = of b1, text width=4cm] {le \textit{loss} après 1 itération ($e_1$)};
 \node (b2) [batch, below = of b1, text width=4cm] {Traitement de \textit{batch}~2 (images 101-200)};
@@ -472,7 +472,7 @@ Ce qu'on appelle l'erreur, soit la différence entre la prédiction du modèle e
 \node (loss3) [loss, right = of b3, text width=4cm] {le \textit{loss} après 3 itérations ($e_3$)}; 
 \node (b4) [batch, below = of b3, text width=4cm] {Traitement de \textit{batch}~4 (images 301-400)};
 \node (loss4) [loss, right = of b4, text width=4cm] {le \textit{loss} après 4 itérations ($e_4$)};
-\node (ep2) [epoch, left = of b4, below = of ep1] {Époch \textit{n}};
+\node (ep2) [epoch, left = of b4, below = of ep1] {Époque \textit{n}};
 \draw [arrow] (ep1) -- (b1);
 \draw [arrow] (b1) -- (loss1);
 \draw [arrow] (loss1) -- (b2);
