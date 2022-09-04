@@ -278,6 +278,7 @@ En tout cas, chaque genre de \texttt{<teiHeader>} aura la même arborescence par
 Quatre source de données servent à informer des éléments du \texttt{<teiHeader>}. Elles sont le \textit{manifest} \acrshort{IIIF}, les données \Gls{unimarc} du catalogue général de la \acrshort{BNF}, la base de données du site web du \acrlong{SUDOC} (\acrshort{SUDOC}), le fichier de configuration, et les fichiers \acrshort{ALTO} produits par des modèles \acrshort{HTR}. Les trois premières sources exigent une requête au bon \acrshort{API}. Le \textit{manifest} \acrshort{IIIF} est renvoyé par une requête à l'\acrshort{API} \acrshort{IIIF} du fac-similé numérique sur Gallica, selon les normes imposées par la \acrshort{BNF}. Les données \Gls{unimarc} du catalogue général de la \acrshort{BNF} sont accessible à partir d'une requête à l'\acrshort{API} \acrshort{SRU} (\textit{\acrlong{SRU}} de la \acrshort{BNF}. Enfin, les données du \acrlong{SUDOC} sont renvoyées à partir d'une requête à l'\textit{endpoint} \acrshort{API} du site \acrshort{SUDOC}. L'application \texttt{alto2tei} se dispose directement du fichier de configuration et des fichiers \acrshort{ALTO} qu'elle traite.
 
 \subsection{Le format du \textit{manifest} \acrshort{IIIF}}
+\label{sec:manifest}
 Le \textit{manifest} \acrshort{IIIF} est un format de données standardisés qui est envoyé par tout \acrshort{API} \acrshort{IIIF} selon le syntaxe de requête demandé par l'organisation qui gère l'\acrshort{API}. La \acrlong{BNF} exige le syntaxe suivant pour toute requête envoyée à l'\acrshort{API} \acrshort{IIIF} des fac-similés numériques sur Gallica~:
 \begin{verbatim}
 https://gallica.bnf.fr/iiif/ark:/12148/<ARK>/manifest.json
@@ -396,23 +397,121 @@ class SRU:
 
 Les données \Gls{unimarc} sont emballées dans les éléments du préfix \texttt{srw} qui fait référence au protocole \acrshort{SRU}.\footcite{SRUSearchRetrieval} L'élément \texttt{<srw:recordData>} (ligne 11, Fig~\ref{fig:unimarc}) présente les données da la notice du catalogue trouvée. L'application \texttt{alto2tei} détermine qu'elle a bien localisé le bon document physique dans le catalogue de la \acrshort{BNF} si la réponse de l'\acrshort{API} \acrshort{SRU} ne contient qu'une seule notice. Le nombre de notices trouvées est sur la ligne 6 de la Figure~\ref{fig:unimarc}. Si ce nombre est plus que \og{}1\fg{} cela indique que l'\acrshort{ARK} récupéré de la donnée \textit{Relation} du \textit{manifest} \acrshort{IIIF} est lié aux notices de plusieurs documents. Ne pouvant pas déterminer quel document est le bon, l'application \texttt{alto2tei} abandonne les données \Gls{unimarc} et compte uniquement sur les métadonnées du \textit{manifest} \acrshort{IIIF}.
 
-\subsection{Le format du fichier de configuration}
-
 \subsection{Le format des données du site \acrshort{SUDOC}}
+Puisque les données \Gls{unimarc} ne renseignent pas sur le lieu de l'institution qui conserve le document physique, il faut d'autre source de données pour remplir l'élément \acrshort{TEI} \texttt{<settlement>} du \texttt{<sourceDesc>}. Pour trouver une solution, j'en ai discuté avec une spécialiste à la \acrlong{BNF}, Florence Tfibel. Dans un courriel, Tfibel a dit que \og{}la localisation de l'institution n'y est effectivement nulle part renseignée "en dur"\fg{} dans les données \Gls{unimarc} du catalogue.\footcite{tfibelRETrGallic2022} Alors elle a eu l'idée de la chercher sur le site web du \acrlong{SUDOC} qui gère un répertoire des centres de ressources (RCR), auquel appartient la \acrshort{BNF}. La \acrshort{BNF} se dispose d'un numéro RCR. Son emplacement sur l'arbre des données \Gls{unimarc} du catalogue est montré dans la Figure~\ref{fig:rcr}. Le numéro RCR de la \acrshort{BNF} est 759999999.
+\begin{figure}[ht]
+\begin{lstlisting}[language=XML]
+<mxc:datafield tag="930" ind1=" " ind2=" ">
+<!-- ... -->
+	<mxc:subfield code="b">759999999</mxc:subfield>
+<!-- ... -->
+</mxc:datafield>
+\end{lstlisting}
+\caption{L'emplacement du RCR sur l'arbre des données \Gls{unimarc}}
+\label{fig:rcr}
+\end{figure}
 
+Le site web du \acrlong{SUDOC} ne se dispose pas d'un genre d'\acrshort{API} \acrshort{SRU} aussi efficace que celui de la \acrshort{BNF}, mais les données de son site peuvent être interrogées en traitant la page du centre de ressource qui porte le numéro cherché. Il est possible de lire la page d'un centre en construisant l'URL que le site attend à la suite d'une recherche. Si on recherche le numéro de la \acrshort{BNF}, l'URL sera le suivant, ou le dernier chiffre après la signe d'égalité est le numéro RCR de la \acrshort{BNF}~:
+\begin{verbatim}
+http://www.sudoc.abes.fr/cbs/xslt//DB=2.2/
+    CMD?ACT=SRCHA&IKT=8888&SRT=RLV&TRM=759999999
+\end{verbatim}
+L'application \texttt{alto2tei} demande à l'\acrshort{API} du site \acrshort{SUDOC} la page de cet URL~; ensuite, elle traite les données \acrshort{HTML} renvoyées. (cf. Fig~\ref{fig:sudoc}) La page \acrshort{HTML} a un tableau avec une une cellule (\texttt{<td>}) qui contient la phrase \og{}Adresse postale\fg{} dans le \texttt{<span>} d'un \texttt{<div>}. À la file après cette cellule il y a une autre cellule avec les données portant sur l'adresse du centre. Ayant la localiser avec l'aide de la première cellule, l'application \texttt{alto2tei} traite les données de cette dernière et extrait la ville et le nom uniforme du centre. Même si la ville et le nom de la \acrshort{BNF} seront toujours Paris et la \acrlong{BNF}, respectivement, il est meilleur de s'appuyer sur les sources de données pour que l'application puisse s'adapter plus facilement aux autres utilisations.
+
+\begin{figure}[ht]
+\begin{lstlisting}[language=XML]
+<tr>
+	<td class="rec_lable">
+		<div>
+			<span>Adresse postale : </span>
+		</div>
+	</td>
+	<td clas="rec_title">
+		<div>
+			<span>Bibliothèque nationale de France</span>
+		</div>
+		<div>
+			<span>quai Francois Mauriac </span>
+		</div>
+		<div>
+			<span>75706 Paris CEDEX 13</span>
+		</div>
+		<div>
+			<span>France</span>
+		</div>
+		<div>
+			<span> </span>
+		</div>
+	</td>
+</tr>
+\end{lstlisting}
+\caption{Les données cherchées depuis le site \acrshort{SUDOC}}
+\label{fig:sudoc}
+\end{figure}
+
+\subsection{Le format du fichier de configuration}
+Une partie importante des métadonnées s'appuient aussi sur le fichier de configuration que les utilisateurs de l'application \texttt{alto2tei} peut facilement personnaliser. Son format est le \acrshort{YAML} (\acrlong{YAML}) qui n'exige pas de grande expertise dans la programmation. Comme l'\acrlong{XML} (\acrshort{XML}) le \acrshort{YAML} est ce qu'on appelle un langage de \og{}Mark Up\fg{} et donc il imbrique des données. Mais au lieu d'utiliser les éléments \acrshort{XML} (\texttt{< >}), le \acrshort{YAML} utilise simplement les deux points et de la tabulation. Ainsi les utilisateurs de divers spécialités peuvent adapter l'application \texttt{alto2tei} et le pipeline \textit{Gallic(orpor)a} aux données de leur propre projet.
+
+Le fichier de configuration informe trois aspects de la création du document \acrshort{TEI}. Dans un premier temps, il informe l'application \texttt{alto2tei} où il peut trouver les fichiers \acrshort{ALTO} qui a été traités par les modèles \acrshort{HTR}. Cette donnée est personnalisable pour qu'une utilisatrice ou un utilisateur puisse transformer les transcriptions \acrshort{ALTO} stockés sous divers dossiers. Dans un deuxième temps, le fichier de configuration informe la requête que l'application \texttt{alto2tei} envoie à l'\acrshort{API} \acrshort{IIIF}, le même \acrshort{API} qui réserve d'accès aux images et aux métadonnées du fac-similé numérique et qui est discuté dans la section~\ref{sec:manifest}. L'application \texttt{alto2tei} permet de personnaliser la requête envoyée à l'\acrshort{API} \acrshort{IIIF} selon les normes de l'institution qui le gère. Le fichier configuré pour l'\acrshort{API} \acrshort{IIIF} géré par la \acrshort{BNF} est montré dans la Figure~\ref{fig:configIIIF}. Les paramètres \texttt{manifest\_prefix} et \texttt{image\_prefix} sont pareils pour l'\acrshort{API} \acrshort{IIIF} de la \acrshort{BNF}, mais le fichier de configuration les garder distinct afin qu'ils puisse s'adapter aux APIs qui distinguent entre l'URL de l'\Gls{iiifapi} et du Presentation l'\acrshort{API}.
+
+\begin{figure}[ht]
+\lstset{style=python}
+\begin{lstlisting}[language=python]
+iiifURI:
+	scheme: "https"
+	server: "gallica.bnf.fr"
+	manifest_prefix: "/iiif/ark:/12148/"
+	image_prefix: "/iiif/ark:/12148/"
+	manifest_suffix: "/manifest.json"
+\end{lstlisting}
+\caption{La partie du fichier de configuration portant sur la requête envoyée à l'\acrshort{API} \acrshort{IIIF}}
+\label{fig:configIIIF}
+\end{figure}
+
+Enfin, le fichier de configuration informe les éléments descendant du \texttt{<publicationStmt>} dans le \texttt{<fileDesc>} du \texttt{<teiHeader>}. Les métadonnées récupérées par l'application \texttt{alto2tei} ainsi que leur format en \acrshort{YAML} sont montrés dans la Figure~\ref{fig:configResp}. Le nom du projet (ligne 18, Fig.~\ref{fig:configResp}) et les noms des membres de l'équipe peuvent être personnalisés. Le prénom ou les prénoms de chaque membre sont renseignés par la chaîne entre guillemets qui suit les deux points après le terme \textit{forename}. Le terme \textit{surname} indique le même chose pour le nom de famille. L'identifiant du membre peut être personnalisé soit en le type d'identifiant, tel que ORCID, soit en la valeur qui suit les deux points après le terme \textit{target}.
+
+\begin{figure}[ht]
+\lstset{style=python}
+\begin{lstlisting}[language=python]
+responsibility:
+	text: "Transformation from ALTO4 to TEI by"
+	resp: [{"forename":"Kelly", 
+		"surname":"Christensen", 
+		"ptr":{"type":"orcid","target":"000000027236874X"}},
+		
+		{"forename":"Simon",
+		"surname":"Gabay", 
+		"ptr":{"type":"orcid","target":"0000000190944475"}},
+		
+		{"forename":"Ariane",
+		"surname":"Pinche",
+		"ptr":{"type":"orcid","target":"0000000278435050"}}
+		]
+	# name the publisher of this digital edition (project name)
+	publisher: "Gallic(orpor)a"
+	# name which authority finances or supports the project
+	authority: "BnF DATALab"
+	# specify the edition's availability to the public/licencing
+	availability: {"status": "restricted", "n":"cc-by"}
+	licence: {"target":"https://creativecommons.org/licenses/by/4.0/"}
+\end{lstlisting}
+\caption{La partie du fichier de configuration portant sur la requête envoyée à l'\acrshort{API} \acrshort{IIIF}}
+\label{fig:configResp}
+\end{figure}
 
 \section{La mise en place des données récupérées}
-Ayant découvert les formats de données des quatre sources de données utilisées pour remplir le \texttt{<teiHeader>}, il faut parler d'où ses données ainsi récupérées vont.
+Ayant découvert les structures de données des quatre sources de données externes, il faut parler d'où ses données ainsi récupérées vont dans le \texttt{<teiHeader>}. Les métadonnées intégrées au document \acrshort{TEI} s'appuient sur (1) le \textit{manifest} \acrshort{IIIF} envoyé par l'\acrshort{API} \acrshort{IIIF} en format \acrshort{JSON}, (2) les données \Gls{unimarc} du catalogue général de la \acrshort{BNF} envoyées par l'\acrshort{API} \acrshort{SRU} en format \acrshort{XML}, (3) les données \acrshort{HTML} récupérées à partir de la page de recherche du site \acrshort{SUDOC}, et (4) le fichier de configuration en format \acrshort{YAML}. L'application recherche des données dans deux autres sources~: (5) les fichiers \acrshort{ALTO} et (6) la commande qui démarre l'application. L'application \texttt{alto2tei} compte les fichiers \acrshort{ALTO} du fac-similé numérique et utilise ce nombre pour l'élément \texttt{<extent>}. De plus, elle s'appuie sur la commande saisie pour démarrer l'application. La commande exige un paramètre qui déclare la version du engin \textit{Kraken} qui a été utilisé pour mettre en œuvre les modèles \acrshort{HTR}.
 
 \subsection{Les sources des données du \texttt{<titleStmt>}}
 La Figure~\ref{fig:titleStmt} visualise les sources des données du \texttt{<titleStmt>}. Les éléments portant sur le titre de la ressource (\texttt{<title>}) et sur les personnes auxquels est attribuée la propriété intellectuelle du texte représenté (\texttt{<author>}) sont informés par l'un de deux sources de données possible. Soit les données du catalogue général donnent beaucoup d'information sur les auteurs ainsi qu'un titre propre, soit le \textit{manifest} \acrshort{IIIF} donne le titre du texte et les noms non annotés des auteurs. Le choix entre les deux sources de données se fait à partir de la disponibilité des données du catalogue de la \acrshort{BNF}. D'habitude, l'application \texttt{alto2tei} met en priorité les données du catalogue. Les éléments descendants du \texttt{<respStmt>} s'appuient toujours sur le fichier de configuration afin qu'ils puissent être personnalisés par les personnes qui utilisent l'application \texttt{alto2tei} pour générer leurs propres documents \acrshort{TEI}.
 
+\tikzstyle{empty} = [rectangle, rounded corners, minimum width=2cm, minimum height=0.5cm]
 \tikzstyle{iiif} = [rectangle, rounded corners, minimum width=2cm, minimum height=0.5cm, text centered, draw=black, fill=blue!30]
-\tikzstyle{both} = [rectangle, rounded corners, minimum width=2cm, minimum height=0.5cm, text centered, draw=black, fill=violet!30]
 \tikzstyle{unimarc} = [rectangle, rounded corners, minimum width=2cm, minimum height=0.50cm, text centered, draw=black, fill=red!30]
 \tikzstyle{config} = [rectangle, rounded corners, minimum width=2cm, minimum height=0.5cm, text centered, draw=black, fill=green!30]
 \tikzstyle{sudoc} = [rectangle, rounded corners, minimum width=2cm, minimum height=0.5cm, text centered, draw=black, fill=yellow!30]
 \tikzstyle{files} = [rectangle, rounded corners, minimum width=2cm, minimum height=0.5cm, text centered, draw=black, fill=gray!30]
+\tikzstyle{input} = [rectangle, rounded corners, minimum width=2cm, minimum height=0.5cm, text centered, draw=black, fill=violet!30]
 \tikzstyle{elem} = [rectangle, rounded corners, minimum width=2cm, minimum height=0.5cm, text centered, draw=black]
 \tikzstyle{arrow} = [thick,>=stealth]
 \tikzset{line/.style={draw, thick, -latex'}}
@@ -425,9 +524,10 @@ La Figure~\ref{fig:titleStmt} visualise les sources des données du \texttt{<tit
 \matrix [draw] {
 	\node [iiif,label=right:manifest IIIF] {};\\
 	\node [unimarc,label=right:Unimarc] {};\\
-	\node [config,label=right:fichier de config] {}; \\
 	\node [sudoc,label=right:SUDOC] {}; \\
+	\node [config,label=right:fichier de config] {}; \\
 	\node [files,label=right:fichiers traités] {}; \\
+	\node [input,label=right:saisie] {}; \\
 };
 \end{tikzpicture}
 \end{subfigure}
@@ -529,17 +629,24 @@ L'élément \texttt{<extent>} du \texttt{<teiHeader>}, qui indique le nombre de 
 
 \begin{figure}[htp]
 \centering
-\begin{tikzpicture}[node distance=0.5cm]
-
-\matrix [draw,above=of start] {
+% legend
+\begin{subfigure}[b]{0.3\textwidth}
+\begin{tikzpicture}
+\matrix [draw] {
 	\node [iiif,label=right:manifest IIIF] {};\\
-	\node [both,label=right:IIIF ou Unimarc] {}; \\
-	\node [unimarc,label=right:données Unimarc] {};\\
-	\node [config,label=right:fichier de config] {}; \\
+	\node [unimarc,label=right:Unimarc] {};\\
 	\node [sudoc,label=right:SUDOC] {}; \\
+	\node [config,label=right:fichier de config] {}; \\
 	\node [files,label=right:fichiers traités] {}; \\
+	\node [input,label=right:saisie] {}; \\
 };
+\end{tikzpicture}
+\end{subfigure}
 
+\vspace{1cm}
+
+\begin{subfigure}[b]{0.3\textwidth}
+\begin{tikzpicture}
 \node [elem] (start) {extent};
 \node [files, right=of start] (measure) {measure};
 
@@ -547,98 +654,201 @@ L'élément \texttt{<extent>} du \texttt{<teiHeader>}, qui indique le nombre de 
 	(start) -- (measure);
 
 \end{tikzpicture}
-\caption{}
+\end{subfigure}
+
+\caption{La source des données du \texttt{<extent>}}
 \label{fig:dataExtent}
 \end{figure}
 
 \subsection{Les sources des données du \texttt{<publicationStmt>}}
-La distribution de la ressource numérique est décrite par l'élément \texttt{<publicationStmt>}. Cet élément peut compter uniquement--et idéalement--sur les données du catalogue général de la \acrshort{BNF} en format \Gls{unimarc}. Mais si l'application a besoin, elle peut remplir certains éléments du \texttt{<publicationStmt>} en laissant vide des autres puisque le \textit{manifest} \acrshort{IIIF} peut renseigner sur l'auteur du document, son titre, et sa date de création.
+La distribution de la ressource numérique est décrite par l'élément \texttt{<publicationStmt>}. Cet élément peut compter uniquement--et idéalement--sur les données du catalogue général de la \acrshort{BNF} en format \Gls{unimarc}. Mais si l'application a besoin, elle peut remplir certains éléments du \texttt{<publicationStmt>} en laissant vide des autres puisque le \textit{manifest} \acrshort{IIIF} peut renseigner sur l'auteur du document, son titre, et sa date de création. Le \textit{manifest} \acrshort{IIIF} n'est pas une source sûre sur l'éditeur ni sur le lieu de publication. Les données du catalogue général de la \acrshort{BNF}, par contre, portent toujours sur ces détails. Même si elles disent que la donnée n'est pas connue, la notice du catalogue général renseigne toujours sur l'éditeur et le lieu de publication du document.
 
 \begin{figure}[htp]
 \centering
-\begin{tikzpicture}[node distance=0.5cm]
-
-\matrix [draw,above=of start] {
+% legend
+\begin{subfigure}[b]{0.3\textwidth}
+\begin{tikzpicture}
+\matrix [draw] {
 	\node [iiif,label=right:manifest IIIF] {};\\
-	\node [both,label=right:IIIF ou Unimarc] {}; \\
-	\node [unimarc,label=right:données Unimarc] {};\\
-	\node [config,label=right:fichier de config] {}; \\
+	\node [unimarc,label=right:Unimarc] {};\\
 	\node [sudoc,label=right:SUDOC] {}; \\
+	\node [config,label=right:fichier de config] {}; \\
 	\node [files,label=right:fichiers traités] {}; \\
+	\node [input,label=right:saisie] {}; \\
 };
+\end{tikzpicture}
+\end{subfigure}
 
+\vspace{1cm}
 
+% <publicationStmt>
+\begin{subfigure}[b]{0.3\textwidth}
+\begin{tikzpicture}
 
 \end{tikzpicture}
+\end{subfigure}
+
 \caption{}
 \label{fig:dataPS}
 \end{figure}
 
 \subsection{Les sources des données du \texttt{<sourceDesc>}}
+Le \texttt{<sourceDesc>} décrit le document source dont la transcription et le texte la ressource numérique représente. Il se compose de deux éléments principales. Dans un premier temps, il contient le \texttt{<bibl>} qui est une description de la source, en parlant de ses auteurs, de son titre, de l'éditeur, et de sa date et lieu de création. Dans un deuxième temps, le \texttt{<sourceDesc>} contient le \texttt{<msDesc>} qui est une citation bibliographique du document source. Les descendants du \texttt{<sourceDesc>} comptent sur le plus grand nombre de sources de données par rapport aux autres éléments du \texttt{<fileDesc>} puisque la description du document source (\texttt{<bibl>}) et la citation bibliographique du document (\texttt{<msDesc>}) s'appuient tous les deux sur le document physique et sur le fac-similé numérique.
 
 \begin{figure}[htp]
 \centering
-\begin{tikzpicture}[node distance=0.5cm]
+% legend
+\begin{subfigure}[b]{0.3\textwidth}
+\begin{tikzpicture}
+\matrix [draw] {
+	\node [iiif,label=right:manifest IIIF] {};\\
+	\node [unimarc,label=right:Unimarc] {};\\
+	\node [sudoc,label=right:SUDOC] {}; \\
+	\node [config,label=right:fichier de config] {}; \\
+	\node [files,label=right:fichiers traités] {}; \\
+	\node [input,label=right:saisie] {}; \\
+};
+\end{tikzpicture}
+\end{subfigure}
 
+\vspace{1cm}
 
+% <sourceDesc>
+\begin{subfigure}[b]{0.3\textwidth}
+\begin{tikzpicture}
 
 \end{tikzpicture}
+\end{subfigure}
+
 \caption{}
 \label{fig:dataSD}
 \end{figure}
 
 \subsection{Les sources des données du \texttt{<profileDesc>}}
+Le \texttt{<profileDesc>} de la ressource numérique généré par l'application \texttt{alto2tei} est minimal est ne présente que de la donnée sur la langue utilisé dans le document source. En outre, la version actuelle de l'application ne supporte qu'une seule langue. Malgré la simplicité conceptuelle du \texttt{<profileDesc>}, son élément \texttt{<language>} compte sur deux sources de données. Le mot balisé dans l'élément vient du \textit{manifest} \acrshort{IIIF} puisque la langue est l'une des données déterminée essentielle et recherchée lors du traitement du \textit{manifest}. La valeur de l'attribut \texttt{@ident} dans l'élément \texttt{<language>} est récupérée depuis le catalogue général de la \acrshort{BNF} parce qu'elle est une clef standardisé pour la langue utilisée.
 
 \begin{figure}[htp]
 \centering
-\begin{tikzpicture}[node distance=0.5cm]
+% legend
+\begin{subfigure}[b]{0.3\textwidth}
+\begin{tikzpicture}
+\matrix [draw] {
+	\node [iiif,label=right:manifest IIIF] {};\\
+	\node [unimarc,label=right:Unimarc] {};\\
+	\node [sudoc,label=right:SUDOC] {}; \\
+	\node [config,label=right:fichier de config] {}; \\
+	\node [files,label=right:fichiers traités] {}; \\
+	\node [input,label=right:saisie] {}; \\
+};
+\end{tikzpicture}
+\end{subfigure}
 
+\vspace{1cm}
 
+% <profileDesc>
+\begin{subfigure}[b]{0.3\textwidth}
+\begin{tikzpicture}
 
 \end{tikzpicture}
+\end{subfigure}
+
 \caption{}
 \label{fig:dataPS}
 \end{figure}
 
 \subsection{Les sources des données du \texttt{<encodingDesc>}}
+La description de l'encodage et de l'appareil qui a fait la transcription sont essentiels. Sans eux, la transcription présentée dans la ressource ne pourra pas être reproduite. Et sans pouvoir reproduire la transcription, les scientifiques ne peuvent pas la vérifier. Pouvoir reproduire des résultats scientifiques est fondamental à la recherche.
+
+Le \texttt{<encodingDesc>} contient deux descendants directs. Dans un premier temps, il contient des informations sur l'engin qui a mis en œuvre les modèles \acrshort{HTR} (\texttt{<application>}). L'application \texttt{alto2tei} actuelle supporte seulement l'engin \textit{Kraken}. L'élément \texttt{<appInfo>} est créé toujours pour les versions de \textit{Kraken}. Mais quand l'application \texttt{alto2tei} est démarré depuis la ligne de commande, un paramètre obligatoire déclare quelle version de \textit{Kraken} a été utilisé pour créer les fichiers \acrshort{ALTO}. L'application \texttt{alto2tei} tient ce paramètre et l'utilise pour renseigner sur la version de l'application \textit{Kraken} dans l'élément \texttt{<application>}.
+
+Dans un deuxième temps, le \texttt{<encodingDesc>} s'appuie sur les fichiers \acrshort{ALTO} que l'application \texttt{alto2tei} traite. L'application analyse les étiquettes de ligne et de zone que les modèles \acrshort{HTR} ont appliquées. Ensuite, elle compare les étiquette trouvées avec une liste des étiquettes du vocabulaire \textit{SegmOnto}. Pour chaque type d'étiquette utilisé dans les fichiers \acrshort{ALTO} qui appartient au vocabulaire \textit{SegmOnto}, l'application \textit{alto2tei} la déclare dans la bonne catégorie de l'élément \texttt{<taxonomy>} du \texttt{<classDecl>}. Un exemple d'une telle liste des étiquettes utilisés dans des fichiers \acrshort{ALTO} est visualisé dans la Figure~\ref{fig:classDecl}.
+
+En outre, puisque le projet \textit{Gallic(orpor)a} a choisi de s'appuyer sur le vocabulaire \textit{SegmOnto} (cf. Chap.~\ref{chap:segmonto}), certains éléments du \texttt{<classDecl>} sont encodés en dur. La taxonomie déclarée dans l'identifiant de l'élément \texttt{<taxonomy>} ainsi que le titre déclaré (\texttt{<title>}) est toujours \og{}SegmOnto\fg{}. De plus, le \textit{pointer} (\texttt{<ptr>}) qui indique l'URL où se trouvent des informations mises à jour sur le vocabulaire utilisé est toujours celui du projet \textit{SegmOnto}. Ces données ne sont pas personnalisables. En plus, bien que les descendants des catégories (\texttt{<category>}) des lignes et des zones soient informés par les fichiers \acrshort{ALTO}, les données encodées dans les éléments viennent plutôt d'une liste que l'application \texttt{alto2tei} maintient. Cette liste encodée en dur porte l'URL de toute zone et toute ligne sur le site web du projet \textit{SegmOnto}. L'application \texttt{alto2tei} récupère l'étiquette \textit{SegmOnto} utilisée dans des fichiers \acrshort{ALTO}. Elle nettoie cette donnée et la met dans l'élément \texttt{<title>}, puis elle la enrichit avec l'URL qu'elle tient dans sa liste et met cette dernière donnée dans l'élément \texttt{<ptr>}.
 
 \begin{figure}[htp]
+% legend
+\begin{subfigure}[b]{0.4\textwidth}
 \centering
-\begin{tikzpicture}[node distance=0.5cm]
+\begin{tikzpicture}
+\matrix [draw] {
+	\node [iiif,label=right:manifest IIIF] {};\\
+	\node [unimarc,label=right:Unimarc] {};\\
+	\node [sudoc,label=right:SUDOC] {}; \\
+	\node [config,label=right:fichier de config] {}; \\
+	\node [files,label=right:fichiers traités] {}; \\
+	\node [input,label=right:saisie] {}; \\
+};
+\end{tikzpicture}
+\end{subfigure}
 
+\vspace{1cm}
 
+% <appInfo>
+\begin{subfigure}[b]{\textwidth}
+\begin{tikzpicture}
+
+\node [elem] (encodingDesc) {encodingDesc};
+\node [elem, right=of encodingDesc] (appInfo) {appInfo};
+\node [input, right=of appInfo] (application) {application};
+\node [elem, right=of application] (label) {label};
+\node [elem, below=of label] (ptr) {ptr};
+
+\draw [arrow] (encodingDesc) -- (appInfo);
+\draw [arrow] (appInfo) -- (application);
+\draw [arrow] (application) -- (label);
+\draw [arrow]
+	(ptr) -| node[pos=0.25] {} (application);
 
 \end{tikzpicture}
-\caption{}
+\caption{La source de données du \texttt{<appInfo>}}
+\end{subfigure}
+
+\vspace{1cm}
+
+% <classDecl>
+\begin{subfigure}[b]{\textwidth}
+\begin{tikzpicture}
+
+\node [elem] (encodingDesc) {encodingDesc};
+\node [elem, right=of encodingDesc] (classDecl) {classDecl};
+\node [elem, right=of classDecl] (bibl) {bibl};
+\node [elem, right=of bibl] (titleBibl) {title};
+\node [elem, below=of titleBibl] (ptrBibl) {ptr};
+\node [empty, below=of bibl] (emp) {};
+\node [elem, below=of emp] (category) {category};
+\node [files, right=of category] (catDesc) {catDesc};
+\node [files, right=of catDesc] (title) {title};
+\node [files, below=of title] (ptr) {ptr};
+
+\draw [arrow]
+	(encodingDesc) -- (classDecl);
+\draw [arrow]
+	(classDecl) -- (bibl);
+\draw [arrow]
+	(bibl) -- (titleBibl);
+\draw [arrow]
+	(ptrBibl) -| node[pos=0.25] {} (bibl);
+\draw [arrow]
+	(category) -| node[pos=0.25] {} (classDecl);
+\draw [arrow]
+	(ptr) -| node[pos=0.25] {} (catDesc);
+\draw [arrow]
+	(category) -- (catDesc);
+\draw [arrow]
+	(catDesc) -- (title);
+
+\end{tikzpicture}
+\caption{La source de données du \texttt{<classDecl>}}
+\label{fig:classDecl}
+\end{subfigure}
+
+\caption{Les sources de données du \texttt{<encodingDesc>}}
 \label{fig:dataED}
 \end{figure}
 
+\section{Le \textit{mapping} des toutes données du \texttt{<teiHeader>}}
 
-
-Parler de la récupération des données depuis les deux APIs discutés (cf.\,fig.~\ref{fig:workflow}) ainsi que le fichier YAML de configuration.
-
-\begin{figure}
-\centering
-\includegraphics[width=\textwidth]{../../../images/full_tree.png}
-\label{fig:workflow}
-\caption{Workflow}
-\end{figure}
-
-\subsection{Du manifest IIIF à un dictionnaire Python}
-
-Montrer le mapping des données du manifest au dictionnaire Python.
-
-\subsection{De l'Unimarc à un dictionnaire Python}
-
-Montrer le mapping des données du catalogue au dictionnaire Python.
-
-\section{L'analyse des données}
-
-Parler de la stratégie d'atténuation des risques en sélectionnant les données fiables. Les métadonnées du catalogue général de la BnF sont utilisées uniquement si le même exemplaire physique du document numérisé sur Gallica a bien été trouvé. Sinon, on risque de mettre les données d'un autre exemplaire de l'oeuvre que celui qui a été transcrit et donc introduire des fausses données, tel que le cote ou même l'éditeur et la date de publication de l'exemplaire.
-
-\section{Le modèle du \texttt{<teiHeader>}}
-
-Montrer le mapping des données au \texttt{<teiHeader>}.
+Le \textit{mapping} complet des données du \texttt{<teiHeader>} est visualisé dans la Table~\ref{tab:mapping} ci-dessous. La table montre en détail la localisation de chaque donnée cherchée, dont les sources sont décrites dans les sections précédents de ce chapitre. Les données \Gls{unimarc} du catalogue général de la \acrshort{BNF} et les données \acrshort{HTML} du site \acrshort{SUDOC}, étant en format \acrshort{XML}, exigent plus de détail pour se localiser. Par exemple, l'élément ou l'attribut qui contient la donnée cherchée ne suffit pas puisqu'il en y a souvent plusieurs du même nom dans l'arbre \acrshort{XML}. La Table~\ref{tab:mapping} décrit donc la localisation des données en listant les éléments ou les composants qui précèdent la donnée cherchée. Pour les attributs d'un élément \acrshort{XML}, la table utilise le syntaxe \textit{XPath} par lequel l'attribut est déclaré avec l'arobase. Par exemple, l'attribut \texttt{@att} d'un élément \texttt{<element>}, qui descende de l'élément \texttt{<parent>}, serait représenté dans le format suivant~: \texttt{parent/element[@att]}. Les données en \acrshort{JSON} et \acrshort{YAML} du \textit{manifest} \acrshort{IIIF} et du fichier de configuration, respectivement, n'exigent pas une telle solution parce que les données du \textit{manifest} viennent toutes de la clef \textit{metadata} et le fichier de configuration ne répète pas des étiquettes.
 
 \end{document}
 \documentclass[../main.tex]{subfiles}
