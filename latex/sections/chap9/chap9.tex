@@ -1,16 +1,265 @@
+% PREAMBULE
+
+% !BIB TS-program = biber
+% !TEX TS-program = xelatexmk
+% ITEX TS-program = latex
+
+% !TEX spellcheck = French
+
 \documentclass[class=article, crop=false]{standalone}
 \usepackage[subpreambles=true]{standalone}
 \usepackage{import}
 \usepackage{blindtext}
+\usepackage{fontspec}
+\usepackage[french]{babel}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{csquotes}
+\usepackage{url}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			REFERENCES
+% le package hyperref avec des options, si en local
+\usepackage[pdfusetitle, pdfsubject ={Mémoire TNAH}, pdfkeywords={les mots-clés}]{hyperref}
+\usepackage[backend=bibtex, sorting=nyt, style=verbose-ibid]{biblatex}
+\addbibresource{../../../bib.bib}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			GLOSSAIRE
+\usepackage[acronym]{glossaries}
+\newglossaryentry{htr}
+{
+    name=Handwritten Text Recognition,
+    description={La reconnaissance du texte écrit sur une image numérique}
+}
+\newacronym{HTR}{HTR}{Handwritten Text Recognition}
+
+\newglossaryentry{ocr}
+{
+    name=Optical Character Recognition,
+    description={La reconnaissance des polices du texte sur une image numérique}
+}
+\newacronym{OCR}{OCR}{Optical Character Recognition}
+
+\newglossaryentry{Inria}
+{
+    name=Inria,
+    description={Institut national de recherche en sciences et technologies du numérique}
+}
+\newacronym{INRIA}{Inria}{Institut national de recherche en sciences et technologies du numérique}
+
+\newacronym{almanach}{ALMAnaCH}{Automatic Language Modelling and Analysis \& Computational Humanities}
+
+\newglossaryentry{enc}
+{
+    name=École nationale des chartes,
+    description={Grande école bla bla bla}
+}
+\newacronym{ENC}{ENC}{École nationale des chartes}
+
+\newglossaryentry{HTR-United}
+{
+    name=HTR-United,
+    description={HTR-United is a catalog and an ecosystem for sharing and finding ground truth for optical character or handwritten text recognition (OCR/HTR)}
+}
+
+\newglossaryentry{CLab}
+{
+	name=CREMMALab,
+	description={Consortium pour la reconnaissance
+d’'écriture manuscrite des matériaux anciens}
+}
+\newacronym{CREMMA}{CREMMA}{Consortium Reconnaissance
+d’Écriture Manuscrite des Matériaux Anciens}
+
+\newglossaryentry{tei}
+{
+	name={Text Encoding Initiative},
+	description={Normes internationales de l'encodage des documents texts}
+}
+\newacronym{TEI}{TEI}{Text Encoding Initiative}
+
+\newglossaryentry{iiif}
+{
+	name={International Image Interoperability Framework},
+	description={Normes internationales de l'exploitation des images numériques et de leurs métadonnées par API}
+}
+\newacronym{IIIF}{IIIF}{International Image Interoperability Framework}
+
+\newacronym{ALTO}{ALTO}{Analyzed Layout and Text Object}
+
+\newacronym{XML}{XML}{eXtensible Markup Language}
+
+\newacronym{BNF}{BnF}{Bibliothèque nationale de France}
+
+\newacronym{RDF}{RDF}{Resource Description Framework}
+
+\newacronym{TAL}{TAL}{Traitement automatique des langues}
+
+\newacronym{ARK}{ARK}{Archival Resource Key}
+
+\newacronym{DTS}{DTS}{Distributed Text Services}
+
+\newglossaryentry{iiifapi}
+{
+	name={IIIF Image API},
+	description={Un service de web qui renvoie une image suite à une requête standardisée HTTP(S). L'URI peut préciser la région, la taille, la rotation, la qualité, les caractéristiques, et le format de l'image demandée.}
+}
+\newacronym{API}{API}{Application Programming Interface}
+
+\newglossaryentry{odd}
+{
+	name={One Document Does it all},
+	description={Un fichier XML TEI qui précise les règles d'un schème TEI personnalisé.}
+}
+\newacronym{ODD}{ODD}{One Document Does it all}
+
+\newacronym{JSON}{JSON}{JavaScript Object Notation}
+
+\newacronym{HTML}{HTML}{HyperText Markup Language}
+
+\newacronym{METS}{METS}{Metadata Encoding and Transmission Standard}
+
+\newacronym{YAML}{YAML}{Yet Another Markup Language}
+
+\newacronym{SRU}{SRU}{Search/Retrieve via URL}
+
+\newglossaryentry{unimarc}
+{
+	name={UNIMARC},
+	description={Une référence pour l’échange de données en format XML}
+}
+
+\newacronym{SUDOC}{SUDOC}{Système Universitaire de Documentation}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			DIAGRAM
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usetikzlibrary{calc, matrix, shapes.geometric, arrows}
+\usepackage{pgfplots}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{graphicx}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			CODE
+\usepackage{listings}
+\usepackage{color}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{cyan}{rgb}{0.0,0.6,0.6}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinelanguage{XML}{
+  backgroundcolor=\color{backcolour},  
+  basicstyle=\ttfamily\footnotesize,
+  morestring=[s]{"}{"},
+  moredelim=[s][\color{black}]{>}{<},
+  morecomment=[s]{!--}{--},
+  commentstyle=\color{codegreen},
+  moredelim=[s][\color{red}]{\ }{=},
+  stringstyle=\color{blue},
+  identifierstyle=\color{cyan},
+  numberstyle=\tiny\color{codegray},
+  breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+%Code listing style named "json"
+\lstdefinestyle{json}{
+  backgroundcolor=\color{backcolour}, 
+  basicstyle=\ttfamily\footnotesize,
+  commentstyle=\color{codegreen},
+  numberstyle=\tiny\color{codegray},
+  basicstyle=\ttfamily\footnotesize,
+  breakatwhitespace=false,         
+  breaklines=true,                 
+  captionpos=b,                    
+  keepspaces=true,                 
+  numbers=left,                    
+  numbersep=5pt,                  
+  showspaces=false,                
+  showstringspaces=false,
+  showtabs=false,                  
+  tabsize=2
+}
+
+%Code listing style named "python"
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+
+\lstdefinestyle{python}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			DOCUMENT
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
 
-\section{La génération du \texttt{<body>} grâce au lexique \textit{SegmOnto}}
+Jusqu'à présent dans l'exposition sur la modélisation des fichiers \acrshort{ALTO} en \acrshort{TEI}, nous avons parlé de deux éléments descendant directement de la racine \acrshort{TEI}. Le \texttt{<teiHeader>} renseigne sur les trois objets de texte concernés par la ressource numérique~: la ressource elle-même, le fac-similé numérique dont les images des modèles \acrshort{HTR} ont traité, et le document source physique à partir duquel le fac-similé a été fait. Le document \acrshort{TEI} contient aussi des métadonnées utiles à l'exploitation de la ressource numérique. Dans un deuxième temps, le \texttt{<sourceDoc>} a récupéré toute donnée significative des fichiers \acrshort{ALTO} et les met dans un arbre \acrshort{TEI}, spécifiquement dans les éléments descendant du \texttt{<sourceDoc>} et des attributs. Ayant récupéré toutes les données des sources externes, l'application \texttt{alto2tei} traite ensuite les données déjà présentes dans la ressource en cours de construction.
 
-Expliquer comment j'ai généré le \texttt{<body>} en prenant les lignes de texte de la \texttt{<sourceDoc>} selon leurs étiquettes.
+La ressource numérique présente deux versions du texte prédit que l'application \texttt{alto2tei} produit à partir des données qu'elle a traités et mises dans le \texttt{<sourceDoc>}. Dans un premier temps, elle présente dans l'élément \texttt{<body>} une version du texte pré-éditorialisée, c'est-à-dire dans la manière par laquelle le texte s'apparaît sur la page. Les fautes d'orthographe, les sauts de ligne, les coupures de mot sont tous conservés dans la représentation du texte de l'élément \texttt{<body>}. La version pré-éditorialisée sert à l'analyse du texte transcrit ainsi qu'à l'analyse linguistique que peuvent vouloir faire des chercheurs. 
+
+Dans un deuxième temps, la ressource numérique du pipeline \textit{Gallic(orpor)a} présente son propre analyse linguistique du texte transcrit grâce aux modèles \acrshort{TAL} qu'elle met en pratique. La représentation du texte ainsi analysé, avec des entités nommés et des mots normalisés, est contenu dans l'élément \acrshort{TEI} \texttt{<standOff>} pour qu'elle ne soit pas traité comme la transcription du texte. La transcription du texte est représentée dans l'élément \texttt{<body>} qui peut être facilement exploité par les éditeurs et les visionneurs de texte en format \acrshort{TEI}. L'état actuel de l'application \texttt{alto2tei} n'effectue pas d'analyse linguistique, mais elle prépare la représentation du texte pré-éditorialisé du \texttt{<body>} duquel un \textit{feature} ajouté plus tard pourrait disposer pour mettre en œuvre l'analyse linguistique produite par des modèles \acrshort{TAL}.
+
+\section{La génération du \texttt{<body>} grâce au vocabulaire \textit{SegmOnto}}
+L'objectif du \texttt{<body>} est de permettre aux logiciels d'exploiter la transcription du texte que des modèles \acrshort{HTR} ont prédit. Cependant, des modèles prédisent plusieurs aspects de la page numérisée, plus que celui qui concerne le texte du document. Selon le vocabulaire \textit{SegmOnto}, par exemple, les parties de l'image dans lesquelles s'encadre un dessin (\textit{GraphicZone}), ou un numéro de page (\textit{NumberingZone}), ou un titre en tête (\textit{RunningTitleZone}) ne devraient pas être incluses dans la représentation du texte pré-éditorialisé. La plupart des chercheurs qui désireront analyser la transcription du fac-similé auront besoin du texte appartenant à l'œuvre telle qu'elle se conçoit. Les en-têtes, les numéros de pages, le texte des tampons, et les notes ajoutées après la publication de l'imprimé ou l'apparition du manuscrit sont tous intéressants à la recherche, mais ils dérangent l'analyse computationnelle de l'œuvre qui compte sur une représentation du texte continu, où les mots coupés au saut de ligne sont réunis et le texte qui continue sur la page suivante fait partie d'un encodage sans une telle interruption.
+
+L'application \texttt{alto2tei} met en œuvre deux étapes pour extraire et nettoyer le texte transcrit. Dans un premier temps, l'application recherche tous les éléments \texttt{<line>} du \texttt{<sourceDoc>} pour recueillir les lignes de texte. Ensuite, elle extrait uniquement les lignes qui portent des étiquettes qui appartiennent au texte principal du document selon la détermination de notre modélisation. La Table~\ref{tab:tags} montre quelles étiquettes de zone font partie du texte principal et lesquelles qui n'en font pas selon la détermination de l'équipe \textit{Gallic(orpor)a}.
+
+\centering
+\begin{tabularx}{0.5\textwidth}
+	{|  c | c | }
+\hline
+Texte principal & Autre \\
+\hline \hline
+ & CustomZone \\ \hline
+ & DamageZone \\ \hline
+ & DecorationZone \\ \hline
+ & DigitizationArtefactZone\\ \hline
+DropCapitalZone & \\ \hline
+MainZone & \\ \hline
+ & MarginTextZone\\ \hline
+ & MusicZone\\ \hline
+ & NumberingZone\\ \hline
+ & QuireMarksZone\\ \hline
+ & RunningTitleZone\\ \hline
+ & SealZone\\ \hline
+ & StampZone\\ \hline
+ & TableZone\\ \hline
+ & TitlePageZone\\ \hline
+\end{tabularx}
+\label{tab:tags}
 
 \section{L'analyse linguistique}
-
-Parler d'un travail futur qui pourra prendre le fichier XML-TEI que j'ai créé et extraire les lignes de texte du \texttt{<body>} et les passer aux modèles TAL pour faire des analyses linguistiques. Montrer un exemple de ces données et comment cela marcherait avec un travail préliminaire que j'aurai fait d'ici la fin de stage et/ou le travail d'un ancien stagiaire que j'ai appliquée aux données Gallic(orpor)a. 
 
 \end{document}
 \documentclass[../main.tex]{subfiles}
