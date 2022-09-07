@@ -371,7 +371,7 @@ Normalement, les modèles \acrshort{HTR} d'aujourd'hui prédisent le rectangle q
 \subsubsection{Le bloc (\texttt{<TextBlock>}) en particulier}
 En plus des données d'usage (le type et les coordonnées du polygone et/ou du rectangle) la modélisation \acrshort{TEI} du \texttt{<TextBlock>} exige la composition d'URL pour visionner le masque du bloc (\texttt{@source}) et la décomposition de l'étiquette appliquée au bloc. Entraîné sur le vocabulaire \textit{SegmOnto}, le modèle \acrshort{HTR} devrait donner au bloc une référence à une étiquette qui peut se composer de trois parties~: le type, le sous-type, et le numéro dans la suite. Le deuxième colonne prédite sur la page, par exemple, porterait l'étiquette \textit{MainZone:column:2}. Les étiquettes ainsi composées sont données aux blocs et aux lignes de texte. Les parties du document encore plus petit, tel que le mot ou le glyphe, ne portent pas d'étiquette composée.
 
-Par conséquent, uniquement les étiquettes attribuées aux éléments \acrshort{ALTO} \texttt{<TextBlock>} et \texttt{<TextLine>} sont décomposées lors de leur transformation \acrshort{TEI}. Elles peuvent se diviser en trois. L'attribut \texttt{@type} prend la première partie, le \texttt{@subtype} prend le sous-type qui pourrait suivre les deux points, et le \texttt{@n} prend le numéro s'il y en a un qui suit les deux points à la fin. Si le modèle \acrshort{HTR} n'a pas mis en pratique des étiquettes aussi détaillées, les attributs \texttt{@subtype} et \texttt{@n} prennent la valeur \textit{none} pour le bloc. Mais pour la ligne de texte (\texttt{<TextLine>}), la valeur du numéro se constitue du compte que fait l'application \texttt{alto2tei} des lignes de texte traitées sur la page. Un tel compte n'est pas si logique pour les blocs et donc l'attribut \texttt{@n} ne porte pas de valeur significative si l'étiquette n'en a pas donnée aucune. L'exemple du \texttt{<TextBlock>} et l'exemple de sa modélisation en \acrshort{TEI} sont donnés dans la Figure~\ref{fig:zone}. Une visualisation de la transformation d'\acrshort{ALTO} à \acrshort{TEI} est donnée à la fin du chapitre dans la Figure~\ref{}.
+Par conséquent, uniquement les étiquettes attribuées aux éléments \acrshort{ALTO} \texttt{<TextBlock>} et \texttt{<TextLine>} sont décomposées lors de leur transformation \acrshort{TEI}. Elles peuvent se diviser en trois. L'attribut \texttt{@type} prend la première partie, le \texttt{@subtype} prend le sous-type qui pourrait suivre les deux points, et le \texttt{@n} prend le numéro s'il y en a un qui suit les deux points à la fin. Si le modèle \acrshort{HTR} n'a pas mis en pratique des étiquettes aussi détaillées, les attributs \texttt{@subtype} et \texttt{@n} prennent la valeur \textit{none} pour le bloc. Mais pour la ligne de texte (\texttt{<TextLine>}), la valeur du numéro se constitue du compte que fait l'application \texttt{alto2tei} des lignes de texte traitées sur la page. Un tel compte n'est pas si logique pour les blocs et donc l'attribut \texttt{@n} ne porte pas de valeur significative si l'étiquette n'en a pas donnée aucune. L'exemple du \texttt{<TextBlock>} et l'exemple de sa modélisation en \acrshort{TEI} sont donnés dans la Figure~\ref{fig:zone}. Une visualisation de la transformation d'\acrshort{ALTO} à \acrshort{TEI} est donnée à la fin du chapitre dans la Figure~\ref{fig:modTextBlock}.
 
 \begin{figure}[ht]
 \centering
@@ -410,7 +410,7 @@ Dans le vocabulaire \textit{SegmOnto}, l'étiquette \textit{line} s'applique à 
 
 La modélisation des données du \texttt{<TextLine>} en \acrshort{TEI} s'appuient comme d'habitude sur l'élément \texttt{<zone>} parce qu'il porte sur la représentation d'une région de la page et une partie des données du \texttt{<TextLine>} portent sur le masque de la ligne. Les attributs du \texttt{<zone>} pour la ligne de texte sont identiques à ceux du bloc de texte. Il y a les quatre coordonnées du rectangle \texttt{@ulx}, \texttt{@uly}, \texttt{@lrx}, \texttt{@lry} récupérées respectivement depuis les attributs suivants du \texttt{<TextLine>}~: \texttt{@HPOS}, \texttt{@VPOS}, \texttt{@WIDTH}, \texttt{@HEIGHT}. Ensuite l'attribut \texttt{@source} se compose en part de ces quatre coordonnées. Enfin, le \texttt{<zone>} contient les points du \texttt{<Polygon>}, l'élément qui descend du \texttt{<TextLine>} et qui décrit le périmètre du polygone qui encadre la ligne de texte.
 
-Le \texttt{<zone>} du \texttt{<TextLine>} contient deux enfants directs particulier à la ligne de texte~: le \texttt{<line>} et le \texttt{<path>}. L'élément \texttt{<line>} contient le texte de la ligne. Comme attribut, il porte simplement un identifiant et le nombre de la ligne de texte lors du traitement du fichiers \acrshort{ALTO}. Le \texttt{<path>} représente le \textit{baseline} de la ligne de texte, c'est-à-dire le début et la fin de la ligne linéaire. Il se compose donc de quatre nombres, un pair x,y indiquant le point du début et un deuxième pair x,y indiquant le point de la fin. Les quatre nombres sont encodés directement dans le fichier \acrshort{ALTO} comme la valeur de l'attribut \texttt{@BASELINE} du \texttt{<TextLine>}. L'élément \acrshort{TEI} qui convient le mieux à la donnée du \textit{baseline} est l'élément \texttt{<path>}. L'exemple du \texttt{<TextLine>} et l'exemple de sa modélisation en \acrshort{TEI} sont donnés dans la Figure~\ref{fig:line}. Une visualisation de la transformation d'\acrshort{ALTO} à \acrshort{TEI} est donnée dans la Figure~\ref{}.
+Le \texttt{<zone>} du \texttt{<TextLine>} contient deux enfants directs particulier à la ligne de texte~: le \texttt{<line>} et le \texttt{<path>}. L'élément \texttt{<line>} contient le texte de la ligne. Comme attribut, il porte simplement un identifiant et le nombre de la ligne de texte lors du traitement du fichiers \acrshort{ALTO}. Le \texttt{<path>} représente le \textit{baseline} de la ligne de texte, c'est-à-dire le début et la fin de la ligne linéaire. Il se compose donc de quatre nombres, un pair x,y indiquant le point du début et un deuxième pair x,y indiquant le point de la fin. Les quatre nombres sont encodés directement dans le fichier \acrshort{ALTO} comme la valeur de l'attribut \texttt{@BASELINE} du \texttt{<TextLine>}. L'élément \acrshort{TEI} qui convient le mieux à la donnée du \textit{baseline} est l'élément \texttt{<path>}. L'exemple du \texttt{<TextLine>} et l'exemple de sa modélisation en \acrshort{TEI} sont donnés dans la Figure~\ref{fig:line}. Une visualisation de la transformation d'\acrshort{ALTO} à \acrshort{TEI} est donnée dans la Figure~\ref{fig:modLine}.
 
 \begin{figure}[ht]
 \centering
@@ -423,7 +423,7 @@ Le \texttt{<zone>} du \texttt{<TextLine>} contient deux enfants directs particul
 	<String CONTENT="A MONSIEVR" HPOS="596" VPOS="777" WIDTH="1414" HEIGHT="182"/>
 </TextLine>
 \end{lstlisting}
-\caption{Le \texttt{<TextLine>} en \acrshort{ALTO}}
+\caption{Le \texttt{<TextLine>} en \acrshort{ALTO} où le texte est contenu dans l'attribut \texttt{@CONTENT} de l'élément descendant \texttt{<String>}}
 \label{alto:line}
 \end{subfigure}
 
@@ -448,16 +448,77 @@ Pour certains fichiers \acrshort{ALTO}, tel que ceux qui sortent de l'interface 
 
 % Segment
 \subsection{Le segment}
-Les fichiers \acrshort{ALTO} qui contiennent plus de détail ont des éléments \texttt{<zone>} pour des segments (\texttt{<String>}) prédits et pour les glyphes (\texttt{<Glyph>}) prédits dans les segment. Les modèles \acrshort{HTR} prédisent les segments qui contiennent des glyphes, tel qu'un mot, et ceux qui n'en ont pas, tel qu'une espace entre mots. Les segment qui contiennent des glyphes peuvent représenter la prédiction d'un mot, de la ponctuation, ou d'un mot avec de la ponctuation à côté. L'important est que le segment contient soit la prédiction d'au moins un glyphe ou la prédiction d'une espace entre mots. Uniquement les segments (\texttt{<String>}) qui contiennent des prédictions sur des glyphes portent aussi un polygone dans lequel s'encadre la chaîne des glyphes. Si le \texttt{<String>} représente une espace entre mots, le masque prédit n'est qu'un rectangle. Bien que l'élément \texttt{<String>} ne porte pas directement sur le texte prédit, le modèle \acrshort{HTR} évalue son taux de réussite à partir des glyphes bien prédits dedans. L'évaluation de sa prédiction est représentée dans l'attribut \texttt{@WC} de l'élément \texttt{<String>}. L'acronyme \textit{WC} signifie en anglais \textit{word confidence}. L'exemple du \texttt{<String>} et l'exemple de sa modélisation en \acrshort{TEI} sont donnés dans la Figure~\ref{fig:string}. Une visualisation de la transformation d'\acrshort{ALTO} à \acrshort{TEI} est donnée dans la Figure~\ref{}.
+Les fichiers \acrshort{ALTO} qui contiennent plus de détail ont des éléments \texttt{<zone>} pour des segments (\texttt{<String>}) prédits et pour les glyphes (\texttt{<Glyph>}) prédits dans les segment. Les modèles \acrshort{HTR} prédisent les segments qui contiennent des glyphes, tel qu'un mot, et ceux qui n'en ont pas, tel qu'une espace entre mots. Les segment qui contiennent des glyphes peuvent représenter la prédiction d'un mot, de la ponctuation, ou d'un mot avec de la ponctuation à côté. L'important est que le segment contient soit la prédiction d'au moins un glyphe ou la prédiction d'une espace entre mots. Uniquement les segments (\texttt{<String>}) qui contiennent des prédictions sur des glyphes portent aussi un polygone dans lequel s'encadre la chaîne des glyphes. Si le \texttt{<String>} représente une espace entre mots, le masque prédit n'est qu'un rectangle. Bien que l'élément \texttt{<String>} ne porte pas directement sur le texte prédit, le modèle \acrshort{HTR} évalue son taux de réussite à partir des glyphes bien prédits dedans. L'évaluation de sa prédiction est représentée dans l'attribut \texttt{@WC} de l'élément \texttt{<String>}. L'acronyme \textit{WC} signifie en anglais \textit{word confidence}. L'exemple du \texttt{<String>} et l'exemple de sa modélisation en \acrshort{TEI} sont donnés dans la Figure~\ref{fig:stringAltoTei}. Une visualisation de la transformation d'\acrshort{ALTO} à \acrshort{TEI} est donnée dans la Figure~\ref{fig:modString}.
 
+\begin{figure}[ht]
+\centering
+\begin{subfigure}[b]{\textwidth}
+\begin{lstlisting}[language=XML]
+<String ID="segment_1" CONTENT="MONSIEVR" HPOS="837" VPOS="777" WIDTH="1172" HEIGHT="182" WC="0.9.64">
+	<Shape>
+		<Polygon POINT="..."/>
+	</Shape>
+<!-- ... -->
+</String>
+\end{lstlisting}
+\caption{Le \texttt{<String>} en \acrshort{ALTO} où le texte n'est pas contenu dans l'attribut \texttt{@CONTENT} de l'élément descendant \texttt{<String>}}
+\label{alto:string}
+\end{subfigure}
+
+\vspace{1cm}
+
+\begin{subfigure}[b]{\textwidth}
+\begin{lstlisting}[language=XML]
+<zone xml:id="f11-textblock_0-textline_0-segment_2-segCount3" type="String" ulx="837" uly="777" lrx="2009" lry="959" points="..." source="https://gallica.bnf.fr/iiif/ark:/12148/btv1b8610802d/f11/837,777,1172,182/full/0/native.jpg">
+	<certainty xml:id="f11-textblock_0-textline_0-segment_2-segCount3-cert" target="#f11-textblock_0-textline_0-segment_2-segCount3-text" locus="value" degree="0.9064"/>
+<!-- ... -->
+</zone>
+\end{lstlisting}
+\caption{Le \texttt{<zone>} du \texttt{<String>} en \acrshort{TEI}}
+\label{tei:string}
+\end{subfigure}
+\caption{La modélisation du \texttt{<String>}}
+\label{fig:stringAltoTei}
+\end{figure}
 
 % Glyph
 \subsection{Le glyphe}
-Les caractères et de la ponctuation prédits par des modèles \acrshort{HTR} sont tous encodés dans l'élément \texttt{<Glyph>} selon le schème \acrshort{ALTO}. Contrairement au \texttt{<String>} qui sert à contenir une chaîne de glyphes, le \texttt{<Glyph>} du fichiers \acrshort{ALTO} contient à la fois le masque et le texte. Pour cette raison, la modélisation en \acrshort{TEI} représente, comme d'habitude, le masque du \texttt{<Glyph>} dans l'élément \texttt{<zone>} et le texte prédit dans l'élément \texttt{<c>}. Ce dernier est un élément du schème \acrshort{TEI} destiné à la représentation d'un caractère, soit une lettre, soit de la ponctuation. Il convient bien donc à la représentation de toute prédiction dans l'élément \texttt{<Glyph>} du fichier \acrshort{ALTO}. Le modèle \acrshort{HTR} évalue son taux de réussite de sa prédiction du glyphe. L'évaluation de sa prédiction est représentée dans l'attribut \texttt{@GC} de l'élément \texttt{<String>}. L'acronyme \textit{GC} signifie en anglais \textit{glyph confidence}. L'exemple du \texttt{<Glyph>} et l'exemple de sa modélisation en \acrshort{TEI} sont donnés dans la Figure~\ref{fig:}. Une visualisation de la transformation d'\acrshort{ALTO} à \acrshort{TEI} est donnée dans la Figure~\ref{}.
+Les caractères et de la ponctuation prédits par des modèles \acrshort{HTR} sont tous encodés dans l'élément \texttt{<Glyph>} selon le schème \acrshort{ALTO}. Contrairement au \texttt{<String>} qui sert à contenir une chaîne de glyphes, le \texttt{<Glyph>} du fichiers \acrshort{ALTO} contient à la fois le masque et le texte. Pour cette raison, la modélisation en \acrshort{TEI} représente, comme d'habitude, le masque du \texttt{<Glyph>} dans l'élément \texttt{<zone>} et le texte prédit dans l'élément \texttt{<c>}. Ce dernier est un élément du schème \acrshort{TEI} destiné à la représentation d'un caractère, soit une lettre, soit de la ponctuation. Il convient bien donc à la représentation de toute prédiction dans l'élément \texttt{<Glyph>} du fichier \acrshort{ALTO}. Le modèle \acrshort{HTR} évalue son taux de réussite de sa prédiction du glyphe. L'évaluation de sa prédiction est représentée dans l'attribut \texttt{@GC} de l'élément \texttt{<String>}. L'acronyme \textit{GC} signifie en anglais \textit{glyph confidence}. L'exemple du \texttt{<Glyph>} et l'exemple de sa modélisation en \acrshort{TEI} sont donnés dans la Figure~\ref{fig:glyphAltoTei}. Une visualisation de la transformation d'\acrshort{ALTO} à \acrshort{TEI} est donnée dans la Figure~\ref{fig:modGlyph}.
 
+\begin{figure}[ht]
+\centering
+\begin{subfigure}[b]{\textwidth}
+\begin{lstlisting}[language=XML]
+<Glyph ID="char_1" CONTENT="M" HPOS="837" VPOS="777" WIDTH="159" HEIGHT="162" WC="0.8127">
+	<Shape>
+		<Polygon POINT="..."/>
+	</Shape>
+<!-- ... -->
+</String>
+\end{lstlisting}
+\caption{Le \texttt{<Glyph>} en \acrshort{ALTO}}
+\label{alto:string}
+\end{subfigure}
+
+\vspace{1cm}
+
+\begin{subfigure}[b]{\textwidth}
+\begin{lstlisting}[language=XML]
+<zone xml:id="f11-textblock_0-textline_0-segment_2-char_1-glyphCount2" type="String" ulx="837" uly="777" lrx="996" lry="939" points="..." source="https://gallica.bnf.fr/iiif/ark:/12148/btv1b8610802d/f11/837,777,154,120/full/0/native.jpg">
+	<certainty xml:id="f11-textblock_0-textline_0-segment_2-char_1-glyphCount2-cert" target="#f11-textblock_0-textline_0-segment_2-char_1-glyphCount2-text" locus="value" degree="0.8127"/>
+	<c xml:id="f11-textblock_0-textline_0-segment_2-char_1-glyphCount2-text">M</c>
+</zone>
+\end{lstlisting}
+\caption{Le \texttt{<zone>} du \texttt{<Glyph>} en \acrshort{TEI}}
+\label{tei:string}
+\end{subfigure}
+\caption{La modélisation du \texttt{<Glphy>}}
+\label{fig:glyphAltoTei}
+\end{figure}
 
 \section{Les visualisations de la transformation}
 Des visualisations de la modélisation de chaque élément du fichier \acrshort{ALTO} sont montrées dans les figures qui suivent. Les attributs sont visualisés par les carrés en ligne tirée et les éléments \acrshort{XML} sont visualisés par les carrés en ligne solide. La couleur de l'élément ou de l'attribut du schème \acrshort{ALTO} est répétée dans la visualisation du schème \acrshort{TEI} quand sa valeur est utilisée.
+
 % empty
 \tikzstyle{empty} = [rectangle, rounded corners, minimum width=2cm, minimum height=0.5cm]
 
@@ -565,39 +626,91 @@ Des visualisations de la modélisation de chaque élément du fichier \acrshort{
 \draw [-] (graphic) -- (url);
 
 \end{tikzpicture}
-\caption{Le modèle du \texttt{<surface>} en \acrshort{TEI}}
+\caption{La modélisation du \texttt{<Page>} en \acrshort{TEI}}
 \label{mod:pageTEI}
 \end{subfigure}
 
-\caption{La transformation de la page d'\acrshort{ALTO} à \acrshort{TEI}}
+\vspace{1cm}
+
+\caption{La transformation du \texttt{<Page>} d'\acrshort{ALTO} à \acrshort{TEI}}
 \label{fig:modPage}
 \end{figure}
 
 %%%%%%%%%
-% Line
+% TextBlock
+\begin{figure}[ht]
+\centering
+\begin{subfigure}[b]{\textwidth}
+\begin{tikzpicture}[node distance=0.5cm]
 
+\node [elem] (TextBlock) {TextBlock};
+\node [
+
+\end{tikzpicture}
+\caption{Le \texttt{<TextBlock>} en \acrshort{ALTO}}
+\end{subfigure}
+
+\vspace{1cm}
+
+\begin{subfigure}[b]{\textwidth}
+\begin{tikzpicture}[node distance=0.5cm]
+\end{tikzpicture}
+\caption{La modélisation du \texttt{<TextBlock>} en \acrshort{TEI}}
+\end{subfigure}
+
+\vspace{1cm}
+
+\caption{La transformation du \texttt{<TextBlock>} en \acrshort{TEI}}
+\label{fig:modTextBlock}
+\end{figure}
+
+%%%%%%%%%
+% Line
+\begin{figure}[ht]
+\centering
+\begin{subfigure}[b]{\textwidth}
+\begin{tikzpicture}[node distance=0.5cm]
+
+\end{tikzpicture}
+\caption{Le \texttt{<TextLine>} en \acrshort{ALTO}}
+\end{subfigure}
+
+\vspace{1cm}
+
+\begin{subfigure}[b]{\textwidth}
+\begin{tikzpicture}[node distance=0.5cm]
+\end{tikzpicture}
+\caption{La modélisation du \texttt{<TextLine>} en \acrshort{TEI}}
+\end{subfigure}
+
+\vspace{1cm}
+
+\caption{La transformation du \texttt{<TextLine>} en \acrshort{TEI}}
+\label{fig:modLine}
+\end{figure}
 
 %%%%%%%%%
 % Segment
 \begin{figure}[ht]
 \centering
 \begin{subfigure}[b]{\textwidth}
-\begin{lstlisting}[language=XML]
-\end{lstlisting}
+\begin{tikzpicture}[node distance=0.5cm]
+\end{tikzpicture}
 \caption{Le \texttt{<String>} en \acrshort{ALTO}}
-\label{alto:string}
 \end{subfigure}
 
 \vspace{1cm}
 
 \begin{subfigure}[b]{\textwidth}
-\begin{lstlisting}[language=XML]
-\end{lstlisting}
-\caption{Le \texttt{<zone>} en \acrshort{TEI}}
-\label{tei:string}
+\begin{tikzpicture}[node distance=0.5cm]
+\end{tikzpicture}
+\caption{La modélisation du \texttt{<String>} en \acrshort{TEI}}
 \end{subfigure}
-\caption{La modélisation du \texttt{<String>}}
-\label{fig:string}
+
+\vspace{1cm}
+
+\caption{La transformation du \texttt{<String>} en \acrshort{TEI}}
+\label{fig:modString}
 \end{figure}
 
 %%%%%%%%%
@@ -605,22 +718,23 @@ Des visualisations de la modélisation de chaque élément du fichier \acrshort{
 \begin{figure}[ht]
 \centering
 \begin{subfigure}[b]{\textwidth}
-\begin{lstlisting}[language=XML]
-\end{lstlisting}
-\caption{Le \texttt{<>} en \acrshort{ALTO}}
-\label{alto:}
+\begin{tikzpicture}[node distance=0.5cm]
+\end{tikzpicture}
+\caption{Le \texttt{<Glyph>} en \acrshort{ALTO}}
 \end{subfigure}
 
 \vspace{1cm}
 
 \begin{subfigure}[b]{\textwidth}
-\begin{lstlisting}[language=XML]
-\end{lstlisting}
-\caption{Le \texttt{<>} en \acrshort{TEI}}
-\label{tei:}
+\begin{tikzpicture}[node distance=0.5cm]
+\end{tikzpicture}
+\caption{La modélisation du \texttt{<Glyph>} en \acrshort{TEI}}
 \end{subfigure}
-\caption{La modélisation du \texttt{<>}}
-\label{fig:}
+
+\vspace{1cm}
+
+\caption{La transformation du \texttt{<Glyph>} en \acrshort{TEI}}
+\label{fig:modGlyph}
 \end{figure}
 
 \end{document}

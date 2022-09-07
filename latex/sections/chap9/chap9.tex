@@ -132,6 +132,9 @@ d’Écriture Manuscrite des Matériaux Anciens}
 
 \newacronym{SUDOC}{SUDOC}{Système Universitaire de Documentation}
 
+\newacronym{CSV}{CSV}{Comma Separated Values}
+\newacronym{TSV}{TSV}{Tab Separated Values}
+
 %%%%%%%%%%%%%%%%%%%%%%%%
 %			DIAGRAM
 \usepackage{tikz}
@@ -231,35 +234,174 @@ La ressource numérique présente deux versions du texte prédit que l'applicati
 Dans un deuxième temps, la ressource numérique du pipeline \textit{Gallic(orpor)a} présente son propre analyse linguistique du texte transcrit grâce aux modèles \acrshort{TAL} qu'elle met en pratique. La représentation du texte ainsi analysé, avec des entités nommés et des mots normalisés, est contenu dans l'élément \acrshort{TEI} \texttt{<standOff>} pour qu'elle ne soit pas traité comme la transcription du texte. La transcription du texte est représentée dans l'élément \texttt{<body>} qui peut être facilement exploité par les éditeurs et les visionneurs de texte en format \acrshort{TEI}. L'état actuel de l'application \texttt{alto2tei} n'effectue pas d'analyse linguistique, mais elle prépare la représentation du texte pré-éditorialisé du \texttt{<body>} duquel un \textit{feature} ajouté plus tard pourrait disposer pour mettre en œuvre l'analyse linguistique produite par des modèles \acrshort{TAL}.
 
 \section{La génération du \texttt{<body>} grâce au vocabulaire \textit{SegmOnto}}
-L'objectif du \texttt{<body>} est de permettre aux logiciels d'exploiter la transcription du texte que des modèles \acrshort{HTR} ont prédit. Cependant, des modèles prédisent plusieurs aspects de la page numérisée, plus que celui qui concerne le texte du document. Selon le vocabulaire \textit{SegmOnto}, par exemple, les parties de l'image dans lesquelles s'encadre un dessin (\textit{GraphicZone}), ou un numéro de page (\textit{NumberingZone}), ou un titre en tête (\textit{RunningTitleZone}) ne devraient pas être incluses dans la représentation du texte pré-éditorialisé. La plupart des chercheurs qui désireront analyser la transcription du fac-similé auront besoin du texte appartenant à l'œuvre telle qu'elle se conçoit. Les en-têtes, les numéros de pages, le texte des tampons, et les notes ajoutées après la publication de l'imprimé ou l'apparition du manuscrit sont tous intéressants à la recherche, mais ils dérangent l'analyse computationnelle de l'œuvre qui compte sur une représentation du texte continu, où les mots coupés au saut de ligne sont réunis et le texte qui continue sur la page suivante fait partie d'un encodage sans une telle interruption.
+L'objectif du \texttt{<body>} est de permettre aux logiciels d'exploiter la transcription du texte que des modèles \acrshort{HTR} ont prédit. Cependant, des modèles prédisent plusieurs aspects de la page numérisée, plus que celui qui concerne le texte du document. Selon le vocabulaire \textit{SegmOnto}, par exemple, les parties de l'image dans lesquelles s'encadre un dessin (\textit{GraphicZone}), ou un numéro de page (\textit{NumberingZone}), ou un titre en tête (\textit{RunningTitleZone}) ne devraient pas être incluses dans la représentation du texte pré-éditorialisé. La plupart des chercheurs qui désireront analyser la transcription du fac-similé auront besoin du texte appartenant à l'œuvre telle qu'elle se conçoit. Les en-têtes, les numéros de pages, le texte des tampons, et les notes ajoutées après la publication de l'imprimé ou l'apparition du manuscrit sont tous intéressants à la recherche, mais ils dérangent l'analyse computationnelle de l'œuvre qui compte sur une représentation du texte continu, où les mots coupés au saut de ligne sont recollés et le texte qui continue sur la page suivante fait partie d'un encodage sans une telle interruption.
 
-L'application \texttt{alto2tei} met en œuvre deux étapes pour extraire et nettoyer le texte transcrit. Dans un premier temps, l'application recherche tous les éléments \texttt{<line>} du \texttt{<sourceDoc>} pour recueillir les lignes de texte. Ensuite, elle extrait uniquement les lignes qui portent des étiquettes qui appartiennent au texte principal du document selon la détermination de notre modélisation. La Table~\ref{tab:tags} montre quelles étiquettes de zone font partie du texte principal et lesquelles qui n'en font pas selon la détermination de l'équipe \textit{Gallic(orpor)a}.
+L'application \texttt{alto2tei} met en œuvre deux étapes pour extraire et nettoyer le texte transcrit. Dans un premier temps, elle recherche tous les éléments \texttt{<line>} du \texttt{<sourceDoc>} afin de recueillir les lignes de texte prédit dans le document source. Ces lignes deviennent directement de la prédiction des modèles \acrshort{HTR}. Il faut donc les nettoyer. L'application garde toute saut de ligne à la fin de chaque chaîne qu'elle extrait du \texttt{<sourceDoc>} sauf si elle coupe un mot, ce que l'application sait si la ligne se termine par un tiret. Dans un tel cas, elle recolle le début du mot à la fin de ligne et le reste du mot au début de la ligne suivante.
 
+Dans un deuxième temps, l'application \texttt{alto2tei} analyse les étiquettes de toutes ses lignes de texte ainsi nettoyées. L'équipe \textit{Gallic(orpor)a} a déterminé une traduction entre les étiquettes du vocabulaire \textit{SegmOnto} et l'arborescence de la \acrshort{TEI}. La Table~\ref{tab:tags} montre quelles lignes font partie du texte principal et comment notre modélisation les balise dans des éléments du \texttt{<body>}. Toute ligne se précède par un \texttt{<lb/>}, l'élément du schème \acrshort{TEI} destiné à indiquer le début d'une ligne de texte. Balisant le \texttt{<lb/>} est (au moins) l'un des éléments \acrshort{TEI} de la Table~\ref{tab:tags}.
+
+
+\begin{figure}[ht]
 \centering
-\begin{tabularx}{0.5\textwidth}
-	{|  c | c | }
+\begin{tabular}{| c | c | c |}
 \hline
-Texte principal & Autre \\
+\textit{SegmOntoZone} & \textit{SegmOntoLine} & représentation en \acrshort{TEI}\\
 \hline \hline
- & CustomZone \\ \hline
- & DamageZone \\ \hline
- & DecorationZone \\ \hline
- & DigitizationArtefactZone\\ \hline
-DropCapitalZone & \\ \hline
-MainZone & \\ \hline
- & MarginTextZone\\ \hline
- & MusicZone\\ \hline
- & NumberingZone\\ \hline
- & QuireMarksZone\\ \hline
- & RunningTitleZone\\ \hline
- & SealZone\\ \hline
- & StampZone\\ \hline
- & TableZone\\ \hline
- & TitlePageZone\\ \hline
-\end{tabularx}
+NumberingZone & DefaultLine & \texttt{<fw type="NumberingZone">} \\ \hline
+QuireMarksZone & DefaultLine & \texttt{<fw type="QuireMarksZone">} \\ \hline
+RunningTitleZone & DefaultLine & \texttt{<fw type="RunningTitleZone">} \\ \hline
+MarginTextZone & DefaultLine & \texttt{<note type="MarginTextZone">} \\ \hline
+MainZone & DefaultLine & \texttt{<ab type="MainZone">} \\ \hline
+MainZone & DropCapitalLine & \texttt{<hi rend="DefaultLine">} \\ \hline
+\end{tabular}
+\caption{Les étiquettes du texte principal}
 \label{tab:tags}
+\end{figure}
+
+\noindent Les lignes d'affilé dans une \textit{MainZone} s'encadrent toutes dans l'élément \texttt{<ab>}, mais la ligne d'un \textit{drop capital} se balise dans l'élément \texttt{<hi>} qui lui-même se balise dans le \texttt{<ab>} de la zone à laquelle la ligne appartient, comme se voit dans la Figure~\ref{fig:mainzone}.
+
+\begin{figure}[ht]
+\centering
+\begin{subfigure}[b]{0.4\textwidth}
+\Huge L\normalsize igne de texte \\
+Deuxième ligne de texte
+\end{subfigure}
+
+\hspace{1cm}%
+
+\begin{subfigure}[b]{\textwidth}
+\begin{lstlisting}[language=XML]
+<ab corresp="#sourceDocBlockID" type="MainZone">
+	<lb corresp="#sourceDocLine1ID"/><hi rend="DropCapitalLine">L</hi>igne de texte.
+	<lb corresp="#sourceDocLine2ID"/>Deuxième ligne de texte.
+</ab>
+\end{lstlisting}
+\end{subfigure}
+
+\hspace{1cm}%
+
+\caption{Les lignes de la \textit{MainZone}}
+\label{fig:mainzone}
+\end{figure}
+
+Ainsi encodée, où les lignes de texte se suivent l'une après l'autre dans l'élément \texttt{<body>}, en ignorant les zones détectées qui ne portent pas de texte, la ressource numérique peut être exploitée par un logiciel configuré pour le \acrshort{TEI}. Normalement l'élément \texttt{<lb/>} produira une saut de ligne pour que le texte qui traîne derrière l'élément vide s'apparaisse au début d'une nouvelle ligne. En plus, en recollant les mots coupés à la fin de ligne dans le document source, les mots ainsi nettoyés et reconstitués peuvent être cherchés grâce aux outils de recherche du logiciel. Par exemple, une utilisatrice ou un utilisateur ne trouverait pas le mot \textit{bâtiment} s'il avait été écrit dans le document source comme \textit{bâti-ment}, avec une saut de ligne après le tiret, et qu'il n'était pas recollé avant la recherche de l'utilisatrice ou l'utilisateur.
+
+Enfin, le texte hiérarchisé du \texttt{<body>} peut supporter des annotations et de l'analyse encore plus profonde et particularisée au genre du document source. Par exemple, une équipe de chercheurs pourraient développer un système de filtrage, tel qu'une feuille de transformation XSL, pour traiter les répliques d'un drame que notre modélisation balise dans le \texttt{<ab>} d'une \textit{MainZone}. Un tel exemple d'élaboration de l'encodage du \texttt{<body>} est visualisé dans la Figure~\ref{fig:drame}. Le texte pré-éditorialisé du \texttt{<body>} permet d'élaborer un texte éditorialisé grâce à la base produite par l'application \texttt{alto2tei} et conceptualisée par l'équipe \textit{Gallic(orpor)a}.
+
+\begin{figure}[ht]
+\centering
+
+\begin{subfigure}[b]{\textwidth}
+\begin{lstlisting}[language=XML]
+<ab corresp="#sourceDocBlockID" type="MainZone">
+	<lb corresp="#sourceDocLine1ID"/>Angélique.
+	<lb corresp="#sourceDocLine2ID"/>Regarde-moi un peu.
+	<lb corresp="#sourceDocLine3ID"/>Toinette.
+	<lb corresp="#sourceDocLine4ID"/>Hé bien! je vous regarde.
+</ab>
+\end{lstlisting}
+\caption{Le texte pré-éditorialisé du \texttt{<body>}}
+\end{subfigure}
+
+\hspace{1cm}%
+
+\begin{subfigure}[b]{\textwidth}
+\begin{lstlisting}[language=XML]
+<div2 type="scene" n="4">
+	<sp>
+		<speaker corresp="#sourceDocLine1ID"/>Angélique.</speaker>
+		<p>
+			<lb corresp="#sourceDocLine2ID"/>Regarde-moi un peu.
+		</p>
+	</sp>
+	<sp>
+		<speaker corresp="#sourceDocLine3ID"/>Toinette.</speaker>
+		<p>
+			<lb corresp="#sourceDocLine4ID"/>Hé bien! je vous regarde.
+		</p>
+	</sp>
+</div2>
+\end{lstlisting}
+\caption{Le texte éditorialisé}
+\end{subfigure}
+
+\hspace{1cm}%
+
+\caption{La transformation des répliques prédits dans une \textit{MainZone}}
+\label{fig:drame}
+\end{figure}
 
 \section{L'analyse linguistique}
+Le dernière aspect de la ressource numérique qu'avait conceptualisé l'équipe du projet \textit{Gallic(orpor)a} est une analyse linguistique du texte prédit. Mon application \texttt{alto2tei} ne réalise pas encore l'application de cet objectif. Cependant, sa structure supporte l'ajout plus tard d'un \textit{feature} qui soit reprendra le texte nettoyé du \texttt{<body>}, soit reprendra le texte que mon application a structuré dans les éléments du \texttt{<sourceDoc>}. Les deux options sont intéressants parce qu'elles permettent des approches différentes à la mise en œuvre des modèles \acrshort{TAL} (\acrlong{TAL}). L'un des enjeux de l'analyse linguistique et l'alignement entre le texte saisie et le texte produit. Idéalement, un mot normalisé par des modèles \acrshort{TAL} se lierait toujours à sa version transcrite depuis le document source. Ainsi, la donnée que des modèles \acrshort{TAL} produite ferrait référence à l'identifiant du élément \texttt{<zone>} dans le \texttt{<sourceDoc>}.
+
+Le défi à surmonter est que les modèles \acrshort{TAL} ont besoin des mots complets, c'est-à-dire recollés s'ils était coupés à la fin de ligne. La transcription représentée dans le \texttt{<sourceDoc>} donne à chaque segment de texte son propre identifiant~; par conséquent, un mot peut porter deux identifiants s'il est coupé en deux. Il est possible de lier les deux identifiants du mot dans la transcription avec le seul identifiant du même mot nettoyé et donné aux modèles \acrshort{TAL}. Mais la complexité qui se produit pour certains mots et pas pour des autres est un défi qu'une application doit pouvoir surmonter.
+
+Un autre défi qui s'applique tous le temps concerne les lignes de texte de la transcription. Normalement les modèles \acrshort{TAL} saisissent les segments du texte qui ont une cohérence lexicale, afin qu'ils puissent en chercher la signification linguistique de la phrase. Il faut donc leur donner des lignes de texte recollées. Comme l'application \texttt{alto2tei} cherche les tirets à la fin de ligne, afin de recoller les mots coupés, une application qui met en œuvre l'analyse linguistique devrait chercher les signes de ponctuation qui indique le début ou la fin d'une phrase cohérente. Pour le français moderne, qui a déjà adopté des règles quant à la ponctuation et à l'emploi de lettres majuscules, un tel filtrage du texte est facile et déjà mis en pratique par plusieurs applications. Mais pour les documents historiques du moyen français le défi devient plus compliqué. En outre, il se complique encore quand on veut élaborer un système pour recoller les lignes de texte performant pour plusieurs états du français.
+
+Dans le cadre du stage, j'ai expérimenté avec la mise en œuvre de l'analyse linguistique en saisissant le texte que mon application a préparé pour le \texttt{<body>} de la ressource numérique. Puisque les mots du \texttt{<body>} sont déjà recollés, la première étape est de composer des phrases qui ont d'une cohérence lexicale sur laquelle des modèles \acrshort{TAL} peuvent s'appuyer. J'avais déjà écrit un code pour faire cela dans le cadre de la création des vérités de terrain. Il y avait une équipe qui s'occupait des vérités de terrain pour les modèles \acrshort{HTR} et une autre qui s'occupait de la lemmatisation du texte transcrit par la première équipe. Ce dernier jeu des vérités de terrain est ciblé à entraîner des modèles \acrshort{TAL} pour l'application de l'analyse linguistique au corpus. Mon code a aidé l'équipe qui s'en chargeait car il traite les lignes de texte et sort un fichier TXT. Le texte se donne soit dans des phrases complets, soit dans une phrase partielle qui ne termine pas par des signes de ponctuation en fin de phrase, tel comme le point, le point d'exclamation, et le point d'interrogation.
+
+Normalement, des modèles \acrshort{TAL} saisissent des listes itératives des phrases et des mots~\footcite{ortizsuarezAsynchronousPipelineProcessing2019}. Ayant préparé la liste itérative des phrases d'une cohérence lexicale, grâce à mon script, l'expérience a profité des scripts développés dans le cadre du projet \textit{e-Ditiones} par Alexandre Bartz~\footcite{bartzAnnotator2022}. L'une des premières étapes de l'analyse linguistique, et quelque chose que fait le script de Bartz, est la tokenisation, par laquelle la phrase est désagrégée en \textit{tokens}, c'est-à-dire des petits unités lexicale. Le texte ainsi atomisé peut être ensuite traité par des modèles \acrshort{TAL} entraînés pour faire certaines tâches, telle comme la lemmatisation et la normalisation.
+
+Le script de Bartz apport la lemmatisation au texte grâce à la librairie pytho \textit{pie-extended}, développée par Thibault Clérice~\footcite{clericePieExtendedExtension2020a}. Un modèle entraîné pour faire la lemmatisation trait tout \textit{token}, que le script de Bartz a préparé, et renvoie deux genres de données~: la forme canonique du \textit{token} (le \textit{lemme}) et une suite d'analyses en fonction de la nature du \textit{lemme}~\footnotemark{}\footnotetext{Dans l'analyse du script de Bartz, la nature (\textit{part of speech} ou POS) du \textit{lemme} est accompagnée par des analyses supplémentaires et dépendents sur la langue. Par exemple, il donne au \textit{lemme} identifié comme un verbe son temps, et celui identifié comme un nom son genre.}. Après la lemmatisation, le script de Bartz applique un modèle de normalisation qui transforme le français du document source en une version moderne. Dans l'expérience que j'ai faite avec un imprimé du XVIe siècle (\acrshort{ARK} bpt6k724151), j'ai utilisé un modèle de normalisation entraîné par Rachel Bawden~\footcite{bawdenModFrNormalisation2022}. Un exemple des résultats des deux tâches de \acrshort{TAL} est montré dans la Figure~\ref{fig:tal}.
+
+\begin{figure}
+\centering
+\begin{subfigure}[b]{\textwidth}
+\centering
+\textit{Humble salut et recognoissance de sa liberalité enuers luy.}
+\caption{Le texte de saisie en phrase cohérente}
+\end{subfigure}
+
+\vspace{1mm}
+
+\begin{subfigure}[b]{\textwidth}\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\textit{token} & \textit{lemma} & \textit{pos}\\
+\hline\hline
+Humble & Humble & ADJqua\\ \hline
+salut & salut & NOMcom\\ \hline
+et & et & CONcoo\\ \hline
+recognoissance & recognoissance & ADJqua\\ \hline
+de & de & PRE\\ \hline
+sa & son & DETpos \\ \hline
+liberalité & liberalité & NOMcom\\ \hline
+enuers & enuer & VERcjg\\ \hline
+luy & luy & PROind\\ \hline
+. & .& PONfrt\\ \hline
+\end{tabular}
+\caption{La tokenisation et lemmatisation en format \acrshort{CSV}}
+\end{subfigure}
+
+\vspace{1mm}
+
+\begin{subfigure}[b]{\textwidth}\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\textit{token} & \textit{lemma} & normalisation\\
+\hline\hline
+Humble & Humble & Humble\\ \hline
+salut & salut & salut\\ \hline
+et & et & et\\ \hline
+recognoissance & recognoissance & reconnaissance\\ \hline
+de & de & de\\ \hline
+sa & son & sa \\ \hline
+liberalité & liberalité & liberalité\\ \hline
+enuers & enuer & envers\\ \hline
+luy & luy & lui\\ \hline
+. & .& .\\ \hline
+\end{tabular}
+\caption{La normalisation en format \acrshort{CSV}}
+\end{subfigure}
+
+\vspace{1mm}
+
+
+\caption{L'expérience du \acrlong{TAL} sur le document d'\acrshort{ARK} \texttt{bpt6k724151}}
+\label{fig:tal}
+\end{figure}
+
+Le dernier défi pour une application éventuelle de l'analyse linguistique dans le pipeline \textit{Gallic(orpor)a} est la modélisation des données produites. La sortie des modèles \acrshort{TAL} est typiquement du format \acrshort{CSV} (\acrlong{CSV}) ou \acrshort{TSV} (\acrlong{TSV}), mais la ressource numérique exige des données en \acrshort{XML} et formatées selon les normes de la \acrshort{TEI}. Une telle modélisation a été présentée par Bartz, Juliette Janes, Laurent Romary, Philippe Gambette, Rachel Bawden, Pedro Ortiz Suaréz, Benoît Sagot, et Simon Gabay en 2021 à la conférence TEI~\footcite{bartzExpandingContentModel2021}. L'équipe \textit{Gallic(orpor)a} envisage à élaborer une modélisation du \texttt{<standOff>} similaire. Ainsi disposé du script de l'application \texttt{alto2tei} qui prépare une version pré-éditorialisée du texte, le pipeline \textit{Gallic(orpor)a} est prêt à avoir intégrée de l'analyse linguistique et pouvoir construire le \texttt{<standOff>}.
 
 \end{document}
 \documentclass[../main.tex]{subfiles}
