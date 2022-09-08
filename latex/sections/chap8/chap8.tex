@@ -521,6 +521,7 @@ Des visualisations de la modélisation de chaque élément du fichier \acrshort{
 
 % empty
 \tikzstyle{empty} = [rectangle, rounded corners, minimum width=2cm, minimum height=0.5cm]
+\tikzstyle{emptypetit} = [rectangle, rounded corners, minimum width=1cm, minimum height=0.5cm]
 
 % No match
 \tikzstyle{elem} = [rectangle, rounded corners, minimum width=2cm, minimum height=0.5cm, text centered, draw=black, line width=0.5mm]
@@ -533,22 +534,35 @@ Des visualisations de la modélisation de chaque élément du fichier \acrshort{
 % B match
 \tikzstyle{Belem} = [rectangle, rounded corners, minimum width=2cm, minimum height=0.50cm, text centered, draw=black, fill=red!30, line width=0.5mm]
 \tikzstyle{Batt} = [rectangle, minimum width=2cm, minimum height=0.50cm, text centered, draw=black, dashed, fill=red!30]
+\tikzstyle{Battpetit} = [rectangle, minimum width=1cm, minimum height=0.50cm, text centered, draw=black, dashed, fill=red!30]
 
 % C match
 \tikzstyle{Celem} = [rectangle, rounded corners, minimum width=2cm, minimum height=0.5cm, text centered, draw=black, fill=green!30, line width=0.5mm]
 \tikzstyle{Catt} = [rectangle, minimum width=2cm, minimum height=0.5cm, text centered, draw=black, dashed, fill=green!30]
+\tikzstyle{Cattpetit} = [rectangle, minimum width=1cm, minimum height=0.5cm, text centered, draw=black, dashed, fill=green!30]
 
 % D match
 \tikzstyle{Delem} = [rectangle, rounded corners, minimum width=2cm, minimum height=0.5cm, text centered, draw=black, fill=yellow!30, line width=1mm]
 \tikzstyle{Datt} = [rectangle, minimum width=2cm, minimum height=0.5cm, text centered, draw=black, dashed, fill=yellow!30]
+\tikzstyle{Dattpetit} = [rectangle, minimum width=1cm, minimum height=0.5cm, text centered, draw=black, dashed, fill=yellow!30]
 
 % E match
 \tikzstyle{Eelem} = [rectangle, rounded corners, minimum width=2cm, minimum height=0.5cm, text centered, draw=black, fill=gray!30, line width=0.5mm]
 \tikzstyle{Eatt} = [rectangle, minimum width=2cm, minimum height=0.5cm, text centered, draw=black, dashed, fill=gray!30]
+\tikzstyle{Eattpetit} = [rectangle, minimum width=1cm, minimum height=0.5cm, text centered, draw=black, dashed, fill=gray!30]
 
 % F match
 \tikzstyle{Felem} = [rectangle, rounded corners, minimum width=2cm, minimum height=0.5cm, text centered, draw=black, fill=violet!30, line width=0.5mm]
 \tikzstyle{Fatt} = [rectangle, minimum width=2cm, minimum height=0.5cm, text centered, draw=black, dashed, fill=violet!30]
+\tikzstyle{Fattpetit} = [rectangle, minimum width=1cm, minimum height=0.5cm, text centered, draw=black, dashed, fill=violet!30]
+
+% G match
+\tikzstyle{Gelem} = [rectangle, rounded corners, minimum width=2cm, minimum height=0.5cm, text centered, draw=black, fill=cyan!30, line width=0.5mm]
+\tikzstyle{Gatt} = [rectangle, minimum width=2cm, minimum height=0.5cm, text centered, draw=black, dashed, fill=cyan!30]
+
+% H match
+\tikzstyle{Helem} = [rectangle, rounded corners, minimum width=2cm, minimum height=0.5cm, text centered, draw=black, fill=orange!30, line width=0.5mm]
+\tikzstyle{Hatt} = [rectangle, minimum width=2cm, minimum height=0.5cm, text centered, draw=black, dashed, fill=orange!30]
 
 
 %%%%%%%%%
@@ -640,11 +654,38 @@ Des visualisations de la modélisation de chaque élément du fichier \acrshort{
 % TextBlock
 \begin{figure}[ht]
 \centering
-\begin{subfigure}[b]{\textwidth}
+\begin{subfigure}[b]{\textwidth}\centering
 \begin{tikzpicture}[node distance=0.5cm]
 
 \node [elem] (TextBlock) {TextBlock};
-\node [
+\node [att, right=of TextBlock] (ID) {@ID};
+\node [Aatt, below=of ID] (TAGREFS) {@TAGREFS};
+\node [Batt, below=of TAGREFS] (HPOS) {@HPOS};
+\node [Catt, below=of HPOS] (VPOS) {@VPOS};
+\node [Datt, below=of VPOS] (WIDTH) {@WIDTH};
+\node [Eatt, below=of WIDTH] (HEIGHT) {@HEIGHT};
+\node [empty, right=of HEIGHT] (empty1) {};
+\node [elem, below=of empty1] (Shape) {Shape};
+\node [elem, right=of Shape] (Polygon) {Polygon};
+\node [Fatt, right=of Polygon] (POINTS) {@POINTS};
+
+\draw [-, dashed] (TextBlock) -- (ID);
+\draw [-, dashed]
+	(TextBlock) |- node[pos=0.25] {} (TAGREFS);
+\draw [-, dashed]
+	(TextBlock) |- node[pos=0.25] {} (HPOS);
+\draw [-, dashed]
+	(TextBlock) |- node[pos=0.25] {} (VPOS);
+\draw [-, dashed]
+	(TextBlock) |- node[pos=0.25] {} (WIDTH);
+\draw [-, dashed]
+	(TextBlock) |- node[pos=0.25] {} (HEIGHT);
+\draw [-, shorten <=5.25cm, line width = 0.5mm]
+	(TextBlock) |- node[pos=0.25] {} (Shape);
+\draw [-, line width= 0.5mm]
+	(Shape) -- (Polygon);
+\draw [-, dashed]
+	(Polygon) -- (POINTS);
 
 \end{tikzpicture}
 \caption{Le \texttt{<TextBlock>} en \acrshort{ALTO}}
@@ -652,13 +693,61 @@ Des visualisations de la modélisation de chaque élément du fichier \acrshort{
 
 \vspace{1cm}
 
-\begin{subfigure}[b]{\textwidth}
+\begin{subfigure}[b]{\textwidth}\centering
 \begin{tikzpicture}[node distance=0.5cm]
+
+\node [elem] (zone) {zone};
+\node [att, right=of zone] (id) {@xml:id};
+\node [Aatt, below=of id] (type) {@type};
+\node [Aatt, below=of type] (corresp) {@corresp};
+\node [Aatt, below=of corresp] (subtype) {@subtype};
+\node [Aatt, below=of subtype] (n) {@n};
+\node [Batt, below=of n] (ulx) {@ulx};
+\node [Catt, below=of ulx] (uly) {@uly};
+\node [att, below=of uly] (lrx) {@lrx};
+\node [att, below=of lrx] (lry) {@lry};
+\node [Fatt, below=of lry] (points) {@points};
+\node [att, below=of points] (source) {@source};
+
+\draw [-] (lrx.north west) rectangle +(8.1cm, -0.6cm);
+\node [emptypetit, right=of lrx] (calc1) {=};
+\node [Battpetit, right=of calc1] (addD) {};
+\node [emptypetit, right=of addD] (calc12) {+};
+\node [Dattpetit, right=of calc12] () {};
+
+\draw [-] (lry.north west) rectangle +(8.1cm, -0.7cm);
+\node [emptypetit, right=of lry] (calc2) {=};
+\node [Cattpetit, right=of calc2] (addE) {};
+\node [emptypetit, right=of addE] (calc22) {+};
+\node [Eattpetit, right=of calc22] () {};
+
+
+\draw [-, dashed]
+	(zone) -- (id);
+\draw [-, dashed]
+	(zone) |- node[pos=0.25] {} (type);
+\draw [-, dashed]
+	(zone) |- node[pos=0.25] {} (corresp);
+\draw [-, dashed]
+	(zone) |- node[pos=0.25] {} (subtype);
+\draw [-, dashed]
+	(zone) |- node[pos=0.25] {} (n);
+\draw [-, dashed]
+	(zone) |- node[pos=0.25] {} (ulx);
+\draw [-, dashed]
+	(zone) |- node[pos=0.25] {} (uly);
+\draw [-, dashed]
+	(zone) |- node[pos=0.25] {} (lrx);
+\draw [-, dashed]
+	(zone) |- node[pos=0.25] {} (lry);
+\draw [-, dashed]
+	(zone) |- node[pos=0.25] {} (points);
+\draw [-, dashed]
+	(zone) |- node[pos=0.25] {} (source);
+
 \end{tikzpicture}
 \caption{La modélisation du \texttt{<TextBlock>} en \acrshort{TEI}}
 \end{subfigure}
-
-\vspace{1cm}
 
 \caption{La transformation du \texttt{<TextBlock>} en \acrshort{TEI}}
 \label{fig:modTextBlock}
@@ -668,22 +757,117 @@ Des visualisations de la modélisation de chaque élément du fichier \acrshort{
 % Line
 \begin{figure}[ht]
 \centering
-\begin{subfigure}[b]{\textwidth}
-\begin{tikzpicture}[node distance=0.5cm]
+\begin{subfigure}[b]{\textwidth}\centering
+\begin{tikzpicture}[node distance=0.25cm]
+
+\node [elem] (TextLine) {TextLine};
+\node [att, right=of TextLine] (ID) {@ID};
+\node [Aatt, below=of ID] (TAGREFS) {@TAGREFS};
+\node [Batt, below=of TAGREFS] (BASELINE) {@BASELINE};
+\node [Catt, below=of BASELINE] (HPOS) {@HPOS};
+\node [Datt, below=of HPOS] (VPOS) {@VPOS};
+\node [Eatt, below=of VPOS] (WIDTH) {@WIDTH};
+\node [Fatt, below=of WIDTH] (HEIGHT) {@HEIGHT};
+\node [empty, right=of HEIGHT] (empty1) {};
+\node [elem, below=of empty1] (Shape) {Shape};
+\node [elem, right=of Shape] (Polygon) {Polygon};
+\node [Gatt, right=of Polygon] (POINTS) {@POINTS};
+\node [elem, below=of Shape] (String) {String};
+\node [Hatt, right=of String] (CONTENT) {@CONTENT};
+
+\draw [-, dashed] (TextLine) -- (ID);
+\draw [-, dashed]
+	(TextLine) |- node[pos=0.25] {} (TAGREFS);
+\draw [-, dashed]
+	(TextLine) |- node[pos=0.25] {} (BASELINE);
+\draw [-, dashed]
+	(TextLine) |- node[pos=0.25] {} (HPOS);
+\draw [-, dashed]
+	(TextLine) |- node[pos=0.25] {} (VPOS);
+\draw [-, dashed]
+	(TextLine) |- node[pos=0.25] {} (WIDTH);
+\draw [-, dashed]
+	(TextLine) |- node[pos=0.25] {} (HEIGHT);
+\draw [-, shorten <=4.75cm, line width = 0.5mm]
+	(TextLine) |- node[pos=0.25] {} (Shape);
+\draw [-, shorten <=4.75cm, line width = 0.5mm]
+	(TextLine) |- node[pos=0.25] {} (String);
+\draw [-, line width = 0.5mm] (Shape) -- (Polygon);
+\draw [-, dashed] (Polygon) -- (POINTS);
+\draw [-, dashed] (String) -- (CONTENT);
 
 \end{tikzpicture}
-\caption{Le \texttt{<TextLine>} en \acrshort{ALTO}}
+\caption{Le \texttt{<TextLine>} en \acrshort{ALTO} où tout le contenu textuel prédit de la ligne est présenté dans l'attribut \texttt{@CONTENT}}
 \end{subfigure}
 
 \vspace{1cm}
 
-\begin{subfigure}[b]{\textwidth}
-\begin{tikzpicture}[node distance=0.5cm]
+\begin{subfigure}[b]{\textwidth}\centering
+\begin{tikzpicture}[node distance=0.25cm]
+
+\node [elem] (zone) {zone};
+\node [att, right=of zone] (id) {@xml:id};
+\node [Aatt, below=of id] (type) {@type};
+\node [Aatt, below=of type] (corresp) {@corresp};
+\node [Aatt, below=of corresp] (subtype) {@subtype};
+\node [att, below=of subtype] (n) {@n};
+\node [Catt, below=of n] (ulx) {@ulx};
+\node [Datt, below=of ulx] (uly) {@uly};
+\node [att, below=of uly] (lrx) {@lrx};
+\node [att, below=of lrx] (lry) {@lry};
+\node [Gatt, below=of lry] (points) {@points};
+\node [att, below=of points] (source) {@source};
+\node [empty, right=of source] (empty1) {};
+\node [elem, below=of empty1] (path) {path};
+\node [att, right=of path] (id2) {@xml:id};
+\node [Batt, below=of id2] (pointsbaseline) {@points};
+\node [empty, right=of pointsbaseline] (empty2) {};
+\node [Helem, below=of empty2] (line) {line};
+
+\draw [-] (lrx.north west) rectangle +(8.1cm, -0.6cm);
+\node [emptypetit, right=of lrx] (calc1) {=};
+\node [Cattpetit, right=of calc1] (addC) {};
+\node [emptypetit, right=of addC] (calc12) {+};
+\node [Eattpetit, right=of calc12] () {};
+
+\draw [-] (lry.north west) rectangle +(8.1cm, -0.7cm);
+\node [emptypetit, right=of lry] (calc2) {=};
+\node [Dattpetit, right=of calc2] (addE) {};
+\node [emptypetit, right=of addE] (calc22) {+};
+\node [Fattpetit, right=of calc22] () {};
+
+\draw [-, shorten <=8.75cm, line width = 0.5mm]
+	(zone) |- node[pos=0.25] {} (path);
+\draw [-, shorten <=0.5cm, line width = 0.5mm]
+	(path) |- node[pos=0.25] {} (line);
+\draw [-, dashed] (path) -- (id2);
+\draw [-, dashed]
+	(path) |- node[pos=0.25] {} (pointsbaseline);
+\draw [-, dashed] (zone) -- (id);
+\draw [-, dashed]
+	(zone) |- node[pos=0.25] {} (type);
+\draw [-, dashed]
+	(zone) |- node[pos=0.25] {} (corresp);
+\draw [-, dashed]
+	(zone) |- node[pos=0.25] {} (subtype);
+\draw [-, dashed]
+	(zone) |- node[pos=0.25] {} (n);
+\draw [-, dashed]
+	(zone) |- node[pos=0.25] {} (ulx);
+\draw [-, dashed]
+	(zone) |- node[pos=0.25] {} (uly);
+\draw [-, dashed]
+	(zone) |- node[pos=0.25] {} (lrx);
+\draw [-, dashed]
+	(zone) |- node[pos=0.25] {} (lry);
+\draw [-, dashed]
+	(zone) |- node[pos=0.25] {} (points);
+\draw [-, dashed]
+	(zone) |- node[pos=0.25] {} (source);
+
 \end{tikzpicture}
 \caption{La modélisation du \texttt{<TextLine>} en \acrshort{TEI}}
 \end{subfigure}
-
-\vspace{1cm}
 
 \caption{La transformation du \texttt{<TextLine>} en \acrshort{TEI}}
 \label{fig:modLine}
@@ -695,6 +879,7 @@ Des visualisations de la modélisation de chaque élément du fichier \acrshort{
 \centering
 \begin{subfigure}[b]{\textwidth}
 \begin{tikzpicture}[node distance=0.5cm]
+
 \end{tikzpicture}
 \caption{Le \texttt{<String>} en \acrshort{ALTO}}
 \end{subfigure}
