@@ -1,10 +1,177 @@
+% PREAMBULE
+
+% !BIB TS-program = biber
+% !TEX TS-program = xelatexmk
+% ITEX TS-program = latex
+
+% !TEX spellcheck = French
+
 \documentclass[class=article, crop=false]{standalone}
 \usepackage[subpreambles=true]{standalone}
 \usepackage{import}
 \usepackage{blindtext}
+\usepackage{fontspec}
+\usepackage[french]{babel}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{csquotes}
+\usepackage{url}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			REFERENCES
+% le package hyperref avec des options, si en local
+\usepackage{hyperref}
+\usepackage[backend=bibtex, sorting=nyt, style=verbose-ibid]{biblatex}
+\addbibresource{../bib.bib}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			LANGUE
+% !TEX spellcheck = French
+\usepackage[french]{babel}
+\usepackage{csquotes}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			ENC
+\usepackage[margin=2.5cm]{geometry} %marges
+\usepackage{setspace} % espacement qui permet ensuite de définir un interligne
+\onehalfspacing % interligne de 1.5
+\setlength\parindent{1cm} % indentation des paragraphes à 1 cm
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			GLOSSAIRE
+\usepackage[acronym]{glossaries}
+\makeglossaries
+\newglossaryentry{htr}
+{
+    name=Handwritten Text Recognition,
+    description={La reconnaissance du texte écrit sur une image numérique}
+}
+\newacronym{HTR}{HTR}{Handwritten Text Recognition}
+
+\newglossaryentry{ocr}
+{
+    name=Optical Character Recognition,
+    description={La reconnaissance des polices du texte sur une image numérique}
+}
+\newacronym{OCR}{OCR}{Optical Character Recognition}
+
+\newglossaryentry{Inria}
+{
+    name=Inria,
+    description={Institut national de recherche en sciences et technologies du numérique}
+}
+\newacronym{INRIA}{Inria}{Institut national de recherche en sciences et technologies du numérique}
+
+\newacronym{almanach}{ALMAnaCH}{Automatic Language Modelling and Analysis \& Computational Humanities}
+
+\newglossaryentry{enc}
+{
+    name=École nationale des chartes,
+    description={Grande école bla bla bla}
+}
+\newacronym{ENC}{ENC}{École nationale des chartes}
+
+\newglossaryentry{HTR-United}
+{
+    name=HTR-United,
+    description={HTR-United is a catalog and an ecosystem for sharing and finding ground truth for optical character or handwritten text recognition (OCR/HTR)}
+}
+
+\newglossaryentry{CLab}
+{
+	name=CREMMALab,
+	description={Consortium pour la reconnaissance
+d’'écriture manuscrite des matériaux anciens}
+}
+\newacronym{CREMMA}{CREMMA}{Consortium Reconnaissance
+d’Écriture Manuscrite des Matériaux Anciens}
+
+\newglossaryentry{tei}
+{
+	name={Text Encoding Initiative},
+	description={Normes internationales de l'encodage des documents texts}
+}
+\newacronym{TEI}{TEI}{Text Encoding Initiative}
+
+\newglossaryentry{iiif}
+{
+	name={International Image Interoperability Framework},
+	description={Normes internationales de l'exploitation des images numériques et de leurs métadonnées par API}
+}
+\newacronym{IIIF}{IIIF}{International Image Interoperability Framework}
+
+\newacronym{ALTO}{ALTO}{Analyzed Layout and Text Object}
+
+\newacronym{XML}{XML}{eXtensible Markup Language}
+
+\newacronym{BNF}{BnF}{Bibliothèque nationale de France}
+
+\newacronym{RDF}{RDF}{Resource Description Framework}
+
+\newacronym{TAL}{TAL}{Traitement automatique des langues}
+
+\newacronym{ARK}{ARK}{Archival Resource Key}
+
+\newacronym{DTS}{DTS}{Distributed Text Services}
+
+\newglossaryentry{iiifapi}
+{
+	name={IIIF Image API},
+	description={Un service de web qui renvoie une image suite à une requête standardisée HTTP(S). L'URI peut préciser la région, la taille, la rotation, la qualité, les caractéristiques, et le format de l'image demandée.}
+}
+\newacronym{API}{API}{Application Programming Interface}
+
+\newglossaryentry{odd}
+{
+	name={One Document Does it all},
+	description={Un fichier XML TEI qui précise les règles d'un schème TEI personnalisé.}
+}
+\newacronym{ODD}{ODD}{One Document Does it all}
+
+\newacronym{JSON}{JSON}{JavaScript Object Notation}
+
+\newacronym{HTML}{HTML}{HyperText Markup Language}
+
+\newacronym{METS}{METS}{Metadata Encoding and Transmission Standard}
+
+\newacronym{YAML}{YAML}{Yet Another Markup Language}
+
+\newacronym{SRU}{SRU}{Search/Retrieve via URL}
+
+\newglossaryentry{unimarc}
+{
+	name={UNIMARC},
+	description={Une référence pour l’échange de données en format XML}
+}
+
+\newacronym{SUDOC}{SUDOC}{Système Universitaire de Documentation}
+
+\newacronym{CSV}{CSV}{Comma Separated Values}
+\newacronym{TSV}{TSV}{Tab Separated Values}
+
+
+
+
+
 \begin{document}
 
+Plus en plus d'institutions patrimoniales cherchent à numériser leurs ressources textuelles dans le but de démocratiser la recherche\footnote{Depuis 2006, la \acrlong{BNF} s'engage à la numérisation et l'océrisation (\Gls{ocr}) en masse de ses documents pour afin qu'ils puissent être recherchés par le texte, au lieu de tout simplement la notice bibliographique, cf.~\cite{salahAdaptiveDetectionMissed2013}}. Cet objectif s'est ressenti fortement lors de la pandémie de Covid-19, quand des archives autour du monde ont fermé leurs portes physiques. Les portails des bases de données, tel que Gallica de la \acrlong{BNF}, sont fondamentaux pour la recherche. Mais l'extraction du texte des ressources numérisées n'est plus l'enjeu le plus important\footnote{La reconnaissance du texte à partir des manuscrits et des documents écrits dans un ancien état du français posent toujours plus de difficulté que les imprimés et que les documents en français moderne. Néanmoins, la technologie permettant l'amélioration de la reconnaissance du texte sur les manuscrits est déjà mise en place~; elle s'agit de l'entraînement des modèles supérieurs en s'appuyant sur la création d'encore meilleures données, cf.~\cite{gabayOCR17GroundTruth2020}.}. 
+Il est tellement facile actuellement de numériser la page d'un document et d'extraire du texte brut et repérable qu'un individu possédant un portable avec un appareil photo et une application \acrshort{OCR} (\textit{\acrlong{OCR}}) peut le faire. Les interfaces graphiques et libres, telle qu'\textit{eScriptorium}\footcite{gautierCompterenduJourneeEtude2022}, ainsi que les modèles \acrshort{OCR} et \acrshort{HTR} (\textit{\acrlong{HTR}}) publiés librement en ligne\footcite{ModelsHuggingFace} ont révolutionné la recherche ainsi que l'archivage et la conservation du patrimoine. Le monde dispose désormais d'un nombre croissant de documents numérisés.
 
+Le nouveau défi à relever aujourd'hui est de transformer ces numérisations en des ressources enrichies, qui augmentent le texte extrait et repérable avec de la métadonnée et de l'analyse. Le texte brut et non annoté ne suffit plus pour la recherche en informatique appliquée aux documents historiques. De là vient l'impulsion pour le projet \textit{Gallic(orpor)a}. Le projet envisage la mise en place d'un \textit{pipeline} qui saisit un document numérisé depuis le portail Gallica et renvoie une ressource numérique très enrichie. En plus d'une transcription du texte repérable, la ressource présentera les données structurelles portant sur la mise en page, ainsi qu'une analyse linguistique du texte extrait et des métadonnées portant sur le document physique et le fac-similé numérique.
+
+Ce mémoire détaille le contexte (partie~\ref{part1}), les enjeux (partie~\ref{part2}), et la mise en opérationnel du projet \textit{Gallic(orpor)a} (partie~\ref{part3}). Notre pipeline a pour but de traiter automatiquement des collections de document aussi bien en ancien-français, moyen français que français classique, issus soit de manuscrits soit d’imprimés produits entre le \textsc{xv}\up{e} siècle et le \textsc{xviii}\up{e} siècle. Cependant, le but sous-jacent du projet serait de parvenir à produire un prototype qui pourrait servir d’exemple pour mettre en place des chaines d’acquisition numérique pour des collections de documents issus des institutions patrimoniales. Dans le cadre du stage, je me suis chargée da la réalisation du prototype, dont la démonstration nous avons présenté au colloque du DataLab de la \acrshort{BNF} en juin 2022\footcite{christensenGallicOrporTraitment2022}.
+
+Le pipeline du projet \textit{Gallic(orpor)a} se déroule dans cinq étapes. Dans un premier temps, il récupère les fac-similés numériques des documents sources depuis la base de données du portail Gallica. Dans un deuxième temps, il applique des modèles \acrshort{HTR} aux fac-similés téléchargés afin de produire une prédiction du texte et une transcription de la mise en page. Ensuite, il crée un document préliminaire qui réunit les données produites par les modèles \acrshort{HTR} et les métadonnées récupérées de plusieurs sources en ligne qui portent sur le document source. Le quatrième étape enrichit le document avec une analyse linguistique du texte de la transcription. Et enfin, le pipeline export les données du document enrichit en divers formats pour l'exploitation de divers projets. En plus de la mise en place d'un prototype du pipeline, j'ai créé l'application \texttt{alto2tei} qui le complète en allant des fichiers sortis des modèles \acrshort{HTR} vers une version préliminaire du document éventuellement produit par le pipeline, celui qui commence à rassembler les aspects différents.
+
+Une ressource numérique ainsi enrichie porte un grand intérêt aux chercheurs et aux lecteurs. Par exemple, si on recherchait le mot \og{}Candide\fg{} dans la transcription de la première édition de \textit{Candide} par Voltaire, parmi les résultats serait la première page du premier chapitre puisqu'il répète le titre du livre, \textit{Candide, ou l'optimisme}, à en-tête et qu'il présente le titre du chapitre, \og{}Comment Candide fut élévé dans un beau Château, \& comment il fut chaſſé d'icelui\fg{}\footcite[3]{voltaireCandideOuOptimisme1759}. Cependant, un tel résultat ne s'agit pas d'une occurence du nom \og{}Candide\fg{} dans le corps du livre. Si on voulait utiliser une méthode computationnelle pour analyser les références au personnage principal, le texte non hiérarchisé ne suffit pas. Notre calcul serait faux puisqu'il compterait les deux occurrences sur la première page du livre, bien que le personnage n'a pas encore été évoqué.
+
+La ressource numérique sortie du pipeline \textit{Gallic(orpor)a} peut bien distinguer entre l'en-tête et le corps du chapitre. Grâce aux modèles de segmentation entraînés par l'équipe de \textit{Gallic(orpor)a} bien qu'au lexique élaboré dans le cadre du projet \textit{SegmOnto}, le pipeline parvient à un texte hiérarchisé dont les différentes parties du documents portent certaines étiquettes, telle que \textit{HeadingLine} pour un titre du chapitre. Ainsi, une ressource portant sur la première édition de \textit{Candide} ne confondrait pas le titre \og{}Comment Candide fut élévé dans un beau Château, \& comment il fut chaſſé d'icelui\fg{} avec une occurrence du nom de personnage dans le corps du premier chapitre. En profitant d'une structure de données imbriquée, spécifiquement \textit{l'\acrlong{XML}} (\acrshort{XML}), la ressource que notre pipeline produite imbrique le texte du document source dans des éléments portant certains noms et attributs. Grâce à l'imbrication, les chercheurs peuvent filtrer leurs recherches et aboutir à des analyses plus raffinées et importantes.
+
+La première partie du mémoire (chap.~\ref{chap.3}, \ref{chap:segmonto}, \ref{chap:htr}) sert à contextualiser le projet \textit{Gallic(orpor)a}. Le premier chapitre parle des enjeux et des projets précédents qui ont informé notre approche au traitement automatique des documents historique en diachronie longue. Les deux chapitres suivants décrivent deux aspects important au contexte du projet~: le lexique pour décrire systématiquement des documents textes et le processus d'extraire du texte à partir des images numériques d'un document source. La deuxième partie du mémoire (chap.~\ref{chap:pipeline}, \ref{chap:xml}, \ref{chap:metadata}) porte sur les aspects techniques qui ont conditionné la réalisation du projet. Le quatrième chapitre décrit en détail le pipeline. Le cinquième explique les deux schémas informatiques utilisés pour encoder les données structurelles de la page d'un document texte. Le dernier chapitre de la partie intermédiaire décrit de divers métadonnées ciblées par notre pipeline. Enfin, la dernière partie (chap.~\ref{chap:header}, \ref{chap.8}, \ref{chap.9}) porte sur la réalisation du pipeline selon notre modélisation. Le septième chapitre explique comment mon application \texttt{alto2tei} a récupérée toutes les métadonnées ciblées depuis de divers sources de données externes. Ensuite, le huitième chapitre expose notre modélisation de la transcription dans la ressource numérique. Enfin, le neuvième chapitre décrit l'enrichissement des données ainsi récupérées dans une version de texte pré-éditorialisée et une version annotée avec l'analyse linguistique.
 
 \end{document}
 \documentclass[../main.tex]{subfiles}
