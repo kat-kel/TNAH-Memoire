@@ -443,7 +443,7 @@ Un autre élément facultatif qui descend de la racine \texttt{<TEI>} est l'él�
 \begin{displayquote}
 \textit{The }\texttt{standOff} \textit{element is intended to hold content that does not fit well in the }\texttt{text} \textit{(e.g. because it is not transcribed from the source), nor in the }\texttt{teiHeader} \textit{(e.g. because it is not metadata about the source or transcription). Examples include [...] annotations indicating the morphosyntactic features of a text, and annotations commenting on or associating parts of a text with additional information}\footcite{16LinkingSegmentation}.
 \end{displayquote}
-Comme s'est révélé par les \textit{guidelines}, l'élément \texttt{<standOff>} convient bien au texte annoté et normalisé. Ainsi, la transcription du texte tel qu'il apparaît dans le document source, avec toute saute de ligne et faute d'orthographe, se trouvera dans les éléments \texttt{<sourceDoc>} et \texttt{<text>}, qui descend du \texttt{<body>}. Par contre, la version du texte qui n'existe pas dans le document source mais qui sert bien à l'analyse du document se trouvera dans l'élément facultatif \texttt{<standOff>}. Pour résumer, les quatre éléments pertinents qui descendent de la racine \texttt{<TEI>} sont visualisés dans la Figure~\ref{4elements}.
+Comme s'est révélé par les \textit{guidelines}, l'élément \texttt{<standOff>} convient bien au texte annoté et normalisé. Ainsi, la transcription du texte tel qu'il apparaît dans le document source, avec toute saute de ligne et faute d'orthographe, se trouvera dans les éléments \texttt{<sourceDoc>} et \texttt{<body>}, qui descend du \texttt{<text>}. Par contre, la version du texte qui n'existe pas dans le document source mais qui sert bien à l'analyse du document se trouvera dans l'élément facultatif \texttt{<standOff>}. Pour résumer, les quatre éléments pertinents qui descendent de la racine \texttt{<TEI>} sont visualisés dans la Figure~\ref{4elements}.
 
 \begin{figure}[htp]
 \centering
@@ -451,9 +451,9 @@ Comme s'est révélé par les \textit{guidelines}, l'élément \texttt{<standOff
 <TEI>
 	<teiHeader><!-- métadonnées --></teiHeader>
 	<sourceDoc><!-- transcription --></sourceDoc>
-	<body>
-		<text><!-- texte pré-éditorialisé --></text>
-	</body>
+	<text>
+		<body><!-- texte pré-éditorialisé --></text>
+	</text>
 	<standOff><!-- texte annoté --></standOff>
 </TEI>
 \end{lstlisting}

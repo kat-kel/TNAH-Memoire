@@ -47,14 +47,14 @@
 \newglossaryentry{htr}
 {
     name=Handwritten Text Recognition,
-    description={La reconnaissance du texte écrit sur une image numérique}
+    description={La reconnaissance d'écriture manuscrite sur une image numérique}
 }
 \newacronym{HTR}{HTR}{Handwritten Text Recognition}
 
 \newglossaryentry{ocr}
 {
     name=Optical Character Recognition,
-    description={La reconnaissance des polices du texte sur une image numérique}
+    description={La reconnaissance du texte sur une image numérique}
 }
 \newacronym{OCR}{OCR}{Optical Character Recognition}
 
@@ -67,24 +67,19 @@
 
 \newacronym{almanach}{ALMAnaCH}{Automatic Language Modelling and Analysis \& Computational Humanities}
 
-\newglossaryentry{enc}
-{
-    name=École nationale des chartes,
-    description={Grande école bla bla bla}
-}
 \newacronym{ENC}{ENC}{École nationale des chartes}
 
 \newglossaryentry{HTR-United}
 {
     name=HTR-United,
-    description={HTR-United is a catalog and an ecosystem for sharing and finding ground truth for optical character or handwritten text recognition (OCR/HTR)}
+    description={Un catalogue et un écosystème pour l'échange et la recherche des vérités de terrain pour la reconnaissance du texte}
 }
 
 \newglossaryentry{CLab}
 {
 	name=CREMMALab,
 	description={Consortium pour la reconnaissance
-d’'écriture manuscrite des matériaux anciens}
+d’écriture manuscrite des matériaux anciens}
 }
 \newacronym{CREMMA}{CREMMA}{Consortium Reconnaissance
 d’Écriture Manuscrite des Matériaux Anciens}
@@ -120,14 +115,14 @@ d’Écriture Manuscrite des Matériaux Anciens}
 \newglossaryentry{iiifapi}
 {
 	name={IIIF Image API},
-	description={Un service de web qui renvoie une image suite à une requête standardisée HTTP(S). L'URI peut préciser la région, la taille, la rotation, la qualité, les caractéristiques, et le format de l'image demandée.}
+	description={Un service de web qui renvoie une image suite à une requête standardisée HTTP(S). La requête peut préciser la région, la taille, la rotation, la qualité, les caractéristiques, et le format de l'image demandée.}
 }
 \newacronym{API}{API}{Application Programming Interface}
 
 \newglossaryentry{odd}
 {
 	name={One Document Does it all},
-	description={Un fichier XML TEI qui précise les règles d'un schème TEI personnalisé.}
+	description={Un fichier XML TEI qui précise les règles d'un schéma TEI personnalisé.}
 }
 \newacronym{ODD}{ODD}{One Document Does it all}
 
@@ -151,6 +146,19 @@ d’Écriture Manuscrite des Matériaux Anciens}
 
 \newacronym{CSV}{CSV}{Comma Separated Values}
 \newacronym{TSV}{TSV}{Tab Separated Values}
+
+\newglossaryentry{lxml}
+{
+	name={lxml},
+	description={Librairie python pour manipuler des données XML.}
+}
+
+\newglossaryentry{requests}
+{
+	name={requests},
+	description={Librairie python pour requêtes des APIs.}
+}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%
 %			DIAGRAM
@@ -272,6 +280,8 @@ d’Écriture Manuscrite des Matériaux Anciens}
 			\end{Large}
 		%selon le cas
 			\begin{normalsize} 
+				\textit{licenciée ès lettres}
+				\textit{diplômée de master en musicologie}
 				\textit{diplômée de doctorat musicologie}
 			\end{normalsize}
 			
@@ -319,13 +329,13 @@ d’Écriture Manuscrite des Matériaux Anciens}
 	\subfile{sections/abstract/abstract.tex}
 	
 	\chapter{Remerciements}
-	\lettrine{M}es remerciements vont tout d'abord à\dots
+	\lettrine{M}es remerciements vont tout d'abord à l'\acrlong{ENC} et particulièrement le responsable du master Technologies numériques appliquées à l'histoire Thibault Clérice, qui m'a soutenu depuis mon intégration jusqu'à la fin et m'a donné des bases techniques fondamentales au projet du stage et au mon travail après le master.
 	
-	%bibliographie
-	\printbibliography{ref}
+	Je me tiens également à remercier mes tuteurs du stage, Simon Gabay et Ariane Pinche, pour m'avoir fait autant de confiance et m'accompagné dans la publication et la présentation de notre travail. Je remercie aussi ma directrice du mémoire Ségolène Albouy. L'élaboration du mémoire a bénéficié de ses conseils ainsi que les recommandations de Mme. Pinche, M. Gabay, Alix Chagué, et Lucille Delbecchi.
 	
-	%glossaire / acronymes
-	\printglossaries
+	Je pense aussi à Benoît Sagot, responsable de l'équipe \acrlong{almanach} chez \Gls{Inria}, qui m'a chaleureusement accueillie au sein de l'équipe. Là j'ai eu l'occasion de travailler à côté de compétents chercheurs qui ont partagé leur expertise. Je remercie notamment Rachel Bawden, Mme. Chagué, Hugo Scheithauer, Florianne Chiffoleau, Wisam Antoun, et mon co stagiaire Jules Nuguet.
+	
+	Je n'oublie pas non plus mes collègues de la promotion TNAH 2022, mes proches, et mon conjoint qui m'ont sans cesse soutenue dans l'élaboration de mon projet et la rédaction de ce mémoire de stage.
 	
 	\chapter{Introduction}
 	\subfile{sections/intro/introduction.tex}
@@ -396,14 +406,18 @@ d’Écriture Manuscrite des Matériaux Anciens}
 %%%%%%%%%%%%%%%%%%%%%%%%
 %			ANNEXES
 	\appendix
-	\chapter{Données}
+	\chapter{ALTO2TEI}
 	\subfile{sections/data/data.tex}
 	
 	\backmatter
 
 %%%%%%%%%%%%%%%%%%%%%%%%
 %			INDEX
-%	\printindex
+%	%bibliographie
+	\printbibliography{ref}
+	
+	%glossaire / acronymes
+	\printglossaries
 
 %%%%%%%%%%%%%%%%%%%%%%%%
 %			FIGURES

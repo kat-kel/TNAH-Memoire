@@ -1,55 +1,1588 @@
+% PREAMBULE
+
+% !BIB TS-program = biber
+% !TEX TS-program = xelatexmk
+% ITEX TS-program = latex
+
+% !TEX spellcheck = French
+
 \documentclass[class=article, crop=false]{standalone}
 \usepackage[subpreambles=true]{standalone}
 \usepackage{import}
 \usepackage{blindtext}
+\usepackage{fontspec}
+\usepackage[french]{babel}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{csquotes}
+\usepackage{url}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			DIAGRAM
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usetikzlibrary{calc, matrix, shapes.geometric, arrows}
+\usepackage{pgfplots}
+\usepackage{array}
+\usepackage{tabularx}
+
+%si index, package pour index + makeindex
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			EXEMPLES DE CODE
+\usepackage{listings}
+	\usepackage{color}
+	\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+	\definecolor{codepurple}{rgb}{0.58,0,0.82}
+	\definecolor{cyan}{rgb}{0.0,0.6,0.6}
+	\definecolor{codegreen}{rgb}{0,0.6,0}
+	\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+	\definecolor{codepurple}{rgb}{0.58,0,0.82}
+
+%Code listing style named "python"
+\lstdefinestyle{python}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
 \begin{document}
 
-\section{Portée des données d'entraînement}
-\label{data:portee}
-\begin{center}
-\begin{tabular}[c]{| *{6}{| m{1.6cm}} | m{3cm} ||}
-\hline
-Type & Genre & Forme & Écriture & Siècle & Langue & Titre \\
-\hline \hline
-%2
-manuscrit & poésie & vers & gothique & 13 & fro & Français 20050   - chansonnier de Saint-Germain-des-Près \\
-\hline
-%3
-manuscrit & récit & prose & gothique & 13 & fro & Français 23117, légendier\\
-\hline
-%4
-manuscrit & récit & prose & gothique & 13 & fro & Français 6447, légendier\\
-\hline
-%5
-manuscrit & récit & prose & gothique & 13 & fro & NAF 23686, légendier\\
-\hline
-%6
-manuscrit & récit & prose & gothique & 13 & fro & Français 13496, légendier\\
-\hline
-%7
-manuscrit & récit & vers & gothique & 13 & fro & Français 860 - Roland, Gaydon, Ami et Amile, Jourdain de Blaye, Auberi le Bourguignon\\
-\hline
-%8
-manuscrit & récit & vers & gothique & 13 & fro & Français 12615  - chansonnier de Noailles\\
-\hline
-%9
-manuscrit & récit & vers & gothique & 13 & fro & Français 1443 - Garin le Loherain (C) et Girbert de Metz\\
-\hline
-%10
-manuscrit & récit & vers & gothique & 13 & fro & Français 12603 - Fierabras, mais aussi Chevalier as deux espees, Chevalier au Lyon, Eneas, Wace:Brut, Adenet:EnfancesOgier, Fabliaux, Lai de l'Ombre, Raoul de Houdenc:Songe d'Enfer, Fables de Marie de Fance\\
-\hline
-%11
-manuscrit & récit & vers & gothique & 13 & fro & Français 12558  - Chevalier au Cygne, Chanson d'Antioche, Chanson de Jérusalem\\
-\hline
-%12
-manuscrit & récit & vers & gothique & 13 & fro & Français 1598 - Aspremont, Anséïs de Carthage\\
-\hline
-%13
-manuscrit & récit & prose & gothique & 13 & fro & Français 185, légendier\\
-\hline
-\end{tabular}
-\end{center}
+Le livrable principal du stage était une application en python qui construit un document \acrshort{XML} \acrshort{TEI} pour le pipeline \textit{Gallic(orpor)a}. Ce document préliminaire doit saisir la transcription produite par des modèles \acrshort{HTR}, qui est en format \acrshort{XML} \acrshort{ALTO}, bien que chercher des métadonnées depuis divers sources de données externes et internes au pipeline. La librairie principale pour manipuler des données \acrshort{XML} en python est \texttt{\gls{lxml}}, dont j'ai disposé toute la durée du stage\footcite{teamLxmlPowerfulPythonic}. La librairie \texttt{lxml} aide à traiter les fichiers \acrshort{XML} \acrshort{ALTO} ainsi que la création et gestion de l'arbre \acrshort{XML} \acrshort{TEI}. Pour traiter les métadonnées, j'ai disposé de la libraire python \gls{requests} pour envoyer des requêtes d'\acrshort{API}\footcite{reitzRequestsPythonHTTP}. Le code pour l'application \texttt{alto2tei} est disponible sur mon GitHub\footcite{christensenAltoTei2022}.
 
+\section{Setup et démarrage}
+L'application \texttt{alto2tei} se démarre depuis la ligne de commande. Le pipeline \textit{Gallic(orpor)a} l'appel via son script en bash. L'exemple de la commande est la suivante:
+\begin{verbatim}
+alto2tei --config config.yml --version "3.0.13" --header --sourcedoc --body
+\end{verbatim}
+Le premier argument optionnel (\texttt{--config}) localise le fichier de configuration. La deuxième (\texttt{--version}) dit à l'application quelle version de l'engin \acrshort{HTR} \textit{Kraken} a été utilisée pour créer les fichiers \acrshort{XML} \acrshort{ALTO}. Les trois arguments en dernier permettent de créer certaines parties du document \acrshort{TEI} et pas d'autres, au cas où une utilisatrice ou un utilisateur veut simplement créer le \texttt{<teiHeader>} à partir des fichiers \acrshort{XML} \acrshort{ALTO}.
+
+\subsection{\texttt{./setup.py}}
+Afin de faciliter l'utilisation de l'application par de divers utilisateurs qui n'ont pas forcement de l'expérience en programmation, j'ai packagé l'application. Après l'avoir installé (dans un environnement virtuel), la commande \texttt{alto2tei} appel l'application, comme se voit dans l'exemple de commande dessus et dans la ligne 18 du fichier \texttt{setup.py}.
+
+\begin{lstlisting}[language=python, style=python]
+from setuptools import find_packages, setup
+
+setup(
+    name='alto2tei',
+    version='0.0.1',
+    packages=find_packages(),
+    install_requires=[
+        'certifi==2022.6.15',
+        'charset-normalizer==2.1.0',
+        'idna==3.3',
+        'lxml==4.9.1',
+        'PyYAML==6.0',
+        'requests==2.28.1',
+        'urllib3==1.26.11'
+    ],
+    entry_points={
+        'console_scripts': [
+            'alto2tei=src.__main__:main'
+        ]
+    }
+
+)
+\end{lstlisting}
+
+\subsection{\texttt{./src/\_\_main\_\_.py}}
+\label{main.py}
+Le module python \texttt{\_\_main\_\_.py} traite les arguments passés à l'application depuis la ligne de commande et puis mettre en pratique la construction des parties de l'arbre \acrshort{TEI} demandées.
+\begin{lstlisting}[language=python, style=python]
+import argparse, os
+import yaml
+from collections import namedtuple
+from pathlib import Path
+from time import perf_counter
+
+from src.build import TEI
+from src.write_output import Write
+
+def file_path(string):
+    """Verify if the string passed as the argument --config is a valid file path.
+    Args:
+        string (str): file path to YAML configuration file.
+    Raises:
+        FileNotFoundError: informs user that the file path is invalid.
+    Returns:
+        (str): validated path to configuration file
+    """    
+    if os.path.isfile(string):
+        return string
+    else:
+        raise FileNotFoundError(string)
+
+
+def get_args():
+    """Parse command-line arguments and verify (1) the config file exist, (2) the TEI elements demanded can be constructed.
+    """    
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--config", nargs=1, type=file_path, required=True,
+                        help="path to the YAML configuration file")
+    parser.add_argument("--version", nargs=1, type=str, required=True,
+                        help="version of Kraken used to create the ALTO-XML files")
+    parser.add_argument("--header", default=False, action='store_true',
+                        help="produce TEI-XML with <teiHeader>")
+    parser.add_argument("--sourcedoc", default=False, action='store_true',
+                        help="produce TEI-XML with <sourceDoc>")
+    parser.add_argument("--body", default=False, action='store_true',
+                        help="produce TEI-XML with <body>")
+    args = parser.parse_args()
+    return args.config, args.version, args.header, args.sourcedoc, args.body
+
+def main():
+    config, version, header, sourcedoc, body = get_args()
+
+    if body and not sourcedoc: 
+        print("")
+        warning = '\n    Cannot produce <body> without <sourceDoc>.\n    To call the program with the --body option, include also the --sourcedoc option.'
+        raise Exception(warning)
+
+    with open(config[0]) as cf_file:
+        config = yaml.safe_load(cf_file.read())
+
+    # for every directory in the path indicated in the configuration file,
+    # get the directory's name (str) and the paths of its ALTO files (os.path)
+    Docs = namedtuple("Docs", ["doc_name", "filepaths"])
+    docs = [Docs    (d.name,                                      # name of document folder
+                    [f for f in d.iterdir() if f.suffix==".xml"]) # relative filepath for file
+            for d in Path(config.get(("data"))["path"]).iterdir() if d.is_dir()]
+
+    for d in docs:
+        # instantiate the class TEI for the current document in the loop
+        tree = TEI(d.doc_name, d.filepaths)
+        tree.build_tree()
+        print("\n=====================================")
+        print(f"\33[32m~ now processing document {d.doc_name} ~\x1b[0m")
+
+        if header:
+            print(f"\33[33mbuilding <teiHeader>\x1b[0m")
+            t0 = perf_counter()
+            tree.build_header(config, version[0])
+            print("|________finished in {:.4f} seconds".format(perf_counter() - t0))
+        
+        if sourcedoc:
+            print(f"\33[33mbuilding <sourceDoc>\x1b[0m")
+            t0 = perf_counter()
+            tree.build_sourcedoc(config)
+            print("|________finished in {:.4f} seconds".format(perf_counter() - t0))
+        
+        if body:
+            print(f"\33[33mbuilding <body>\x1b[0m")
+            t0 = perf_counter()
+            tree.build_body()
+            print("|________finished in {:.4f} seconds".format(perf_counter() - t0))
+    
+        # -- output XML-TEI file --
+        if not os.path.exists('./data/'):
+            os.mkdir('./data/')
+        Write(d.doc_name, tree.root).write()
+
+if __name__ == "__main__":
+    main()
+\end{lstlisting}
+
+\noindent La première étape de la construction du document \acrshort{TEI} dans le module \texttt{./src/\_\_main\_\_.py} est la création d'une racine \acrshort{XML} \acrshort{TEI}, voir lignes 62-63. Dans un premier temps, l'arborescence de notre modélisation est réalisé avec des valeurs par défaut. La classe pour l'arbre d'un document a besoin de deux données: l'\acrshort{ARK} du fac-similé numérique (le nom du dossier en cours de traitement) et une liste de fichiers \acrshort{XML} \acrshort{ALTO} ordonnée par numéro de folio.
+
+\subsection{\texttt{./src/order\_files.py}}
+Pour créer une arborescence par défaut, la classe \texttt{TEI} du module \texttt{./src/build/} est instantanée dans la ligne 63 du  \texttt{./src/\_\_main\_\_.py}. L'un de ses deux arguments est une liste de chemins des fichiers \acrshort{XML} \acrshort{ALTO}. Cette donnée est gérée par la classe \texttt{Files} du module \texttt{./src/order\_files.py}, spécifiquement la méthode de la classe \texttt{order\_files()} qui met à jour l'attribut de la classe \texttt{self.lf} avec une liste ordonnée de chemins de fichier.
+
+\begin{lstlisting}[language=python, style=python]
+# -----------------------------------------------------------
+# Code by: Kelly Christensen
+# Python class to organize the file paths in the data directory.
+# -----------------------------------------------------------
+
+import re
+from collections import namedtuple
+
+class Files:
+    def __init__(self, document, filepaths):
+        self.d = document
+        self.fl = filepaths  # list
+
+    def order_files(self):
+        File = namedtuple("File", ["num", "filepath"])
+        ordered_files = sorted([File(int(re.search(r"(\d+).xml$", f.name).group(1)), f)for f in self.fl])
+        return ordered_files
+\end{lstlisting}
+
+\section{Construction de l'arborescence \acrshort{TEI} générique}
+Suite à la ligne 63 du module \texttt{./\_\_main\_\_.py}, la première étape de la construction du document \acrshort{TEI} est la méthode \texttt{build\_tree.py} de la classe \texttt{TEI} dans le module \texttt{./src/build.py}. Cette méthode est la première de la classe à être appelée dans le script parce qu'elle créé la racine \acrshort{XML} \acrshort{TEI} du document en cours de développement. Après la création de l'arborescence générique, la même classe \texttt{TEI} du module \texttt{./src/build.py} est utilisée pour ses méthodes \texttt{build\_header()}, \texttt{build\_sourcedoc()}, et \texttt{build\_body()}.
+
+\subsection{\texttt{./src/build.py}}
+La classe \texttt{TEI} organise des données du fac-similé en cours de traitement ainsi qu'applique les méthodes qui construisent les branches principales de l'arbre \acrshort{TEI}. Toute branche peut disposer des données suivantes, qui sont instantanées avec la classe
+\begin{itemize}
+\item l'\acrshort{ARK} (\texttt{self.d})
+\item le chemin de tout fichier \acrshort{XML} \acrshort{ALTO} (\texttt{self.fp})
+\item les métadonnées récupérées du \textit{manifest} \acrshort{IIIF}, du catalogue général de la \acrshort{BNF}, et du site \acrshort{SUDOC} (\texttt{self.metadata})
+\item une liste de toute étiquette utilisée dans les fichiers (\texttt{self.tags})
+\item la racine de l'arbre \acrshort{XML} \acrshort{TEI} en cours de construction (\texttt{self.root})
+\item les zones de \textit{SegmOnto} utilisées dans les fichiers (\texttt{self.segmonto\_zones})
+\item les lignes de \textit{SegmOnto} utilisées dans les fichiers (\texttt{self.segmonto\_lines})
+\end{itemize}
+
+\noindent Les métadonnées sont récupérées lors de la construction du \texttt{<teiHeader>}. Par conséquent, la méthode pour construire le \texttt{<teiHeader>} a besoin de la saisie, afin de savoir la version de \textit{Kraken}, ainsi que le fichier de configuration, pour informer du \texttt{<respStmt>}, voir ligne 32. Le \texttt{<sourceDoc>} a besoin d'une autre partie du fichier de configuration, celle qui informe des composants de la requête HTTPS envoyée à la \Gls{iiifapi} qui est représentée dans l'attribut \texttt{@source} des éléments \texttt{<zone>}, voir ligne 37.
+
+
+\begin{lstlisting}[language=python, style=python]
+from lxml import etree
+from src.teiheader_metadata.clean_data import Metadata
+from src.teiheader_build import teiheader
+from src.sourcedoc_build import sourcedoc
+from src.text_data import Text
+from src.body_build import body
+
+class TEI:
+    metadata = {"sru":None, "iiif":None}
+    tags = {}
+    root = None
+    segmonto_zones = None
+    segmonto_lines = None
+    def __init__(self, document, filepaths):
+        self.d = document  # (str) this document's name / name of directory contiaining the ALTO files
+        self.fp = filepaths  # (list) paths of ALTO files
+        self.metadata  # (dict) dict with two keys ("iiif", "sru"), each of which is equal to its own dictionary of metadata
+        self.tags  # (dict) a label-ref pair for each tag used in this document's ALTO files
+        self.root  # (etree_Element) root for this document's XML-TEI tree
+        self.segmonto_zones
+        self.segmonto_lines
+
+
+    def build_tree(self):
+        """Parse and map data from ALTO files to an XML-TEI tree's <teiHeader> and <sourceDoc>.
+        """   
+
+        # instantiate the XML-TEI root for this document and assign the root basic attributes
+        tei_root_att = {"xmlns":"http://www.tei-c.org/ns/1.0", "{http://www.w3.org/XML/1998/namespace}id":f"ark_12148_{self.d}"}
+        self.root = etree.Element("TEI", tei_root_att)
+    
+    def build_header(self, config, version):
+        # confirm that the metadata is being récupéré
+        self.metadata = Metadata(self.d, config["iiifURI"]).prepare()
+        self.root, self.segmonto_zones, self.segmonto_lines = teiheader(self.metadata, self.d, self.root, len(self.fp), config, version, self.fp, self.segmonto_zones, self.segmonto_lines)
+    
+    def build_sourcedoc(self, config):
+        sourcedoc(self.d, self.root, self.fp, self.tags, self.segmonto_zones, self.segmonto_lines, config["iiifURI"])
+
+    def build_body(self):
+        text = Text(self.root)
+        body(self.root, text.data)
+\end{lstlisting}
+
+
+\section{Récupération des métadonnées}
+En revenant au module \texttt{./src/\_\_main\_\_.py} qui dirige les étapes de l'application, voir lignes 67-70, le \texttt{<teiHeader>} est créé si la commande pour démarrer l'application avait l'argument \texttt{--header}. Pour créer le \texttt{<teiHeader>}, l'application appelle la méthode \texttt{build\_header()} de la classe \texttt{TEI} du module \texttt{./src/build.py}. La première étape de cette méthode est la récupération es métadonnées. Pour créer les métadonnées, la méthode créé une instance de la classe \texttt{Metadata} du module \texttt{./src/teiheader\_metadata/clean\_data.py}. L'instance de cette classe a besoin d'une donnée de la classe \texttt{TEI}, l'\acrshort{ARK} du document traité (\texttt{self.d}, voir ligne 34), ainsi que les parties de la requête à envoyer à l'\Gls{iiifapi}, qui sont données par les utilisateurs dans le fichier de configuration. Parce que les données du fichier de configuration ne font pas partie de la classe \texttt{TEI}, la méthode le saisit directement par l'argument \texttt{config}, voir ligne 32 du module \texttt{./src/build.py}.
+
+\subsection{\texttt{./src/teiheader\_metadata/clean\_data.py}}
+Depuis la ligne 32 du module \texttt{./src/build.py}, l'instance de la classe \texttt{Metadata} est créée avec deux arguments: (1) l'\acrshort{ARK} du document venant de la classe \texttt{TEI} et (2) les données portant sur la requête pour l'\acrshort{API} \acrshort{IIIF}. La seule méthode de la classe \texttt{Metadata} est \texttt{prepare()}, qui créé des instances de deux classes. La classe \texttt{IIIF} du module \texttt{./src/teiheader\_metadata/iiif\_data.py} sert à récupérer les métadonnées du fac-similé numérique. Et la classe \texttt{SRU} du module \texttt{./src/teiheader\_metadata/sru\_data.py} sert à récupérer les métadonnées du document source depuis l'\acrshort{API} \acrshort{SRU}. La méthode \texttt{prepare()} les appelle dans un certain ordre afin que la relation entre le fac-similé numérique et le document source dont la notice est dans le catalogue général de la \acrshort{BNF} soit saisie depuis le \textit{manifest} \acrshort{IIIF}.
+
+\begin{lstlisting}[language=python, style=python]
+from src.teiheader_metadata.iiif_data import IIIF
+from src.teiheader_metadata.sru_data import SRU
+
+class Metadata:
+    metadata = {"sru":None, "iiif":None}
+    def __init__(self, document, config):
+        self.d = document
+        self.metadata
+        self.iiifURI = config
+
+    def prepare(self):
+        # -- Parse data from document's IIIF manifest --
+        # instantiate the class IIIF for this document
+        iiif = IIIF(self.d, self.iiifURI)
+        # request the digital document's IIIF manifest data and clean it with methods from IIIF class
+        iiif_data = iiif.clean(iiif.request())
+        # add the cleaned IIIF data to this document's metadata
+        self.metadata.update({"iiif":iiif_data})
+
+        # -- Parse data from BnF's SRU API --
+        # isntantiate the class SRU for this document
+        sru = SRU(iiif_data["Catalogue ARK"])
+        # request the physical document's catalogue data from the BnF (response) 
+        # and/or a boolean confirming if the physical document was found (perfect_match)
+        response, perfect_match = sru.request()
+        # clean the MARCXML response and prepare a dictinoary of relevant metadata
+        sru_data = sru.clean(response, perfect_match)
+        # add the cleaned catalogue data to this document's metadata
+        self.metadata.update({"sru":sru_data})
+
+        return self.metadata
+\end{lstlisting}
+
+\subsection{\texttt{./src/tei\_metadata/iiif\_data.py}}
+Dans le module \texttt{./src/teiheader\_metadata/clean\_data.py}, la première classe utilisée dans sa méthode \texttt{prepare()} est celle-là qui récupère des métadonnées du \textit{manifest} \acrshort{IIIF} qui est renvoyée suite à une requête à l'\acrshort{API}, voir la méthode \texttt{request()} sur les lignes 19-27. Uniquement les données du \textit{manifest} déterminées essentielles, selon la justification exposée dans le chapitre \ref{chap:metadata}, sont renvoyée par la méthode \texttt{clean()}, voir les lignes 29-50.
+
+\begin{lstlisting}[language=python, style=python]
+# -----------------------------------------------------------
+# Code by: Kelly Christensen
+# Python class to parse and store data from a document's IIIF manifest.
+# -----------------------------------------------------------
+
+import os
+import requests
+import re
+
+class IIIF:
+    def __init__(self, document, iiifURI):
+        self.document = document
+        self.scheme = iiifURI["scheme"]
+        self.server = iiifURI["server"]
+        self.manifest_prefix = iiifURI["manifest_prefix"]
+        self.manifest_suffix= iiifURI["manifest_suffix"]
+
+    def request(self):
+        # Request manifest from the IIIF Presentation API
+        r = requests.get(f"{self.scheme}://{self.server}{self.manifest_prefix}{os.path.basename(self.document)}{self.manifest_suffix}")
+        try:
+            response = {d["label"]:d["value"] for d in r.json()["metadata"]}
+        except:
+            print("The IIIF manifest was not read correctly.")
+            response = {}
+        return response
+
+    def clean(self, response):
+        """Clean metadata received from Gallica API.
+        Returns:
+            clean_data (dict): cleaned data from IIIF manifest with values == None if not present in API request
+        """      
+          
+        # Make defaultdict for cleaned metadata
+        fields = ["Relation", "Catalogue ARK", "Repository", "Shelfmark", "Title", "Language", "Creator", "Date"]
+        clean_data= {}
+        {clean_data.setdefault(f, None) for f in fields}
+        for k,v in response.items():
+            if type(v) is list and list(v[0].keys())[0]=="@value":
+                clean_data[k]=v[0]["@value"]
+            else:
+                clean_data[k]=v
+        # Derive catalogue ARK from "Relation" field; this will be used to access the BnF's SRU API
+        if clean_data["Relation"] and re.search(r"\/((?:ark:)\/\w+\/\w+)", clean_data["Relation"]):
+            clean_data["Catalogue ARK"]=(re.search(r"\/((?:ark:)\/\w+\/\w+)", clean_data["Relation"]).group(1))
+        # Clean author name, getting rid of ". Auteur du texte" at the end of the string
+        if clean_data["Creator"]:
+            clean_data["Creator"]=re.sub(r"(\s\(|\.).+", '', clean_data["Creator"])
+        return clean_data
+\end{lstlisting}
+
+\subsection{\texttt{./src/teiheader\_metadata/sru\_data.py}}
+Après avoir stocké un dictionnaire des données du \textit{manifest} \acrshort{IIIF} comme l'attribut \texttt{self.metadata} dans la classe \texttt{Metadata}, la méthode \texttt{preapre()} de cette dernière classe créé une instance de la classe \texttt{SRU} avec l'\acrshort{ARK} du document physique dans le catalogue général de la \acrshort{BNF}. Dans un premier temps, la classe \texttt{SRU} dispose d'une méthode \texttt{request()}, voir lignes 19-34, pour demander les données \acrshort{XML} \Gls{unimarc} du catalogue général. Cette méthode renvoie le boolean pour dire si la requête a trouvé la bonne notice dans la catalogue (\texttt{perfect\_match}) ainsi que la racine \acrshort{XML} des données \Gls{unimarc} (\texttt{root}). Dans un deuxième temps, plusieurs méthodes sont utilisées pour extraire les données ciblées, selon notre modélisation expliquée dans les chapitres~\ref{chap:metadata} et \ref{chap:header}.
+
+\begin{lstlisting}[language=python, style=python]
+# -----------------------------------------------------------
+# Code by: Kelly Christensen
+# Python class to parse and store data from the BNF's general catalogue.
+# -----------------------------------------------------------
+
+from lxml import etree
+import requests
+import re
+
+NS = {"s":"http://www.loc.gov/zing/srw/", "m":"info:lc/xmlns/marcxchange-v2"}
+
+
+class SRU:
+    def __init__(self, ark):
+        """Args:
+            ark (string): document ARK in BnF catalogue"""
+        self.ark = ark
+
+    def request(self):
+            """Request metadata from the BnF's SRU API.
+            Returns:
+                root (etree_Element): parsed XML tree of requested Unimarc data
+                perfect_match (boolean): True if request was completed with Gallica ark / directory basename
+            """    
+            print("|        requesting data from BnF's SRU API")
+            r = requests.get(f'http://catalogue.bnf.fr/api/SRU?version=1.2&operation=searchRetrieve&query=(bib.persistentid all "ark:/12148/{self.ark}")')
+            root = etree.fromstring(r.content)
+            if root.find('.//s:numberOfRecords', namespaces=NS).text=="0":
+                perfect_match = False
+                print(f"|        \33[31mdid not find digitised document in BnF catalogue\x1b[0m")
+            else:
+                perfect_match = True
+                print(f"|        \33[32mfound digitised document in BnF catalogue\x1b[0m")
+            return root, perfect_match
+
+    def author_data(self, author_element, count):
+        """Create and fill datafields for relevant author data.
+        Args:
+            author_element (etree_Element): <mxc: datafield> being parsed
+            count (int): author's count in processing
+        Returns:
+            data (dict) : relevant authorship data (isni, surname, forename, xml:id)
+        """        
+        # create and set defaults for author data
+        fields = ["isni", "primary_name", "secondary_name", "namelink" , "xmlid"]
+        data = {}
+        {data.setdefault(f, None) for f in fields}
+        
+        # -- identifier (700s subfield "o") --
+        has_isni = author_element.find('m:subfield[@code="o"]', namespaces=NS)
+        if has_isni is not None and has_isni.text[0:4]=="ISNI":
+            data["isni"] = has_isni.text[4:]
+
+        # -- primary name (700s subfield "a") --
+        has_primaryname = author_element.find('m:subfield[@code="a"]', namespaces=NS)
+        if has_primaryname is not None:
+            data["primary_name"] = has_primaryname.text
+
+        # -- secondary name (700s subfield "b") --
+        has_secondaryname = author_element.find('m:subfield[@code="b"]', namespaces=NS)
+        if has_secondaryname is not None:
+            x = re.search(r"(?:van der)|(?:de la)|(?:de)|(?:du)|(?:von)|(?:van)", has_secondaryname.text)
+            if x:
+                data["namelink"] = x.group(0)
+            y = re.sub(r"(?:van der)|(?:de la)|(?:de)|(?:du)|(?:von)|(?:van)","", has_secondaryname.text)
+            if y != "":
+                data["secondary_name"] = y
+
+        # -- unique xml:id for the author --
+        if data["primary_name"]:
+            name = data["primary_name"]
+            data["xmlid"] = f"{name[:2]}{count}"
+        elif data["secondary_name"]:
+            data["xmlid"] = f"{name[:2]}{count}"
+        else:
+            data["xmlid"] = f"au{count}"
+        
+        return data
+    
+    def clean(self, root, perfect_match):
+        """Parse and clean data from SRU API response.
+        Returns:
+            data (dict): all relevant metadata from BnF catalogue
+        """      
+        # create and set defaults for data
+        fields = ["authors", "title", "ptr", "pubplace", "pubplace_key", "publisher", "date", "when", "date_cert", "date_resp", "country", "idno", "objectdesc", "lang", "repo", "settlement"]
+        data = {}
+        {data.setdefault(f, None) for f in fields}
+
+        if not perfect_match:
+            data["found"]=False
+
+        else:
+            data["found"]=True
+            # enter author data into data dictionary
+            data["authors"] = self.clean_authors(root)
+
+            # enter link to the work in the institution's catalogue
+            has_ptr = root.find('.//m:controlfield[@tag="003"]', namespaces=NS)
+            if has_ptr is not None:
+                data["ptr"] = has_ptr.text
+            
+            # enter date of publication
+            has_date_100 = root.find('.//m:datafield[@tag="100"]/m:subfield[@code="a"]', namespaces=NS)
+            if has_date_100 is not None and has_date_100.text[8]!="u":
+                data["date"] = has_date_100.text[9:13]
+                data["when"] = has_date_100.text[9:13]
+                data["date_cert"] = self.date_cert(has_date_100.text[8])
+                data["date_resp"] = "BNF"
+            else:
+                has_date_210 = root.find('.//m:datafield[@tag="210"]/m:subfield[@code="d"]', namespaces=NS)
+                if has_date_210 is not None:
+                    data["date"] = has_date_210.text
+            
+            
+            # enter language of document
+            has_lang = root.find('.//m:datafield[@tag="101"]/m:subfield[@code="a"]', namespaces=NS)
+            if has_lang is not None:
+                data["lang"] = has_lang.text
+
+            # enter country code of publication place
+            has_place_key = root.find('.//m:datafield[@tag="102"]/m:subfield[@code="a"]', namespaces=NS)
+            if has_place_key is not None:
+                data["pubplace_key"] = has_place_key.text
+
+            # enter cleaned title
+            has_title = root.find('.//m:datafield[@tag="200"]/m:subfield[@code="a"]', namespaces=NS)
+            if has_title is not None:
+                data["title"] = has_title.text
+
+            # enter type of document (manuscript or print)
+            has_objectdesc = root.find('.//m:datafield[@tag="200"]/m:subfield[@code="b"]', namespaces=NS)
+            if has_objectdesc is not None:
+                data["objectdesc"] = has_objectdesc.text
+
+            # enter publication place
+            has_place = root.find('.//m:datafield[@tag="210"]/m:subfield[@code="a"]', namespaces=NS)
+            if has_place is not None:
+                data["pubplace"] = has_place.text
+
+            # enter publisher
+            has_publisher = root.find('.//m:datafield[@tag="210"]/m:subfield[@code="c"]', namespaces=NS)
+            if has_publisher is not None:
+                data["publisher"] = has_publisher.text   
+
+            # enter country where the document is conserved
+            has_country = root.find('.//m:datafield[@tag="801"]/m:subfield[@code="a"]', namespaces=NS)
+            if has_country is not None:
+                data["country"] = has_country.text
+
+            # enter catalogue number of the document in the insitution
+            has_isno = root.find('.//m:datafield[@tag="930"]/m:subfield[@code="a"]', namespaces=NS)
+            if has_isno is not None:
+                data["idno"] = has_isno.text
+
+            has_repo = root.find('.//m:datafield[@tag="930"]/m:subfield[@code="b"]', namespaces=NS)
+            if has_repo is not None:
+                data["settlement"], data["repo"] = self.request_sudoc_data(has_repo.text)
+
+        return data
+    
+    def request_sudoc_data(self, num_rcr):
+        """Request and parse a search results page from SUDOC for the repository whose RCR number was found in the Unimarc 930B data.
+        Example of the relevant HTML from the SUDOC results page:
+            <tr>
+                <td class="rec_lable"><div><span>Adresse postale : </span></div></td>
+                <td class="rec_title">
+                    <div><span>NAME OF LIBRARY</span></div>
+                    <div><span>STREET ADDRESS</span></div>
+                    <div><span>CITY AND POSTAL CODE</span></div>
+                    <div><span>COUNTRY</span></div>
+                    <div><span> </span></div>
+                </td>
+            </tr>
+        """
+        # Get the HTML from the search result for the institution's RCR number from Sudoc
+        print("|        requesting data from Sudoc")
+        r = requests.get(f"http://www.sudoc.abes.fr/cbs/xslt//DB=2.2/CMD?ACT=SRCHA&IKT=8888&SRT=RLV&TRM={num_rcr}")
+        if r.status_code == 200:
+            # Parse the HTML into an etree document
+            doc = etree.HTML(r.content)
+            # Grab the <span> that has the label "Adresse postale"
+            address_label = doc.xpath('.//td[@class="rec_lable"]//span[contains(text(),"Adresse postale")]')[0]
+            # Grab the <td> element directly after the <td> that contains the label "Adresse postale"
+            address_title = address_label.getparent().getparent().getnext()
+            # Find the div/span that starts with the country "France"
+            country = address_title.xpath('.//span[starts-with(text(), "France")]')[0]
+            # Grab the text in the first div/span of the address, which should be the name of the institution
+            repository = address_title.xpath('.//span')[0].xpath('string()')
+            # Grab the div/span immediately preceding that which declare the country, which should contain the City
+            city_and_postal_code = country.getparent().getprevious().xpath('string()')
+            # Remove any postal code, other numbers, and/or "CEDEX" from the repository and clean up spaces around remaining text
+            city_and_postal_code_without_cedex = re.sub(r'CEDEX', '', city_and_postal_code)
+            city_with_spaces = re.search(r'(\D+)', city_and_postal_code_without_cedex).group(0)
+            city_without_first_space = re.sub(r'^\s*', '', city_with_spaces)
+            city_without_first_or_last_space = re.sub(r'\s*$', '', city_without_first_space)
+            if city_without_first_or_last_space and repository:
+                print(f"|        \33[32mfound Sudoc data about city and repository\x1b[0m")
+            else:
+                print(f"|        \33[31mdid not find city and repository in Sudoc data\x1b[0m")
+        else:
+            city_without_first_or_last_space = None
+            repository = None
+        return city_without_first_or_last_space, repository
+
+    def date_cert(self, key):
+        """Assigns a degree of certainty to the document's publication date.
+        """
+        # UNIMARC Norms (ca. 2012)
+        # a = currently published continuing resource
+        # b = continuing resource no longer being published
+        # c = continuing resource of unknown status
+        # d = monograph complete when issued, or issued within one calendar year
+        # e = reproduction of a document
+        # f = monograh, date of publication uncertain
+        # g = mongraph whose publication continues for more than a year
+        # h = monograph with both actual and copyright/privilege date
+        # i = monograph with both release/issue date and production date
+        # j = document with detailed date of production
+        # k = monograph published in a certain year and printed in a different year
+        # u = dates of publication unkonwn
+        if key == "a" or key == "b" or key == "d" or key == "e" or key == "h" or key == "i" or key == "j":
+            degree = "high"
+        if key == "g" or key == "k":
+            degree = "medium"
+        if key == "f":
+            degree = "low"
+        return degree
+
+    def clean_authors(self, root):
+        """Parses and cleans author data from Unimarc fields 700 and/or 701.
+        Returns:
+            authors (dict): relevant authorship data (isni, surname, forename, xml:id)
+        """
+        authors = []
+        count = 0
+        if root.find('.//m:datafield[@tag="700"]', namespaces=NS) is not None:
+            # datafield 700 is not repeatable
+            author_element = root.find('.//m:datafield[@tag="700"]', namespaces=NS)
+            count+=1
+            authors.append(self.author_data(author_element, count))
+        if root.find('.//m:datafield[@tag="701"]', namespaces=NS) is not None:
+            # datafield 701 is repeatable
+            author_elements = root.findall('.//m:datafield[@tag="701"]', namespaces=NS)
+            for element in author_elements:
+                count+=1
+                authors.append(self.author_data(element, count))
+        return authors
+
+\end{lstlisting}
+
+\section{Construction du \texttt{<teiHeader>}}
+Avec les métadonnées récupérées et disponibles comme l'attribut \texttt{self.metadata} de la classe \texttt{TEI} du module \texttt{./src/build.py} (voir ligne 34), le \texttt{<teiHeader>} peut être construit. Dans notre modélisation, l'arborescence du \texttt{<teiHeader>} peut varier un peu. Le \texttt{<teiHeader>} par défaut aura un certain nombre d'auteurs imbriqués dans le \texttt{<titleStmt>} et \texttt{<sourceDesc>}, selon le nombre trouvé lors de la récupération des métadonnées. Pour cette raison, la classe destinée à la construction de l'arborescence générique (\texttt{DefaultTree}) a déjà besoin des métadonnées récupérées, même si elle ne les met pas en place.
+
+\subsection{\texttt{./src/teiheader\_build.py}}
+La fonction \texttt{teiheader()} du module \texttt{./src/teiheader\_build.py} créé les instances de deux classes: (1) \texttt{DefaultTree}, qui met en place les valeurs par défaut au cas où une donnée n'était pas récupérée, et (2) \texttt{FullTree} qui rempli la branche du \texttt{<teiHeader>}.
+
+\begin{lstlisting}[language=python, style=python]
+# -----------------------------------------------------------
+# Code by: Kelly Christensen
+# Python script to assemble the <teiHeader> of a TEI file.
+# -----------------------------------------------------------
+
+from src.teiheader_default import DefaultTree
+from src.teiheader_full import FullTree
+
+NS = {"s":"http://www.loc.gov/zing/srw/", "m":"info:lc/xmlns/marcxchange-v2"}
+
+
+def teiheader(metadata, document, root, count_pages, config, version, filepaths, segmonto_zones, segmonto_lines):
+    """Create all elements of the <teiHeader>.
+    Args:
+        document (str): name of directory containing ALTO-encoded transcriptions of the document's pages
+        root (etree): XML-TEI tree
+        count_pages (string): number of files in directory
+    Returns:
+        root (etree): XML-TEI tree
+    """    
+    
+    # step 1 -- generate default <teiHeader>
+    elements = DefaultTree(config, document, root, metadata, count_pages, version)  # deafult_teiheader.py
+    elements.build()
+    
+    # step 2 -- enter available metadata into relevant element in <teiHeader>
+    htree = FullTree(elements.children, metadata)  # full_teiheader.py
+    htree.author_data()
+    htree.bib_data()
+    segmonto_zones, segmonto_lines = htree.segmonto_taxonomy(filepaths)
+    return root, segmonto_zones, segmonto_lines
+
+\end{lstlisting}
+
+\subsection{\texttt{./src/teiheader\_default.py}}
+La classe \texttt{DefaultTree} du module \texttt{./src/teiheader\_default.py} réalise notre modélisation du \texttt{<teiHeader>} qui est expliquée dans le chapitre~\ref{chap:metadata}.
+
+\begin{lstlisting}[language=python, style=python]
+# -----------------------------------------------------------
+# Code by: Kelly Christensen
+# Python class to build the architecture of a default <teiHeader>.
+# -----------------------------------------------------------
+
+from email.mime import application
+from lxml import etree
+from datetime import datetime
+from collections import defaultdict
+
+class DefaultTree:
+    children = defaultdict(list)
+    def __init__(self, config, document, root, metadata, count_pages, version):
+        self.config = config
+        self.document = document
+        self.root = root
+        self.sru = metadata["sru"]
+        self.iiif = metadata["iiif"]
+        self.count = str(count_pages)
+        self.version = version
+
+    def build(self):
+        if self.sru["found"]:
+            default_text = "Information not available."
+            num_authors = len(self.sru["authors"])
+        else:
+            default_text = "Digitised resource not found in BnF catalogue."
+            num_authors = 1  # method of extracting IIIF manifest data will only return 1 author
+
+        teiHeader = etree.SubElement(self.root, "teiHeader")
+        # Three children of the root <teiHeader>
+        fileDesc = etree.SubElement(teiHeader, "fileDesc")
+        profileDesc = etree.SubElement(teiHeader, "profileDesc")
+        encodingDesc = etree.SubElement(teiHeader, "encodingDesc")
+
+        # <fileDesc>
+        titleStmt = etree.SubElement(fileDesc, "titleStmt")
+        self.children["titleStmt"] = titleStmt
+        self.children["ts_title"] = etree.SubElement(titleStmt, "title")  # pass to other methods
+        self.children["ts_title"].text = default_text
+        for i in range(num_authors):
+            etree.SubElement(titleStmt, "author")
+        if num_authors == 0:
+            ts_author = etree.SubElement(titleStmt, "author")
+            ts_author.text = default_text
+        respStmt = etree.SubElement(titleStmt, "respStmt")
+        resp = etree.SubElement(respStmt, "resp")
+        resp.text = self.config["responsibility"]["text"]
+        for i in range(len(self.config["responsibility"]["resp"])):
+            persName = etree.SubElement(respStmt, "persName")
+            forename = etree.SubElement(persName, "forename")
+            forename.text = self.config["responsibility"]["resp"][i]["forename"]
+            surname = etree.SubElement(persName, "surname")
+            surname.text = self.config["responsibility"]["resp"][i]["surname"]
+            etree.SubElement(persName, "ptr", self.config["responsibility"]["resp"][i]["ptr"])
+        extent = etree.SubElement(fileDesc, "extent")
+        etree.SubElement(extent, "measure", unit="images", n=self.count)
+        publicationStmt = etree.SubElement(fileDesc, "publicationStmt")
+        publisher = etree.SubElement(publicationStmt, "publisher")
+        publisher.text = self.config["responsibility"]["publisher"]
+        authority = etree.SubElement(publicationStmt, "authority")
+        authority.text = self.config["responsibility"]["authority"]
+        availability = etree.SubElement(publicationStmt, "availability", self.config["responsibility"]["availability"])
+        etree.SubElement(availability, "licence", self.config["responsibility"]["licence"])
+        today = datetime.today().strftime('%Y-%m-%d')
+        etree.SubElement(publicationStmt, "date", when=today)
+        sourceDesc = etree.SubElement(fileDesc, "sourceDesc")
+        bibl = etree.SubElement(sourceDesc, "bibl")
+        self.children["bibl"] = bibl
+        self.children["ptr"] = etree.SubElement(bibl, "ptr")  # pass to other methods
+        for i in range(num_authors):
+            etree.SubElement(bibl, "author")
+        if num_authors == 0:
+            bib_author = etree.SubElement(bibl, "author")
+            bib_author.text = default_text
+        self.children["bib_title"] = etree.SubElement(bibl, "title")  # pass to other methods
+        self.children["bib_title"].text = default_text
+        self.children["pubPlace"] = etree.SubElement(bibl, "pubPlace")  # pass to other methods
+        self.children["pubPlace"].text = default_text
+        self.children["publisher"] = etree.SubElement(bibl, "publisher")  # pass to other methods
+        self.children["publisher"].text = default_text
+        self.children["date"] = etree.SubElement(bibl, "date")  # pass to other methods
+        self.children["date"].text = default_text
+        msDesc = etree.SubElement(sourceDesc, "msDesc")
+        msIdentifier = etree.SubElement(msDesc, "msIdentifier")
+        self.children["country"] = etree.SubElement(msIdentifier, "country")  # pass to other methods
+        self.children["settlement"] = etree.SubElement(msIdentifier, "settlement")  # pass to other methods
+        self.children["settlement"].text = default_text
+        self.children["repository"] = etree.SubElement(msIdentifier, "repository")  # pass to other methods
+        self.children["repository"].text = default_text
+        self.children["idno"] = etree.SubElement(msIdentifier, "idno")  # pass to other methods
+        self.children["idno"].text = default_text
+        altIdentifer = etree.SubElement(msIdentifier, "altIdentifier")
+        alt_idno = etree.SubElement(altIdentifer, "idno", type="ark")  # pass to other methods
+        alt_idno.text = self.document
+        physDesc = etree.SubElement(msDesc, "physDesc")
+        objectDesc = etree.SubElement(physDesc, "objectDesc")
+        self.children["p"] = etree.SubElement(objectDesc, "p")  # pass to other methods
+        self.children["p"].text = default_text
+
+        # <profileDesc>
+        langUsage = etree.SubElement(profileDesc, "langUsage")
+        self.children["language"] = etree.SubElement(langUsage, "language") # pass to other methods
+        self.children["language"].attrib["ident"] = ""
+
+        # <encodingDesc>
+        appInfo = etree.SubElement(encodingDesc, "appInfo")
+        application = etree.SubElement(appInfo, "application")
+        application.attrib["ident"] = 'Kraken'
+        application.attrib["version"] = self.version
+        app_label = etree.SubElement(application, "label")
+        app_label.text = "Kraken"
+        app_ptr = etree.SubElement(application, "ptr")
+        app_ptr.attrib["target"] = "https://github.com/mittagessen/kraken"
+        classDecl = etree.SubElement(encodingDesc, "classDecl")
+        taxonomy_id = {"{http://www.w3.org/XML/1998/namespace}id":"SegmOnto"}
+        self.children["taxonomy"] = etree.SubElement(classDecl, "taxonomy", taxonomy_id)
+        tax_bibl = etree.SubElement(self.children["taxonomy"], "bibl")
+        tax_title = etree.SubElement(tax_bibl, "title")
+        tax_title.text = "SegmOnto"
+        tax_ptr = etree.SubElement(tax_bibl, "ptr")
+        tax_ptr.attrib["target"]="https://github.com/segmonto"
+
+\end{lstlisting}
+
+\subsection{\texttt{./src/teiheader\_full.py}}
+La classe \texttt{FullTree} prend toutes les métadonnées ainsi que les éléments créés pour le \texttt{<teiHeader>} générique afin qu'elle puisse les remplir avec les bonnes données.
+
+\begin{lstlisting}[language=python, style=python]
+# -----------------------------------------------------------
+# Code by: Kelly Christensen
+# Python class to map the document's and project's metadata to the default <teiHeader>.
+# -----------------------------------------------------------
+
+from lxml import etree
+import re
+from collections import namedtuple
+from .sourcedoc_build import labels
+
+class FullTree:
+    def __init__(self, children, metadata):
+        self.children = children
+        self.sru = metadata["sru"]
+        self.iiif = metadata["iiif"]
+
+    def author_data(self):
+        """Enter document's title and author into <titleStmt>.
+        """        
+        if self.sru["found"]:  # if the document's IIIF manifest had a valid catalogue ARK
+            self.authors(self.children["titleStmt"], True, True)
+            self.authors(self.children["bibl"], True, False)
+        else:  # if the document's IIIF manifest didn't have a valid catalogue ARK
+            self.authors(self.children["titleStmt"], False, True)
+            self.authors(self.children["bibl"], False, False)
+
+    def authors(self, parent, is_catologue_match, is_first_id):
+        """Create elements about authorship in either fileDesc/titleStmt or fileDesc/sourceDesc/bibl.
+        Args:
+            parent (etree_Element): the parent element for the author data (<titleStmt> or <bibl>)
+            is_catologue_match (boolean): True if the document's metadata was found in the BnF catalogue
+            is_first_id (boolean): True if the author id is presented for the first time, aka "xml:id"
+                                    if it's not the first time, the id will be "ref"
+        """     
+
+        if not parent.find('./author').text:  # if the default tree was not built for 0 authors and doesn't have default text
+            xml_id = "{http://www.w3.org/XML/1998/namespace}id"
+            if is_catologue_match:
+                for count, author_root in enumerate(parent.findall('./author')):
+                    if is_first_id:
+                        author_root.attrib[xml_id] = self.sru["authors"][count]["xmlid"]
+                    else:
+                        ref = self.sru["authors"][count]["xmlid"]
+                        author_root.attrib["ref"] = f"#{ref}"
+                    persname = etree.SubElement(author_root, "persName")
+                    if self.sru["authors"][count]["secondary_name"]:
+                        forename = etree.SubElement(persname, "forename")
+                        forename.text = self.sru["authors"][count]["secondary_name"]
+                    if self.sru["authors"][count]["namelink"]:
+                        namelink = etree.SubElement(persname,"nameLink")
+                        namelink.text = self.sru["authors"][count]["namelink"]
+                    if self.sru["authors"][count]["primary_name"]:
+                        surname = etree.SubElement(persname, "surname")
+                        surname.text = self.sru["authors"][count]["primary_name"]
+                    if self.sru["authors"][count]["isni"]:
+                        ptr = etree.SubElement(persname, "ptr")
+                        ptr.attrib["type"] = "isni"
+                        ptr.attrib["target"] = self.sru["authors"][count]["isni"]
+            else:
+                author_root = parent.find('./author')
+                if self.iiif["Creator"] is not None:
+                    a = self.iiif["Creator"]
+                    if is_first_id:
+                        author_root.attrib[xml_id] = f"{a[:2]}"
+                    else:
+                        author_root.attrib["ref"] = f"#{a[:2]}"
+                    name = etree.SubElement(author_root, "name")
+                    name.text = a
+
+    def bib_data(self):
+        """In the <bibl>, enter the document's catalogue pointer (ptr), author, title, publication place, publisher, date.
+            In the <msDesc>, enter the institution's country code, settlement, repository name, shelfmark for the doc, and doc type.
+        """
+
+        Entry = namedtuple("Entry", ["tei_element","attribute","iiif_data","unimarc_data"])
+        entries =   [
+                    # <title> in <titleStmt>, data from IIIF or SRU
+                    Entry("ts_title",None,"Title","title"),
+                    # @target for <ptr> element in <bibl>, only data from SRU
+                    Entry("ptr","target",None,"ptr"),
+                    # <title> in <bibl>, data from IIIF or SRU
+                    Entry("bib_title",None,"Title","title"),
+                    # <pubPlace> in <sourceDesc>, only data from SRU
+                    Entry("pubPlace",None,None,"pubplace"),
+                    # @key for <pubPlace> in <sourceDesc>, only data from SRU
+                    Entry("pubPlace","key",None,"pubplace_key"),
+                    # <publisher> in <sourceDesc>, only data from SRU
+                    Entry("publisher",None,None,"publisher"),
+                    # <date> in <sourceDesc>, data from IIIF or SRU
+                    Entry("date",None,"Date","date"),
+                    # @when for <date> in <sourceDesc>, only data from SRU
+                    Entry("date","when",None,"when"),
+                    # @cert for <date> in <sourceDesc>, only data from SRU
+                    Entry("date","cert",None,"date_cert"),
+                    # @resp for <date> in <sourceDesc>, only data from SRU
+                    Entry("date","resp",None,"date_resp"),
+                    # @key for <country> in <msDesc>, onyl data from SRU
+                    Entry("country","key",None,"country"),
+                    # <settlement> in <msDesc>, only data from SRU
+                    Entry("settlement", None, None, "settlement"),
+                    # <respository> in <msDesc>, only data from IIIF
+                    Entry("repository",None,"Repository","repo"),
+                    # <idno> in <msDesc>, data from IIIF or SRU
+                    Entry("idno",None,"Shelfmark","idno"),
+                    # <p> in <objectDesc>, only data from SRU
+                    Entry("p",None,None,"objectdesc"),
+                    # <language> in <profileDesc>, only data from IIIF
+                    Entry("language",None,"Language",None),
+                    # @ident for <language> in <profileDesc>, only data from SRU
+                    Entry("language","ident",None,"lang")]
+        for e in entries:
+            if self.sru and e.unimarc_data and self.sru[e.unimarc_data]:
+                self.entry(self.sru[e.unimarc_data], self.children[e.tei_element], e.attribute)
+            elif e.iiif_data and self.iiif[e.iiif_data]:
+                self.entry(self.iiif[e.iiif_data], self.children[e.tei_element], e.attribute)
+    
+    def entry(self, data, tei_element, attribute):
+        if attribute:
+            tei_element.attrib[attribute] = data
+        else:
+            tei_element.text = data
+
+    def segmonto_taxonomy(self, filepaths):
+        # List all the SegmOnto tags and a URL pointing to their description.
+        SegmOntoZones = {
+                "CustomZone":"https://segmonto.github.io/gd/gdZ/CustomZone/",
+                "DamageZone":"https://segmonto.github.io/gd/gdZ/DamageZone",
+                "DecorationZone":"https://segmonto.github.io/gd/gdZ/DecorationZone",
+                "DigitizationArtefactzone":"https://segmonto.github.io/gd/gdZ/DigitizationArtefactzone",
+                "DropCapitalZone":"https://segmonto.github.io/gd/gdZ/DropCapitalZone",
+                "MainZone":"https://segmonto.github.io/gd/gdZ/MainZone",
+                "MusicZone":"https://segmonto.github.io/gd/gdZ/MusicZone",
+                "NumberingZone":"https://segmonto.github.io/gd/gdZ/NumberingZone",
+                "QuireMarksZone":"https://segmonto.github.io/gd/gdZ/QuireMarksZone",
+                "RunningTitleZone":"https://segmonto.github.io/gd/gdZ/RunningTitleZone",
+                "SealZone":"https://segmonto.github.io/gd/gdZ/SealZone",
+                "StampZone":"https://segmonto.github.io/gd/gdZ/StampZone",
+                "TableZone":"https://segmonto.github.io/gd/gdZ/TableZone",
+                "TitlePageZone":"https://segmonto.github.io/gd/gdZ/TitlePageZone"
+            }
+        SegmOntoLines = {
+                "CustomLine":"https://segmonto.github.io/gd/gdL/CustomLine/",
+                "DefaultLine":"https://segmonto.github.io/gd/gdL/DefaultLine",
+                "DropCapitalLine":"https://segmonto.github.io/gd/gdL/DropCapitalLine",
+                "HeadingLine":"https://segmonto.github.io/gd/gdL/HeadingLine",
+                "InterlinearLine":"https://segmonto.github.io/gd/gdL/InterlinearLine",
+                "MusicLine":"https://segmonto.github.io/gd/gdL/MusicLine"
+            }
+        
+        # Get all the tags used on the pages of this document.
+        all_tag_dicts = [labels(f) for f in filepaths]
+
+        # With regex, extract the main part (string before a colon, if present) of a label in the tag dictionary.
+        # And use dictionary comprehension to parse all the labels in the document's tags dictionaries.
+        unique_labels = list(set(re.match(r"(\w+):?(\w+)?#?(\d?)?", value).group(1)\
+                                for dic in all_tag_dicts\
+                                for value in dic.values()))
+
+        # Create a list of zone tags used in this document.
+        document_zones = [label for label in unique_labels if "Zone" in label]
+        # Create a list of line tags used in this document.
+        document_lines = [label for label in unique_labels if "Line" in label]
+
+        # Descending directly from <taxonomy>, create the TEI element <category> for SegmOnto zones.
+        cat_id = {"{http://www.w3.org/XML/1998/namespace}id":"SegmOntoZones"}
+        category = etree.SubElement(self.children["taxonomy"], "category", cat_id)
+        # Enter into the <category> every zone in the document that is also named in the SemOnto guidelines.
+        for z in set(SegmOntoZones).intersection(set(document_zones)):
+            self.enter_taxonomy_category(category, z, SegmOntoZones[z])
+        
+        # Descending directly from <taxonomy>, create the TEI element <category> for SegmOnto lines.
+        cat_id = {"{http://www.w3.org/XML/1998/namespace}id":"SegmOntoLines"}
+        category = etree.SubElement(self.children["taxonomy"], "category", cat_id)
+        # Enter into the <category> every line in the document that is also named in the SemOnto guidelines.
+        for l in set(SegmOntoLines).intersection(set(document_lines)):
+            self.enter_taxonomy_category(category, l, SegmOntoLines[l])
+        return document_zones, document_lines
+            
+    def enter_taxonomy_category(self, category, tag, url):
+        """Enter into the TEI-XML tree a <catDesc> for a specific SegmOnto line or zone.
+
+        Args:
+            category (etree_Element): root for the element <category> in the TEI-XML document
+            tag (string): name of the tag identified in the ALTO file
+            url (string): URL pointing to a description fo the line or zone in the SegmOnto guidelines
+        """        
+        catDesc_id = {"{http://www.w3.org/XML/1998/namespace}id":f"{tag}"}
+        catDesc = etree.SubElement(category, "catDesc", catDesc_id)
+        title = etree.SubElement(catDesc, "title")
+        title.text = tag
+        ptr = etree.SubElement(catDesc, "ptr")
+        ptr.attrib["target"] = url
+
+\end{lstlisting}
+
+\section{Construction du \texttt{<sourceDoc>}}
+La méthode \texttt{build\_sourcedoc()} dans la classe \texttt{TEI} (voir lignes 37-38 du module \texttt{./src/build.py}) prend beaucoup d'attributs de la classe \texttt{TEI}. Elle a besoin de l'\acrshort{ARK} du fac-similé numérique (\texttt{self.d}), la racine \acrshort{XML} du document \acrshort{TEI} en cours de construction, une liste des chemins vers les fichiers \acrshort{ALTO}, une liste de toute ligne et toute zone \texttt{SegmOnto} utilisée dans les transcriptions du document. En plus, la classe a besoin d'une donnée qui n'est pas gérée par la classe \texttt{TEI} mais qui vient du fichier de configuration traitée par le module \texttt{\_\_main\_\_.py} est envoyée quand ce module appelle la création du \texttt{<sourceDoc>}, voir ligne 76 du module  \texttt{\_\_main\_\_.py}.
+
+\subsection{\texttt{./src/sourcedoc\_build.py}}
+La module \texttt{./src/sourcedoc\_build.py} contient la fonction \texttt{sourcedoc()} qui est appelée par la méthode \texttt{build\_sourcedoc.py} de la classe \texttt{TEI}. La fonction \texttt{sourcedoc()} profite de la fonction \texttt{labels()} (voir lignes 15-22) pour gérer un dictionnaire qui associe l'identifiant chiffré d'une étiquette \textit{SegmOnto}, que des modèles \acrshort{HTR} y ont appliquée, au nom de l'étiquette. En plus d'un dictionnaire qui déchiffre les étiquettes, la fonction \texttt{sourcedoc()} dispose des classes gèrent certaines données pour le document en cours de traitement. La classe \texttt{Files} fournit une liste des fichiers \acrshort{XML} \acrshort{ALTO} ordonnée par le numéro de folio, pour que l'application les traite et mette leurs transcriptions dans le bon ordre. La classe \texttt{Attributes} gère la création des attributs \acrshort{XML} à donnée aux éléments \acrshort{TEI} créés, voir ligne 50. Enfin, la classe \texttt{SurfaceTree} gère la création des éléments \acrshort{XML} \acrshort{TEI} pour la racine \acrshort{TEI} à partir des éléments descendant de la racine \acrshort{ALTO} du fichier \acrshort{XML} \acrshort{ALTO} en cours de traitement dans la boucle, voir ligne 51.
+
+\begin{lstlisting}[language=python, style=python]
+# -----------------------------------------------------------
+# Code by: Kelly Christensen
+# Python script to map all the data of an ALTO file to the <sourceDoc> of a TEI file.
+# -----------------------------------------------------------
+
+from collections import defaultdict
+from src.order_files import Files
+from src.sourcedoc_attributes import Attributes
+from src.sourcedoc_elements import SurfaceTree
+from lxml import etree
+
+NS = {'a':"http://www.loc.gov/standards/alto/ns-v4#"}  # namespace for the Alto xml
+
+
+def labels(filepath):
+    root = etree.parse(filepath).getroot()
+    elements = [t.attrib for t in root.findall('.//a:OtherTag', namespaces=NS)]
+    collect = defaultdict(dict)
+    for d in elements:
+        collect[d["ID"]] = d["LABEL"]
+    tags = dict(collect)
+    return tags
+
+
+def sourcedoc(document_name, output_tei_root, filepath_list, tags, segmonto_zones, segmonto_lines, config):
+    """Creates the <sourceDoc> for an XML-TEI file using data parsed from a series of ALTO files.
+        The <sourceDoc> collates each ALTO file, which represents one page of a document, into a wholistic
+        description of the document.
+    """
+
+
+    ordered_files = Files(document_name, filepath_list).order_files()
+    
+    # Create <sourceDoc> and its child <surfaceGrp>.
+    sourceDoc = etree.SubElement(output_tei_root, "sourceDoc")
+
+    for file in ordered_files:
+
+        tags = labels(file.filepath)
+
+        # Start count at 0 for number of entities on a page.
+        blocks_on_page = 0
+        lines_on_page = 0
+        strings_on_page = 0
+        glyphs_on_page = 0
+
+        # Parse the XML tree for the ALTO file
+        input_alto_root = etree.parse(file.filepath).getroot()
+        # Instantiate the classes Attributes and SurfaceTree for the ALTO file
+        attributes = Attributes(document_name, file.num, input_alto_root, tags, config)
+        surface_tree = SurfaceTree(document_name, file.num, input_alto_root)
+
+        # -- SURFACE --
+        # For every page in the ALTO file, create a <surface> and assign its attributes.
+        surface = surface_tree.surface(sourceDoc, attributes.surface())
+
+        # -- TEXTBLOCK --
+        # For every <TextBlock> in a <PrintSpace>, create a <zone> and assign it attributes.
+        textblocks = attributes.zones("PrintSpace", "TextBlock", segmonto_zones)
+        for tb in textblocks:
+            # Only map the <TextBlock> to the XML-TEI tree if its @ID was found.
+            if tb.id:
+                blocks_on_page+=1
+                textblock = surface_tree.zone1(surface, tb.attributes, tb.id, blocks_on_page)
+
+            textlines = attributes.zones(f'TextBlock[@ID="{tb.id}"]', "TextLine", segmonto_lines)
+            # "tl" concerns <TextLine> and its descendant <Polygon>
+            for tl in textlines:
+                # Only map the <TextLine> to the XML-TEI tree if its @ID was found.
+                if tl.id:
+                    lines_on_page+=1
+                    textline = surface_tree.zone2(textblock, tb.id, tl.attributes, tl.id, lines_on_page)
+                    words = ""
+
+                    # If <TextLine> has child <String> that has all the line's textual content, map that to the TEI element <line>.
+                    if input_alto_root.find(f'.//a:TextLine[@ID="{tl.id}"]/a:String', namespaces=NS).get("CONTENT") is not None\
+                        and len(input_alto_root.find(f'.//a:TextLine[@ID="{tl.id}"]/a:String', namespaces=NS).getchildren()) == 0:
+                        # Map the textual data to the TEI element <line>.
+                        surface_tree.line(textline, tb.id, tl.id, lines_on_page, None)
+                    
+                    # If the line's textual content is expressed at the level of glyphs, map that textual data to TEI element <c>.
+                    elif input_alto_root.find(f'.//a:TextLine[@ID="{tl.id}"]/a:String', namespaces=NS).get("CONTENT") is not None\
+                        and input_alto_root.find(f'.//a:TextLine[@ID="{tl.id}"]/a:String', namespaces=NS).get("CONTENT") != ""\
+                        and len(input_alto_root.find(f'.//a:TextLine[@ID="{tl.id}"]/a:String', namespaces=NS).getchildren()) > 0:
+
+                        # Loop through all the <String> or <SP> children of a <TextLine>
+                        textline_children = input_alto_root.find(f'.//a:TextLine[@ID="{tl.id}"]', namespaces=NS).getchildren()
+                        for textline_child in textline_children:
+
+                            # If child of <TextLine> is a space <SP>
+                            if etree.QName(textline_child).localname == "SP":
+                                textline_child_id = textline_child.attrib["ID"]
+                                space_data = attributes.zones(f'TextLine[@ID="{tl.id}"]', f'SP[@ID="{textline_child_id}"]', None)[0]
+                                strings_on_page+=1
+                                surface_tree.zone3(textline, tb.id, tl.id, space_data.attributes, space_data.id, strings_on_page)
+
+                            # If a child of <TextLine> is a segment of text <String>
+                            elif etree.QName(textline_child).localname == "String":
+                                textline_child_id = textline_child.attrib["ID"]
+                                string_data = attributes.zones(f'TextLine[@ID="{tl.id}"]', f'String[@ID="{textline_child_id}"]', None)[0]
+                                strings_on_page+=1
+                                string = surface_tree.zone3(textline, tb.id, tl.id, string_data.attributes, string_data.id, strings_on_page)
+
+                                # Loop through all the <Glyph> children of a <String>
+                                string_children = input_alto_root.findall(f'.//a:String[@ID="{textline_child_id}"]/a:Glyph', namespaces=NS)
+                                if words == "":
+                                    words = words + "".join([g.get("CONTENT") for g in string_children])
+                                else:
+                                    words = words + " " + "".join([g.get("CONTENT") for g in string_children])
+                                    
+                                for glyph_child in string_children:
+                                    glyph_id = glyph_child.attrib["ID"]
+                                    glyph_data = attributes.zones(f'String[@ID="{textline_child_id}"]', f'Glyph[@ID="{glyph_id}"]', None)[0]
+                                    glyphs_on_page+=1
+                                    glyph = surface_tree.zone4(string, tb.id, tl.id, textline_child_id, glyph_data.attributes, glyph_id, glyphs_on_page)
+                                    surface_tree.car(glyph, glyph_child, tb.id, tl.id, textline_child_id, glyph_id, glyphs_on_page)
+
+                        surface_tree.line(textline, tb.id, tl.id, lines_on_page, words)
+  
+    return output_tei_root
+    
+\end{lstlisting}
+
+\subsection{\texttt{./src/sourcedoc\_elements.py}}
+La classe \texttt{SurfaceTree} traite les éléments ciblés dans le fichier \acrshort{XML} \acrshort{ALTO} en cours de traitement dans la boucle et fournit une architecture pour tous les éléments utilisés dans notre modélisation du \texttt{<sourceDoc>}. Chaque fonction pour créer les éléments prend comme argument les attributs de l'élément, qui sont donnés depuis le module parent \texttt{./src/sourcedoc\_build.py} qui les récupère depuis une instance de la classe \texttt{Atrributes}.
+
+\begin{lstlisting}[language=python, style=python]
+# -----------------------------------------------------------
+# Code by: Kelly Christensen
+# Python class to build elements inside the <sourceDoc> and map data to them.
+# -----------------------------------------------------------
+
+from lxml import etree
+import re
+
+NS = {'a':"http://www.loc.gov/standards/alto/ns-v4#"}  # namespace for the Alto xml
+
+
+class SurfaceTree:
+    """Creates a <surface> element and its children for one page (ALTO file) of a document.
+    """    
+    
+    def __init__(self, doc, folio, alto_root):
+        self.doc = doc
+        self.folio = folio
+        self.root = alto_root
+
+    def surface(self, surface_group, page_attributes):
+        """Make the TEI <surface> element that will organize all of an ALTO file's data.
+
+        Args:
+            surface_group (_type_): _description_
+            page_attributes (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """        
+        surface = etree.SubElement(surface_group, "surface", page_attributes)
+        # create <graphic> and assign its attributes
+        etree.SubElement(surface, "graphic", url=f"https://gallica.bnf.fr/iiif/ark:/12148/{self.doc}/f{self.folio}/full/full/0/native.jpg")
+        return surface
+
+    def zone1(self, surface, attributes, block_id, blocks_on_page):
+        """Make the xml:id and TEI <zone> element for the ALTO file's <TextBlock>.
+
+        Args:
+            surface (etree_Element): _description_
+            textblock_atts (dict): _description_
+            block_id (str): _description_
+            blocks_on_page (int): _description_
+
+        Returns:
+            _type_: _description_
+        """        
+        xml_id = {"{http://www.w3.org/XML/1998/namespace}id":f"f{self.folio}-{block_id}-blockCount{blocks_on_page}"}
+        zone = etree.SubElement(surface, "zone", xml_id)
+        for k,v in attributes.items():
+            zone.attrib[k]=v
+        return zone
+
+    def zone2(self, textblock, block_parent, attributes, line_id, lines_on_page):   
+        """Make the xml:id and TEI <zone> element for the second-level <zone> for the ALTO file's <TextLine>
+            and make the xml:id for the second-level <zone>'s <path>.
+
+        Args:
+            textblock (_type_): _description_
+            block_parent (_type_): _description_
+            textline_atts (_type_): _description_
+            line_id (_type_): _description_
+            lines_on_page (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """         
+        # -------------------------------------------
+        zone_id = {"{http://www.w3.org/XML/1998/namespace}id":f"f{self.folio}-{block_parent}-{line_id}-lineCount{lines_on_page}"}
+        # Insert the <zone> with this xml:id into the TEI-XML tree.
+        zone = etree.SubElement(textblock, "zone", zone_id)
+        # Insert the 
+        for k,v in attributes.items():
+            zone.attrib[k]=v
+        # -------------------------------------------
+        path_id = {"{http://www.w3.org/XML/1998/namespace}id":f"f{self.folio}-{block_parent}-{line_id}-lineCount{lines_on_page}-baseline"}
+        #
+        baseline = etree.SubElement(zone, "path", path_id)
+        #
+        b = self.root.find(f'.//a:TextLine[@ID="{line_id}"]', namespaces=NS).get("BASELINE")
+        #
+        baseline.attrib["points"] = " ".join([re.sub(r"\s", ",", x) for x in re.findall(r"(\d+ \d+)", b)])
+        return zone
+
+    def line(self, textline, block_parent, line_parent, lines_on_page, extracted_words):
+        """If the ALTO file stores all of a line's textual data in the <TextLine> attribute @CONTENT, 
+            make the xml:id for <line>.
+
+        Args:
+            textline (_type_): _description_
+            block_parent (_type_): _description_
+            line_parent (_type_): _description_
+            lines_on_page (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """        
+        xml_id = {"{http://www.w3.org/XML/1998/namespace}id":f"f{self.folio}-{block_parent}-{line_parent}-lineCount{lines_on_page}-text"}
+        # If the 
+        line = etree.SubElement(textline, "line", xml_id)
+        line.attrib["n"] = str(lines_on_page)
+        if extracted_words:
+            line.text = extracted_words
+        else:
+            line.text = self.root.find(f'.//a:TextLine[@ID="{line_parent}"]/a:String', namespaces=NS).get("CONTENT")
+        return line
+        
+    def zone3(self, textline, block_parent, line_parent, attributes, seg_id, strings_on_page):
+        """Make the xml:id and TEI <zone> element for the ALTO file's <String> (segment/word).
+
+        Args:
+            textline (_type_): _description_
+            block_parent (_type_): _description_
+            line_parent (_type_): _description_
+            attributes (_type_): _description_
+            seg_id (_type_): _description_
+            segments_on_page (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """        
+        xml_id = {"{http://www.w3.org/XML/1998/namespace}id":f"f{self.folio}-{block_parent}-{line_parent}-{seg_id}-segCount{strings_on_page}"}
+        zone = etree.SubElement(textline, "zone", xml_id)
+        for k,v in attributes.items():
+            zone.attrib[k]=v
+
+        if self.root.find(f'.//a:String[@ID="{seg_id}"]', namespaces=NS) is not None \
+            and self.root.find(f'.//a:String[@ID="{seg_id}"]', namespaces=NS).get("WC") is not None:
+            word_certainty = self.root.find(f'.//a:String[@ID="{seg_id}"]', namespaces=NS).get("WC")
+            cert_attribs = {
+                "{http://www.w3.org/XML/1998/namespace}id":f"f{self.folio}-{block_parent}-{line_parent}-{seg_id}-segCount{strings_on_page}-cert",
+                "target":f"#f{self.folio}-{block_parent}-{line_parent}-{seg_id}-segCount{strings_on_page}-text",
+                "locus":"value",
+                "degree":word_certainty
+            }
+            etree.SubElement(zone, "certainty", cert_attribs)
+        return zone
+
+    def zone4(self, string, block_parent, line_parent, seg_parent, attributes, glyph_id, glyphs_on_page):
+        """Make the xml:id and TEI <zone> element for the ALTO file's <String> (segment/word).
+
+        Args:
+            textline (_type_): _description_
+            block_parent (_type_): _description_
+            line_parent (_type_): _description_
+            attributes (_type_): _description_
+            seg_id (_type_): _description_
+            segments_on_page (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """        
+        xml_id = {"{http://www.w3.org/XML/1998/namespace}id":f"f{self.folio}-{block_parent}-{line_parent}-{seg_parent}-{glyph_id}-glyphCount{glyphs_on_page}"}
+        zone = etree.SubElement(string, "zone", xml_id)
+        for k,v in attributes.items():
+            zone.attrib[k]=v
+
+        if self.root.find(f'.//a:Glyph[@ID="{glyph_id}"]', namespaces=NS).get("GC") is not None:
+            glyph_certainty = self.root.find(f'.//a:Glyph[@ID="{glyph_id}"]', namespaces=NS).get("GC")
+            cert_attribs = {
+                "{http://www.w3.org/XML/1998/namespace}id":f"f{self.folio}-{block_parent}-{line_parent}-{seg_parent}-{glyph_id}-glyphCount{glyphs_on_page}-cert",
+                "target":f"#f{self.folio}-{block_parent}-{line_parent}-{seg_parent}-{glyph_id}-glyphCount{glyphs_on_page}-text",
+                "locus":"value",
+                "degree":glyph_certainty
+            }
+            etree.SubElement(zone, "certainty", cert_attribs)
+        return zone
+
+    def car(self, zone,  glyph, block_parent, line_parent, seg_parent, glyph_id, glyphs_on_page):     
+        xml_id = {"{http://www.w3.org/XML/1998/namespace}id":f"f{self.folio}-{block_parent}-{line_parent}-{seg_parent}-{glyph_id}-glyphCount{glyphs_on_page}-text"}
+        car = etree.SubElement(zone, "c", xml_id)
+        if self.root.find(f'.//a:Glyph[@ID="{glyph_id}"]', namespaces=NS).get("WC") is not None:
+            word_certainty = self.root.find(f'.//a:Glyph[@ID="{glyph_id}"]', namespaces=NS).get("WC")
+            cert_attribs = {
+                "{http://www.w3.org/XML/1998/namespace}id":f"f{self.folio}-{block_parent}-{line_parent}-{seg_parent}-{glyph_id}-glyphCount{glyphs_on_page}-cert",
+                "locus":"value",
+                "degree":word_certainty
+            }
+            etree.SubElement(zone, "certainty", cert_attribs)
+        car.text = glyph.attrib["CONTENT"]
+        return car
+
+\end{lstlisting}
+
+\subsection{\texttt{./src/sourcedoc\_attributes.py}}
+La classe \texttt{Attributes} parvient à récupérer les attributs des éléments \acrshort{XML} \acrshort{ALTO} et les transformer dans des éléments \acrshort{TEI} selon notre modélisation, voir le chapitre~\ref{chap:metadata}. Comme expliqué dans le chapitre~\ref{chap:header}, qui décrit le \textit{mapping} des données entre les deux schémas, les éléments \texttt{<zone>} du schéma \acrshort{TEI} se ressemble l'un à l'autre. Pour cette raison, et pour économiser, la fonction \texttt{zones()} est complexe et possède beaucoup de conditions \textit{if} pour s'adapter à l'élément \acrshort{XML} \acrshort{ALTO} en cours de traitement dans la boucle de la fonction \texttt{sourcedoc()} du module \texttt{./src/sourcedoc\_build.py}.
+
+\begin{lstlisting}[language=python, style=python]
+# -----------------------------------------------------------
+# Code by: Kelly Christensen
+# Python class to parse the attributes of the <sourceDoc>'s elements.
+# -----------------------------------------------------------
+
+from lxml import etree
+import re
+from collections import namedtuple
+
+NS = {'a':"http://www.loc.gov/standards/alto/ns-v4#"}  # namespace for the Alto xml
+
+
+class Attributes:
+    def __init__(self, doc, folio, alto_root, tags, config):
+        self.doc = doc
+        self.folio = folio
+        self.root = alto_root
+        self.tags = tags
+        self.scheme = config["scheme"]
+        self.server = config["server"]
+        self.prefix = config["image_prefix"]
+
+    def surface(self):
+        """Create attributes for the TEI <surface> element using data parsed from the ALTO file's <Page> element.
+            The TEI attributes for <surface> are: @n (page number), 
+                                                @ulx (upper left x-axis pixel position, always 0), 
+                                                @uly (upper left y-axis pixel position, always 0), 
+                                                @lrx (lower right x-axis pixel position = width of page), 
+                                                @lry (lower right y-axis pixel position = length of page)
+        Returns:
+            attributes (dict): dictionary of attribute names and their values
+        """    
+
+        # create a dictionary of attributes names and their values for the ALTO file's <Page> element
+        att_list = self.root.find('.//a:Page', namespaces=NS).attrib
+        # assign the ALTO file's extracted <Page> attribute values to TEI attribute names
+        attributes = {"{http://www.w3.org/XML/1998/namespace}id":f"f{self.folio}",
+                    "n":att_list["PHYSICAL_IMG_NR"],
+                    "ulx":"0",
+                    "uly":"0",
+                    "lrx":att_list["WIDTH"],
+                    "lry":att_list["HEIGHT"]}
+        return attributes
+
+    def zones(self, parent, target, segmonto_labels):
+        """Create attributes for one of the two types of TEI <zone> elements: (a) TextBlock and (b) TextLine.
+
+        Args:
+            parent (str): parent's entity name and @ID in the ALTO file for the entity being transformed into a <zone>, followed by a '/'
+                            eg. 'TextBlock[@ID="eSc_textblock_20c2f4d8"]'
+            target (str): entity name in the ALTO file for the entity being transformed into a <zone>
+                            eg. 'TextLine'
+        Returns:
+            attributes (list): list of dictionaries {attribute name (str): value (str)}
+            processed_blocks (list): IDs of the elements whose data were extracted
+        """        
+
+        # Empty variables in which the zone's data will be stored
+        ZoneData = namedtuple("ZoneData", ["attributes", "id"])
+        output = []
+
+        # List all the XML elements that are children of the given parent
+        element_list = [z for z in self.root.findall(f'.//a:{parent}/a:{target}', namespaces=NS)]
+        #print(element_list)
+
+        for element in element_list:
+            # Only parse data from elements that have an ID / are valid
+            if "ID" in element.attrib:
+                attributes={}
+                id=element.attrib["ID"]
+                # Instantiate the named tuple ZoneData with an empty dictionary and the element's ID if it was found
+                data = ZoneData(attributes, id)
+                if "TAGREFS" in element.attrib and element.attrib["TAGREFS"] in self.tags:
+                    tag = str(self.tags[element.attrib["TAGREFS"]])
+                    
+                    # parse the three (possible) components of the targeted ALTO element's @TAGREFS, according to SegmOnto guidelines;
+                    # the 3 groups of this regex parse the following expected tag syntax: MainZone:column#1 --> (MainZone)(column)(1)
+                    tag_parts = re.match(r"(\w+):?(\w+)?#?(\d?)?", tag)
+                    data.attributes["type"]=tag_parts.group(1) or "none"
+                    main_type =  data.attributes["type"]
+                    if segmonto_labels is not None and main_type in segmonto_labels:
+                        data.attributes["corresp"]=f"#{main_type}"
+                    data.attributes["subtype"]=tag_parts.group(2) or "none"
+                    data.attributes["n"]=tag_parts.group(3) or "none"
+
+                # If XML element does not have attribute @TAGREFS (aka, is a segment/space/glyph), assign it a type
+                else:
+                    main_type = etree.QName(element).localname
+                    if main_type=="SP":
+                        main_type="Space"
+                    data.attributes["type"]=main_type
+                    #print(main_type)
+
+                # Only parse coordinate data if it is present
+                if "HPOS" in element.attrib:
+                    x = element.attrib["HPOS"]
+                    y = element.attrib["VPOS"]
+                    w = element.attrib["WIDTH"]
+                    h = element.attrib["HEIGHT"]
+
+                    data.attributes["ulx"]=x
+                    data.attributes["uly"]=y
+                    data.attributes["lrx"]=str(int(w)+int(x))
+                    data.attributes["lry"]=str(int(h)+int(y))
+
+                # Extract the attributes for the child <Polygon> of each targeted ALTO element and put that dictionary into a list
+                if element.find('.//a:Polygon', namespaces=NS) is not None and element.find('.//a:Polygon', namespaces=NS).attrib["POINTS"] is not None:
+                    points = element.find('.//a:Polygon', namespaces=NS).attrib["POINTS"]
+                    # Reformat the string of numbers from Polygon[@POINTS] so that every 2nd value is joined to the previous value by a comma; 
+                    # eg. "2204 4621 2190 4528" --> "2204,4621 2190,4528"
+                    data.attributes["points"]=" ".join([re.sub(r"\s", ",", x) for x in re.findall(r"(\d+ \d+)", points)])
+
+                # Only parse coordinate data if it is present
+                if "HPOS" in element.attrib:
+                    data.attributes["source"]=f"{self.scheme}://{self.server}{self.prefix}/{self.doc}/f{self.folio}/{x},{y},{w},{h}/full/0/native.jpg"
+
+                output.append(data)
+
+        return output
+        
+\end{lstlisting}
+
+\section{Construction du \texttt{<body>}}
+La classe \texttt{TEI} du module \texttt{./src/build.py} construit le \texttt{<body>} grâce à la fonction \texttt{body()} qu'elle importe depuis le module \texttt{./src/body\_build.py}, voir ligne 42. Mais en plus de la racine \acrshort{TEI}, à partir de laquelle la branche \texttt{<body>} est construite, la fonction \texttt{body()} a besoin des données nettoyées du texte. Le texte nettoyé de tous les fichiers \acrshort{XML} \acrshort{ALTO} est géré par la classe \texttt{Text} du module \texttt{./src/text\_data.py}. Le \texttt{<body>} a pour but de présenter une version du texte de toute page, toute rassemblée.
+
+\subsection{\texttt{./src/text\_data.py}}
+La classe \texttt{Text} possède l'attribut \texttt{self.data} qui est dérivé par la méthode de la classe \texttt{line\_data()}. Cette méthode établit un \textit{namedtuple} pour organiser toutes les données ciblées, voir ligne 19. Ensuite, elle attribut à la variable \texttt{data} une liste de lignes de texte extrait de l'élément \texttt{<line>} du \texttt{<sourceDoc>}. Afin que l'extrait du texte pour le \texttt{<body>} peut se faire pour tout type de fichier \acrshort{XML} \acrshort{ALTO}, même eux qui ne mettent pas du contenu de la ligne de texte dans l'attribut \texttt{@CONTENT} dans le \texttt{<TextLine>}, il faut que le \texttt{<sourceDoc>} constitue toujours le texte de la ligne dans l'élément \texttt{<line>}.
+
+\begin{lstlisting}[language=python, style=python]
+# -----------------------------------------------------------
+# Code by: Kelly Christensen
+# Python class to parse and store data from text in the <sourceDoc>.
+# -----------------------------------------------------------
+
+from collections import namedtuple
+
+
+class Text:
+    def __init__(self, root):
+        self.root = root
+        self.data = self.line_data()
+
+    def line_data(self):
+        """Parse contextual and attribute data for each text line and store it in a named tuple.
+        Returns:
+            data (list of named tuples): list of data for each text line
+        """ 
+        Line = namedtuple("Line", ["id", "n", "text", "line_type", "zone_type", "zone_id", "page_id"])
+        data = [Line(
+            ln.getparent().get("{http://www.w3.org/XML/1998/namespace}id"),  # @xml:id of the line's zone
+            ln.get("n"),  # line number
+            ln.text,  # text content of line
+            ln.getparent().get("type"),  # @type of line
+            ln.getparent().getparent().get("type"),  # @type of text block zone
+            ln.getparent().getparent().get("{http://www.w3.org/XML/1998/namespace}id"),  # @xml:id of text block zone
+            ln.getparent().getparent().getparent().get("{http://www.w3.org/XML/1998/namespace}id"),  # @xml:id of page
+        ) for ln in self.root.findall('.//line')]
+        return data
+        
+\end{lstlisting}
+
+\subsection{\texttt{./src/build\_body.py}}
+La fonction \texttt{body()} prend le texte nettoyé par la classe \texttt{Text} du module \texttt{./src/text\_data.py} et boucle sur toute ligne donnée dedans. Les attributs de chaque ligne, y compris l'étiquette \textit{SegmOnto} ainsi que la référence à la ligne dans le \texttt{<sourceDoc>}, accompagne le texte de la ligne, grâce au \textit{namedtuple} que la classe \texttt{Text} utilise. La fonction \texttt{body()} du module \texttt{./src/build\_body.py} créé le \texttt{<body>} grâce à une suite de conditions qui cherchent l'étiquette de la ligne afin de savoir dans lequel élément \acrshort{XML} \acrshort{TEI} la ligne devrait être balisée, selon notre modélisation expliquée dans le chapitre~\ref{chap.9}.
+
+\begin{lstlisting}[language=python, style=python]
+# -----------------------------------------------------------
+# Code by: Kelly Christensen
+# Python script to build the <body> of a TEI file with an ALTO File's MainZone text.
+# -----------------------------------------------------------
+
+from lxml import etree
+
+
+def body(root, data):
+    text = etree.SubElement(root, "text")
+    body = etree.SubElement(text, "body")
+    div = etree.SubElement(body, "div")
+    for line in data:
+        # prepare attributes for the text block's zone
+        zone_atts = {"corresp":f"#{line.zone_id}", "type":line.zone_type}
+        # prepare <lb/> with this line's xml:id as @corresp
+        lb = etree.Element("lb", corresp=f"#{line.id}")
+        lb.tail = f"{line.text}"
+
+        # if this is the page's first line, create a <pb> with the page's xml:id
+        if int(line.n) == 1:
+            pb = etree.Element("pb", corresp=f"#{line.page_id}")
+            div.append(pb)
+        
+        # find the last element added to the div
+        last_element = div[-1]
+
+        # NumberingZone, QuireMarksZone, and RunningTitleZone line
+        if line.zone_type == "NumberingZone" or line.zone_type == "QuireMarksZone" or line.zone_type == "RunningTitleZone":
+            # enclose any page number, quire marks, or running title inside a <fw>
+            fw = etree.Element("fw", zone_atts)
+            last_element.addnext(fw)
+            fw.append(lb)
+
+        # MarginTextZone line
+        elif line.zone_type == "MarginTextZone":
+            # create a <note> if one is not already the preceding sibling
+            if last_element.tag != "note":
+                note = etree.Element("note", zone_atts)
+                last_element.addnext(note)
+                note.append(lb)
+            else:
+                last_element.append(lb)
+            
+        # MainZone line
+        elif line.zone_type[:4] == "Main":
+            # create an <ab> if one is not already the preceding sibling 
+            if last_element.tag != "ab":
+                ab = etree.Element("ab", zone_atts)
+                last_element.addnext(ab)
+                # update the last element in div
+                last_element = div[-1]
+
+            # if the line is emphasized for being 
+            if line.line_type == "DropCapitalLine" or line.line_type == "HeadingLine":
+                # check if there is already an emphasized line in this MainZone
+                ab_children = last_element.getchildren()
+                if len(ab_children) == 0 or ab_children[-1].tag != "hi" or ab_children[-1].get("rend") != line.line_type:
+                    hi = etree.Element("hi", rend=line.line_type)
+                    last_element.append(hi)
+                    hi.append(lb)
+                elif ab_children[-1].tag == "hi":
+                    ab_children[-1].append(lb)
+            
+            # if the line is not emphasized, append it to the last element in the <ab>
+            elif line.line_type[:7] == "Default":
+                last_element.append(lb)
+                
+\end{lstlisting}
+
+\section{Exporter la ressource numérique}
+Dans la fonction \texttt{main()} du module \texttt{./src/\_\_main\_\_.py}, qui dirige la création de la ressource \acrshort{TEI}, la dernière étape est l'export du document, voir lignes 86-88. La fonction appelle la classe \texttt{Write} et sa méthode \texttt{write()} sur la ligne 88 du module. L'instance de la classe \texttt{Write} pour le document source en cours de traitement a besoin de deux arguments: l'\acrshort{ARK} du document (\texttt{d.doc\_name}) et la racine \acrshort{TEI} de la ressource construite. En les prenant comme ses deux attributs, la classe \texttt{Write} du module \texttt{./src/write\_output.py} écrit un fichier \acrshort{TEI} avec l'arborescence ainsi créée.
+
+\subsection{\texttt{./src/write\_output.py}}
+\begin{lstlisting}[language=python, style=python]
+# -----------------------------------------------------------
+# Code by: Kelly Christensen
+# Python class to generate the output XML-TEI file.
+# -----------------------------------------------------------
+
+from lxml import etree
+
+class Write:
+    def __init__(self, document, root):
+        self.d = document
+        self.r = root
+
+    def write(self):
+        with open(f'./data/{self.d}.xml', 'wb') as f:
+                etree.ElementTree(self.r).write(f, encoding="utf-8", xml_declaration=True, pretty_print=True)
+            
+
+\end{lstlisting}
 
 \end{document}
 \documentclass[../main.tex]{subfiles}

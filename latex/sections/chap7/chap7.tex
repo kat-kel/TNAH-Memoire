@@ -501,16 +501,25 @@ Ayant découvert les structures de données des sources de données externes, il
 \subsection{Les sources des données du \texttt{<titleStmt>}}
 La Figure~\ref{fig:titleStmt} visualise les sources de données du \texttt{<titleStmt>}. Les éléments portant sur le titre de la ressource (\texttt{<title>}) et sur les personnes auxquels est attribuée la propriété intellectuelle du texte représenté (\texttt{<author>}) sont informés par l'un de deux sources de données possibles. Soit les données du catalogue général donnent beaucoup d'information sur les auteurs ainsi qu'un titre propre, soit le \textit{manifest} \acrshort{IIIF} donne simplement le titre du texte et les noms non annotés des auteurs. Le choix entre les deux sources de données se fait à partir de la disponibilité des données du catalogue de la \acrshort{BNF}. Normalement, l'application \texttt{alto2tei} met en priorité les données du catalogue.
 
-La Figure~\ref{fig:sourceAuthor} visualise les éléments du \texttt{<titleStmt>} dans le cas où la relation entre le fac-similé numérique sur Gallica et le document physique appartenant à la \acrshort{BNF} est établie. Cela veut dire que le document dont parle la notice du catalogue est le même document à partir duquel le fac-similé numérique sur Gallica a été fait. Quand la notice du bon document est trouvée, les données \Gls{unimarc} cherchées depuis le catalogue sont (1) le titre uniforme du document et (2) le nom et l'identifiant de ses auteurs. Les éléments descendants du \texttt{<respStmt>} s'appuient toujours sur le fichier de configuration afin qu'ils puissent être personnalisées par les personnes qui utilisent l'application \texttt{alto2tei} pour générer leurs propres documents \acrshort{TEI}. Toutes ces sources ainsi que la destination de leurs données sont visualisées dans la Figure~\ref{fig:titleStmt}.
+La Figure~\ref{fig:sourceAuthor} visualise les éléments du \texttt{<titleStmt>} dans le cas où la relation entre le fac-similé numérique sur Gallica et le document physique appartenant à la \acrshort{BNF} est établie. Cela veut dire que le document dont parle la notice du catalogue est le même document à partir duquel le fac-similé numérique sur Gallica a été fait. Quand la notice du bon document est trouvée, les données \Gls{unimarc} cherchées depuis le catalogue sont (1) le titre uniforme du document et (2) le nom et l'identifiant de ses auteurs. Les éléments descendants du \texttt{<respStmt>} s'appuient toujours sur le fichier de configuration afin qu'ils puissent être personnalisées par les personnes qui utilisent l'application \texttt{alto2tei} pour générer leurs propres documents \acrshort{TEI}. Toutes ces sources ainsi que la destination de leurs données sont visualisées dans la Figure~\ref{fig:titleStmt}. Les Tableaux~\ref{tab:author} et \ref{tab:titleStmt} décrivent d'où viennent chaque donnée des sources de données en \acrshort{JSON} et \acrshort{XML}, soit le \textit{manifest} \acrshort{IIIF} et le catalogue général, respectivement\footnote{Pour les attributs d'un élément \acrshort{XML}, la table utilise le syntaxe \textit{XPath} par lequel l'attribut est déclaré avec l'arobase. Par exemple, l'attribut \texttt{@att} d'un élément \texttt{<element>}, qui descende de l'élément \texttt{<parent>}, serait représenté dans le format suivant~: \texttt{parent/element[@att]}.}
 
 \tikzstyle{empty} = [rectangle, rounded corners, minimum width=2cm, minimum height=0.5cm]
 \tikzstyle{iiif} = [rectangle, rounded corners, minimum width=2cm, minimum height=0.5cm, text centered, draw=black, fill=blue!30]
+\tikzstyle{attIIIF} = [rectangle, rounded corners, minimum width=2cm, minimum height=0.5cm, text centered, draw=black, fill=blue!30, dashed]
 \tikzstyle{unimarc} = [rectangle, rounded corners, minimum width=2cm, minimum height=0.50cm, text centered, draw=black, fill=red!30]
+\tikzstyle{attUnimarc} = [rectangle, rounded corners, minimum width=2cm, minimum height=0.50cm, text centered, draw=black, fill=red!30, dashed]
 \tikzstyle{config} = [rectangle, rounded corners, minimum width=2cm, minimum height=0.5cm, text centered, draw=black, fill=green!30]
+\tikzstyle{attConfig} = [rectangle, rounded corners, minimum width=2cm, minimum height=0.5cm, text centered, draw=black, fill=green!30, dashed]
 \tikzstyle{sudoc} = [rectangle, rounded corners, minimum width=2cm, minimum height=0.5cm, text centered, draw=black, fill=yellow!30]
-\tikzstyle{files} = [rectangle, rounded corners, minimum width=2cm, minimum height=0.5cm, text centered, draw=black, fill=gray!30]
+\tikzstyle{attSudoc} = [rectangle, rounded corners, minimum width=2cm, minimum height=0.5cm, text centered, draw=black, fill=yellow!30, dashed]
+\tikzstyle{files} = [rectangle, rounded corners, minimum width=2cm, minimum height=0.5cm, text centered, draw=black, fill=orange!30]
+\tikzstyle{attFiles} = [rectangle, rounded corners, minimum width=2cm, minimum height=0.5cm, text centered, draw=black, fill=orange!30, dashed]
 \tikzstyle{input} = [rectangle, rounded corners, minimum width=2cm, minimum height=0.5cm, text centered, draw=black, fill=violet!30]
+\tikzstyle{attInput} = [rectangle, rounded corners, minimum width=2cm, minimum height=0.5cm, text centered, draw=black, fill=violet!30, dashed]
 \tikzstyle{elem} = [rectangle, rounded corners, minimum width=2cm, minimum height=0.5cm, text centered, draw=black]
+\tikzstyle{att} = [rectangle, rounded corners, minimum width=2cm, minimum height=0.5cm, text centered, draw=black, dashed]
+\tikzstyle{elemDefault} = [rectangle, rounded corners, minimum width=2cm, minimum height=0.5cm, text centered, draw=black, fill=gray!30]
+\tikzstyle{attDefault} = [rectangle, rounded corners, minimum width=2cm, minimum height=0.5cm, text centered, draw=black, fill=gray!30, dashed]
 \tikzstyle{arrow} = [thick,>=stealth]
 \tikzset{line/.style={draw, thick, -latex'}}
 
@@ -526,6 +535,7 @@ La Figure~\ref{fig:sourceAuthor} visualise les éléments du \texttt{<titleStmt>
 	\node [config,label=right:fichier de config] {}; \\
 	\node [files,label=right:fichiers traités] {}; \\
 	\node [input,label=right:saisie] {}; \\
+	\node [elemDefault,label=right:par défaut] {}; \\
 };
 \end{tikzpicture}
 \end{subfigure}
@@ -534,26 +544,29 @@ La Figure~\ref{fig:sourceAuthor} visualise les éléments du \texttt{<titleStmt>
 
 
 % <author> with relation
-\begin{subfigure}[b]{0.7\textwidth}
+\begin{subfigure}[b]{\textwidth}\centering
 \begin{tikzpicture}[node distance=0.5cm]
 
-\node [elem] (titleStmt) {titleStmt};
+\node [elem] (fileDesc) {fileDesc};
+\node [elem, right=of fileDesc] (titleStmt) {titleStmt};
 \node [unimarc, right=of titleStmt] (title) {title};
 \node [elem, below=of title] (author) {author};
 \node [elem, right=of author] (persName) {persName};
 \node [unimarc, right=of persName] (forename) {forename};
 \node [unimarc, below=of forename] (surname) {surname};
-\node [unimarc, below=of surname] (ptr) {ptr};
+\node [elem, below=of surname] (ptr) {ptr};
+\node [attUnimarc, right=of ptr] (isni) {@type};
+\node [attUnimarc, below=of isni] (target) {@target};
 
+\draw [arrow] (fileDesc) -- (titleStmt);
 \draw [arrow] (titleStmt) -- (title);
-\draw [arrow]
-	(author) -| node[pos=0.25] {} (titleStmt);
+\draw [arrow] (author) -| (titleStmt);
 \draw [arrow] (author) -- (persName);
 \draw [arrow] (persName) -- (forename);
-\draw [arrow]
-	(surname) -| node[pos=0.25] {} (persName);
-\draw [arrow]
-	(ptr) -| node[pos=0.25] {} (persName);
+\draw [arrow] (surname) -| (persName);
+\draw [arrow] (ptr) -| (persName);
+\draw [arrow, dashed] (ptr) -- (isni);
+\draw [arrow, dashed] (ptr) |- (target);
 
 \end{tikzpicture}
 \caption{Les sources de données du \texttt{<title>} et du \texttt{<author>} quand la relation entre le fac-similé numérique et le document physique est établie}
@@ -563,18 +576,19 @@ La Figure~\ref{fig:sourceAuthor} visualise les éléments du \texttt{<titleStmt>
 \vspace{1cm}
 
 % <author> without relation
-\begin{subfigure}[b]{0.7\textwidth}
+\begin{subfigure}[b]{\textwidth}\centering
 \begin{tikzpicture}[node distance=0.5cm]
 
-\node [elem] (titleStmt) {titleStmt};
+\node [elem] (fileDesc) {fileDesc};
+\node [elem, right=of fileDesc] (titleStmt) {titleStmt};
 \node [iiif, right=of titleStmt] (title) {title};
 \node [elem, below=of title] (author) {author};
 \node [elem, right=of author] (persName) {persName};
 \node [iiif, right=of persName] (name) {name};
 
+\draw [arrow] (fileDesc) -- (titleStmt);
 \draw [arrow] (titleStmt) -- (title);
-\draw [arrow]
-	(author) -| node[pos=0.25] {} (titleStmt);
+\draw [arrow] (author) -| (titleStmt);
 \draw [arrow] (author) -- (persName);
 \draw [arrow] (persName) -- (forename);
 \draw [arrow] (persName) -- (name);
@@ -587,26 +601,29 @@ La Figure~\ref{fig:sourceAuthor} visualise les éléments du \texttt{<titleStmt>
 \vspace{1cm}
 
 % <respStmt>
-\begin{subfigure}[b]{0.7\textwidth}
+\begin{subfigure}[b]{\textwidth}\centering
 \begin{tikzpicture}[node distance=0.5cm]
 
-\node [elem] (titleStmt) {titleStmt};
+\node [elem] (fileDesc) {fileDesc};
+\node [elem, right=of fileDesc] (titleStmt) {titleStmt};
 \node [elem, right=of titleStmt] (respStmt) {respStmt};
 \node [config, right=of respStmt] (resp) {resp};
 \node [elem, right=of respStmt, below=of resp] (persName) {persName};
 \node [config, right=of persName] (forename) {forename};
 \node [config, below=of forename] (surname) {surname};
-\node [config, below=of surname] (ptr) {ptr};
+\node [elem, below=of surname] (ptr) {ptr};
+\node [attConfig, right=of ptr] (orcid) {@type};
+\node [attConfig, below=of orcid] (target) {@target};
 
+\draw [arrow] (fileDesc) -- (titleStmt);
 \draw [arrow] (titleStmt) -- (respStmt);
 \draw [arrow] (respStmt) -- (resp);
-\draw [arrow] 
-	(persName) -| node[pos=0.25] {} (respStmt);
+\draw [arrow] (persName) -| (respStmt);
 \draw [arrow] (persName) -- (forename);
-\draw [arrow]
-	(surname) -| node[pos=0.25] {} (persName);
-\draw [arrow]
-	(ptr) -| node[pos=0.25] {} (persName);
+\draw [arrow] (surname) -| (persName);
+\draw [arrow] (ptr) -| (persName);
+\draw [arrow, dashed] (ptr) -- (orcid);
+\draw [arrow, dashed] (ptr) |- (target);
 	
 \end{tikzpicture}
 \caption{Les sources de données du \texttt{<respStmt>} dans tout cas}
@@ -619,6 +636,41 @@ La Figure~\ref{fig:sourceAuthor} visualise les éléments du \texttt{<titleStmt>
 \label{fig:titleStmt}
 \end{figure}
 
+\begin{figure}[htp]
+\centering
+\begin{tabularx}{\textwidth}
+{	| >{\arraybackslash}X 
+	| >{\arraybackslash}X 
+	| >{\arraybackslash}X |}
+\hline
+élément ou attribut \acrshort{TEI} & \textit{manifest} \acrshort{IIIF} en \acrshort{JSON} & données \acrshort{XML} \Gls{unimarc} \\
+\hline \hline
+\texttt{author/} \texttt{name} & \texttt{"Creator"} & --\\ \hline
+\texttt{author/[@xml:id]} & 2 premières caractères de la valeur \texttt{"Creator"} + chiffre & 2 premières caractères de la valeur \texttt{datafield[@tag="700"]/} \texttt{subfield[@code="a"]}  ou \texttt{datafield[@tag="703"]/} \texttt{subfield[@code="a"]}  + chiffre \\ \hline
+\texttt{persName/} \texttt{forename} & -- & \texttt{datafield[@tag="700"]/} \texttt{subfield[@code="b"]} ou \texttt{datafield[@tag="703"]/} \texttt{subfield[@code="b"]} sans les éléments suivants: \textit{van der, de la, de, du, von, van} \\ \hline
+\texttt{persName/} \texttt{namelink} & -- & l'un des éléments \textit{van der, de la, de, du, von,} ou \textit{van} extrait du \texttt{datafield[@tag="700"]/} \texttt{subfield[@code="b"]} ou \texttt{datafield[@tag="703"]/} \texttt{subfield[@code="b"]} \\ \hline
+\texttt{persName/} \texttt{surname} & -- & \texttt{datafield[@tag="700"]/} \texttt{subfield[@code="a"]}  ou \texttt{datafield[@tag="703"]/} \texttt{subfield[@code="a"]}\\ \hline\
+\texttt{persName/} \texttt{ptr[@target]} & -- & \texttt{datafield[@tag="700"]/} \texttt{subfield[@code="o"]}  ou \texttt{datafield[@tag="703"]/} \texttt{subfield[@code="o"]} \\ \hline
+
+\end{tabularx}
+\caption{\textit{Mapping} des données du \texttt{<author>} utilisé dans le \texttt{<titleStmt>} et le \texttt{<sourceDesc>}}
+\label{tab:author}
+\end{figure}
+
+\begin{figure}[htp]\centering
+\begin{tabularx}{\textwidth}
+{	| >{\arraybackslash}X 
+	| >{\arraybackslash}X 
+	| >{\arraybackslash}X |}
+\hline
+élément ou attribut \acrshort{TEI} & \textit{manifest} \acrshort{IIIF} & données \Gls{unimarc}\\
+\hline \hline
+\texttt{titleStmt/} \texttt{title} & \texttt{"Title"} & \texttt{datafield[@tag="200"]/} \texttt{subfield[@code="a"]} \\ \hline
+
+\end{tabularx}
+\caption{\textit{Mapping} des données du \texttt{<titleStmt>}}
+\label{tab:titleStmt}
+\end{figure}
 
 \subsection{Les sources des données du \texttt{<extent>}}
 L'élément \texttt{<extent>} du \texttt{<teiHeader>}, qui indique le nombre de fichiers traités par l'application \texttt{alto2tei} lors de la création de la ressource numérique, s'appuie simplement sur un compte des fichiers. L'application a besoin de traiter tout fichier \acrshort{XML} \acrshort{ALTO} dans le dossier du document, comme expliqué dans la section~\ref{structure-fichier}, et mettre ses données dans le \texttt{<sourceDoc>}, selon la modélisation de l'application \texttt{alto2tei}, voir la Figure~\ref{fig:dataExtent}. Elle peut également compter le nombre des fichiers \acrshort{XML} \acrshort{ALTO} qui appartiennent au document. Ce compte elle met comme la \og{}taille\fg{} de la ressource numérique, dans l'élément \texttt{<measure>}.
@@ -626,7 +678,7 @@ L'élément \texttt{<extent>} du \texttt{<teiHeader>}, qui indique le nombre de 
 \begin{figure}[htp]
 \centering
 % legend
-\begin{subfigure}[b]{0.3\textwidth}
+\begin{subfigure}[b]{\textwidth}\centering
 \begin{tikzpicture}
 \matrix [draw] {
 	\node [iiif,label=right:manifest IIIF] {};\\
@@ -635,19 +687,25 @@ L'élément \texttt{<extent>} du \texttt{<teiHeader>}, qui indique le nombre de 
 	\node [config,label=right:fichier de config] {}; \\
 	\node [files,label=right:fichiers traités] {}; \\
 	\node [input,label=right:saisie] {}; \\
+	\node [elemDefault,label=right:par défaut] {}; \\
 };
 \end{tikzpicture}
 \end{subfigure}
 
-\vspace{1cm}
+\vspace{0.5cm}
 
-\begin{subfigure}[b]{0.3\textwidth}
-\begin{tikzpicture}
-\node [elem] (start) {extent};
-\node [files, right=of start] (measure) {measure};
+\begin{subfigure}[b]{\textwidth}\centering
+\begin{tikzpicture}[node distance=0.5cm]
+\node [elem] (fileDesc) {fileDesc};
+\node [elem, right=of fileDesc] (start) {extent};
+\node [elem, right=of start] (measure) {measure};
+\node [attDefault, right=of measure] (unit) {@unit};
+\node [attFiles, below=of unit] (n) {@n};
 
-\draw [arrow]
-	(start) -- (measure);
+\draw [arrow] (fileDesc) -- (start);
+\draw [arrow] (start) -- (measure);
+\draw [arrow, dashed] (measure) -- (unit);
+\draw [arrow, dashed] (measure) |- (n);
 
 \end{tikzpicture}
 \end{subfigure}
@@ -657,76 +715,301 @@ L'élément \texttt{<extent>} du \texttt{<teiHeader>}, qui indique le nombre de 
 \end{figure}
 
 \subsection{Les sources des données du \texttt{<publicationStmt>}}
-La distribution de la ressource numérique est décrite par l'élément \texttt{<publicationStmt>}. Cet élément peut compter uniquement--et idéalement--sur les données du catalogue général de la \acrshort{BNF} en format \Gls{unimarc}. Mais si l'application a besoin, elle peut remplir certains éléments du \texttt{<publicationStmt>} en laissant vide des autres puisque le \textit{manifest} \acrshort{IIIF} peut renseigner sur l'auteur du document, son titre, et sa date de création. Le \textit{manifest} \acrshort{IIIF} n'est pas une source sûre sur l'éditeur ni sur le lieu de publication. Les données du catalogue général de la \acrshort{BNF}, par contre, portent toujours sur ces détails. Même si le catalogue dit que la donnée n'est pas connue, la notice renseigne toujours sur l'éditeur et le lieu de publication du document. Pour cette raison, comme se voit dans la Figure~\ref{fig:dataPS}, les données 
+La distribution de la ressource numérique est décrite par le \texttt{<publicationStmt>}. La Figure~\ref{fig:dataPS} montre comment toute métadonnée du \texttt{<publicationStmt>} vient du fichier de configuration, où les utilisateurs du pipeline et/ou de l'application peuvent personnaliser les détails de leur projet et les droits d'utilisation.
 
 \begin{figure}[htp]
 \centering
-% legend
-\begin{subfigure}[b]{0.3\textwidth}
-\begin{tikzpicture}
-\matrix [draw] {
-	\node [iiif,label=right:manifest IIIF] {};\\
-	\node [unimarc,label=right:Unimarc] {};\\
-	\node [sudoc,label=right:SUDOC] {}; \\
-	\node [config,label=right:fichier de config] {}; \\
-	\node [files,label=right:fichiers traités] {}; \\
-	\node [input,label=right:saisie] {}; \\
-};
+
+\begin{tikzpicture}[node distance=0.5cm]
+
+\node [elem] (fileDesc) {fileDesc};
+\node [elem, right=of fileDesc] (publicationStmt) {publicationStmt};
+\node [config, right=of publicationStmt] (publisher) {publisher};
+\node [config, below=of publisher] (authority) {authority};
+\node [elem, below=of authority] (availability) {availability};
+\node [attConfig, right=of availability] (status) {@status};
+\node [attConfig, below=of status] (n) {@n};
+\node [empty, left=of n] (empty) {};
+\node [elem, below=of empty] (licence) {licence};
+\node [attConfig, right=of licence] (target) {@target};
+\node [elem, below=of licence] (date) {date};
+\node [attFiles, right=of date] (when) {@when};
+
+\draw [arrow] (fileDesc) -- (publicationStmt);
+\draw [arrow] (publicationStmt) -- (publisher);
+\draw [arrow] (publicationStmt) |- (authority);
+\draw [arrow] (publicationStmt) |- (availability);
+\draw [arrow] (publicationStmt) |- (date);
+\draw [arrow, dashed] (availability) -- (status);
+\draw [arrow, dashed] (availability) |- (n);
+\draw [arrow] (publicationStmt) |- (licence);
+\draw [arrow, dashed] (licence) -- (target);
+\draw [arrow] (publicationStmt) |- (date);
+\draw [arrow, dashed] (date) -- (when);
+
 \end{tikzpicture}
-\end{subfigure}
 
-\vspace{1cm}
 
-% <publicationStmt>
-\begin{subfigure}[b]{0.3\textwidth}
-\begin{tikzpicture}
-
-\end{tikzpicture}
-\end{subfigure}
-
-\caption{}
+\caption{La source des données du \texttt{<publicationStmt>}}
 \label{fig:dataPS}
 \end{figure}
+
 
 \subsection{Les sources des données du \texttt{<sourceDesc>}}
-Le \texttt{<sourceDesc>} décrit le document source dont la transcription et le texte la ressource numérique représente. Il se compose de deux éléments principales. Dans un premier temps, il contient le \texttt{<bibl>} qui est une description de la source, en parlant de ses auteurs, de son titre, de l'éditeur, et de sa date et lieu de création. Dans un deuxième temps, le \texttt{<sourceDesc>} contient le \texttt{<msDesc>} qui est une citation bibliographique du document source. Les descendants du \texttt{<sourceDesc>} comptent sur le plus grand nombre de sources de données par rapport aux autres éléments du \texttt{<fileDesc>} puisque la description du document source (\texttt{<bibl>}) et la citation bibliographique du document (\texttt{<msDesc>}) s'appuient tous les deux sur le document physique et sur le fac-similé numérique.
 
-\begin{figure}[htp]
-\centering
-% legend
-\begin{subfigure}[b]{0.3\textwidth}
-\begin{tikzpicture}
-\matrix [draw] {
-	\node [iiif,label=right:manifest IIIF] {};\\
-	\node [unimarc,label=right:Unimarc] {};\\
-	\node [sudoc,label=right:SUDOC] {}; \\
-	\node [config,label=right:fichier de config] {}; \\
-	\node [files,label=right:fichiers traités] {}; \\
-	\node [input,label=right:saisie] {}; \\
-};
-\end{tikzpicture}
-\end{subfigure}
+Le \texttt{<sourceDesc>} décrit le document source dont la transcription et le texte sont représentés par la ressource numérique. Il se compose de deux éléments principales. Dans un premier temps, le \texttt{<sourceDesc>} contient le \texttt{<bibl>} qui est une description de la source, portant sur les auteurs, le titre, l'éditeur, la date et le lieu de création. Dans un deuxième temps, le \texttt{<sourceDesc>} contient le \texttt{<msDesc>} qui est une citation bibliographique du document source. Si besoin, l'application \texttt{alto2tei} peut livrer un \texttt{<sourceDesc>} en utilisant uniquement le \textit{manifest} \acrshort{IIIF}. Mais il n'est pas une source sûre sur l'éditeur ni sur le lieu de publication du document source. Les données \Gls{unimarc} du catalogue général de la \acrshort{BNF}, par contre, portent toujours sur ces détails. Même si le catalogue général dit que la donnée n'est pas connue, la notice renseigne toujours sur l'éditeur et le lieu de publication du document et l'application \texttt{alto2tei} répète l'information incertaine du catalogue. Les Tableaux~\ref{tab:sourceDescBibl} et \ref{tab:sourceDescMS} précisent quelles données sont intégrées dans le \texttt{<sourceDesc>} et lesquelles sont laissées vides si la relation entre le fac-similé numérique et le document physique n'est pas établie. Les Figures~\ref{fig:dataBibl} et \ref{fig:dataMsDesc} visualisent les source de données pour ces deux éléments selon leur disponibilité. 
 
-\vspace{1cm}
-
-% <sourceDesc>
-\begin{subfigure}[b]{0.3\textwidth}
-\begin{tikzpicture}
-
-\end{tikzpicture}
-\end{subfigure}
-
-\caption{}
-\label{fig:dataSD}
+\begin{figure}[htp]\centering
+\begin{tabularx}{\textwidth}
+{	| >{\arraybackslash}X 
+	| >{\arraybackslash}X 
+	| >{\arraybackslash}X |}
+\hline
+élément ou attribut \acrshort{TEI} & \textit{manifest} \acrshort{IIIF} & données \Gls{unimarc}\\
+\hline \hline
+\texttt{sourceDesc/} \texttt{bibl/} \texttt{ptr[@target]} & -- & \texttt{controlfield[@tag="003"]} \\ \hline
+\texttt{sourceDesc/} \texttt{bibl/} \texttt{title} & \texttt{"Title"} & \texttt{datafield[@tag="200"]/} \texttt{subfield[@code="a"]} \\ \hline
+\texttt{sourceDesc/} \texttt{bibl/} \texttt{pubPlace} & -- & \texttt{datafield[@tag="210"]/} \texttt{subfield[@code="a"]} \\ \hline
+\texttt{sourceDesc/} \texttt{bibl/} \texttt{pubPlace[@key]} & -- & \texttt{datafield[@tag="102"]/} \texttt{subfield[@code="a"]} \\ \hline
+\texttt{sourceDesc/} \texttt{bibl/} \texttt{publisher} & -- & \texttt{datafield[@tag="210"]/} \texttt{subfield[@code="c"]} \\ \hline
+\texttt{sourceDesc/} \texttt{bibl/} \texttt{date} & \texttt{"Date"} & Caractères 9-13 de \texttt{datafield[@tag="100"]/} \texttt{subfield[@code="a"]} \\ \hline
+\texttt{sourceDesc/} \texttt{bibl/} \texttt{date[@when} & -- & Caractères 9-13 de \texttt{datafield[@tag="100"]/} \texttt{subfield[@code="a"]} \\ \hline
+\texttt{sourceDesc/} \texttt{bibl/} \texttt{date[@cert} & -- & 8\textsuperscript{e} caractère de \texttt{datafield[@tag="100"]/} \texttt{subfield[@code="a"]} \\ \hline
+\end{tabularx}
+\caption{\textit{Mapping} des données du \texttt{<bibl>} du \texttt{<sourceDesc>}}
+\label{tab:sourceDescBibl}
 \end{figure}
 
+%%%%%%%%%%%%%%%%%%
+\begin{figure}[htp]
+\centering
+% legend
+\begin{subfigure}[b]{\textwidth}\centering
+	\begin{tikzpicture}[node distance=1cm]
+		\matrix [draw] {
+			\node [iiif,label=right:manifest IIIF] {};\\
+			\node [unimarc,label=right:Unimarc] {};\\
+			\node [sudoc,label=right:SUDOC] {}; \\
+			\node [config,label=right:fichier de config] {}; \\
+			\node [files,label=right:fichiers traités] {}; \\
+			\node [input,label=right:saisie] {}; \\
+			\node [elemDefault,label=right:par défaut] {}; \\
+		};
+	\end{tikzpicture}
+\end{subfigure}
+
+\vspace{1cm}
+
+% <bibl> IIIF
+\begin{subfigure}[b]{\textwidth}\centering
+	\begin{tikzpicture}[node distance=0.25cm]
+
+		\node [elem] (fileDesc) {fileDesc};
+		\node [elem, right=of fileDesc] (sourceDesc) {sourceDesc};
+		\node [elem, right=of sourceDesc] (bibl) {bibl};
+		\node [elem, right=of bibl] (ptr) {ptr (\textit{vide})};
+		\node [elem, below=of ptr] (author) {author};
+		\node [iiif, right=of author] (name) {name};
+		\node [iiif, below=of author] (title) {title};
+		\node [elem, below=of title] (pubPlace) {pubPlace (\textit{vide})};
+		\node [elem, below=of pubPlace] (publisher) {publisher (\textit{vide})};
+		\node [iiif, below=of publisher] (date) {date};
+		
+		\draw [arrow] (fileDesc) -- (sourceDesc);
+		\draw [arrow] (sourceDesc) -- (bibl);
+		\draw [arrow] (bibl) -- (ptr);
+		\draw [arrow] (bibl) |- (author);
+		\draw [arrow] (author) -- (name);
+		\draw [arrow] (bibl) |- (title);
+		\draw [arrow] (bibl) |- (pubPlace);
+		\draw [arrow] (bibl) |- (publisher);
+		\draw [arrow] (bibl) |- (date);
+
+	\end{tikzpicture}
+	
+\caption{Quand la relation entre le fac-similé numérique (renseigné par le \textit{manifest} \acrshort{IIIF} et le document physique (renseigné par catalogue général de la \acrshort{BNF}) n'est pas établie}
+\end{subfigure}
+
+\vspace{1cm}
+% <bibl> SRU
+\begin{subfigure}[b]{\textwidth}\centering
+	\begin{tikzpicture}[node distance=0.25cm]
+
+		\node [elem] (fileDesc) {fileDesc};
+		\node [elem, right=of fileDesc] (sourceDesc) {sourceDesc};
+		\node [elem, right=of sourceDesc] (bibl) {bibl};
+		\node [elem, right=of bibl] (ptr) {ptr};
+		\node [attUnimarc, right=of ptr] (target) {@target};
+		\node [elem, below=of ptr] (author) {author};
+		\node [elem, right=of author] (persName) {persName};
+		\node [unimarc, right=of persName] (forename) {forename};
+		\node [unimarc, below=of forename] (surname) {surname};
+		\node [unimarc, below=of surname] (isni) {ptr};
+		\node [unimarc, below=of author] (title) {title};
+		\node [empty, below=of title] (empty) {};
+		\node [unimarc, below=of empty] (pubPlace) {pubPlace};
+		\node [attUnimarc, right=of pubPlace] (att) {@key};
+		\node [unimarc, below=of pubPlace] (publisher) {publisher};
+		\node [unimarc, below=of publisher] (date) {date};
+		\node [attUnimarc, right=of date] (when) {@when};
+		\node [attUnimarc, below=of when] (cert) {@cert};
+		
+		\draw [arrow] (fileDesc) -- (sourceDesc);
+		\draw [arrow] (sourceDesc) -- (bibl);
+		\draw [arrow] (bibl) -- (ptr);
+		\draw [arrow] (bibl) |- (author);
+		\draw [arrow] (bibl) |- (title);
+		\draw [arrow] (bibl) |- (pubPlace);
+		\draw [arrow] (bibl) |- (publisher);
+		\draw [arrow] (bibl) |- (date);
+		\draw [arrow] (author) -- (persName);
+		\draw [arrow] (persName) -- (forename);
+		\draw [arrow] (persName) |- (surname);
+		\draw [arrow] (persName) |- (isni);
+		\draw [arrow, dashed] (pubPlace) -- (att);
+		\draw [arrow, dashed] (date) -- (when);
+		\draw [arrow, dashed] (date) |- (cert);
+		\draw [arrow, dashed] (ptr) -- (target);
+
+	\end{tikzpicture}
+	
+\caption{Quand la relation entre le fac-similé numérique et le document physique est établie}
+\end{subfigure}
+\vspace{1cm}
+\caption{Les sources des données du \texttt{<bibl>} du \texttt{<sourceDesc>}}
+\label{fig:dataBibl}
+\end{figure}
+%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%
+\begin{figure}[htp]
+\centering
+% legend
+\begin{subfigure}[b]{\textwidth}\centering
+	\begin{tikzpicture}[node distance=1cm]
+		\matrix [draw] {
+			\node [iiif,label=right:manifest IIIF] {};\\
+			\node [unimarc,label=right:Unimarc] {};\\
+			\node [sudoc,label=right:SUDOC] {}; \\
+			\node [config,label=right:fichier de config] {}; \\
+			\node [files,label=right:fichiers traités] {}; \\
+			\node [input,label=right:saisie] {}; \\
+			\node [elemDefault,label=right:par défaut] {}; \\
+		};
+	\end{tikzpicture}
+\end{subfigure}
+
+\vspace{1cm}
+
+% <msDesc> IIIF
+\begin{subfigure}[b]{\textwidth}\centering
+	\begin{tikzpicture}[node distance=0.25cm]
+
+		\node [elem] (fileDesc) {fileDesc};
+		\node [elem, right=of fileDesc] (sourceDesc) {sourceDesc};
+		\node [elem, right=of sourceDesc] (msDesc) {msDesc};
+		\node [elem, right=of msDesc] (msIdentifier) {msIdentifier};
+		\node [elem, right=of msIdentifier] (country) {country (\textit{vide})};
+		\node [elem, below=of country] (settlement) {settlement (\textit{vide})};
+		\node [iiif, below=of settlement] (repository) {repository};
+		\node [iiif, below=of repository] (idno) {idno};
+		\node [elem, below=of idno] (altIdentifier) {altIdentifier};
+		\node [files, right=of altIdentifier] (idno2) {idno};
+		\node [elem, below=of altIdentifier] (objectDesc) {objectDesc};
+		\node [elem, left=of objectDesc] (physDesc) {physDesc};
+		\node [elem, right=of objectDesc] (p) {p (\textit{vide})};
+		
+		\draw [arrow] (fileDesc) -- (sourceDesc);
+		\draw [arrow] (sourceDesc) -- (msDesc);
+		\draw [arrow] (msDesc) -- (msIdentifier);
+		\draw [arrow] (msIdentifier) -- (country);
+		\draw [arrow] (msIdentifier) |- (settlement);
+		\draw [arrow] (msIdentifier) |- (repository);
+		\draw [arrow] (msIdentifier) |- (idno);
+		\draw [arrow] (msIdentifier) |- (altIdentifier);
+		\draw [arrow] (altIdentifier) -- (idno2);
+		\draw [arrow] (msDesc) |- (physDesc);
+		\draw [arrow] (physDesc) -- (objectDesc);
+		\draw [arrow] (objectDesc) -- (p);
+
+	\end{tikzpicture}
+	
+\caption{Quand la relation entre le fac-similé numérique (renseigné par le \textit{manifest} \acrshort{IIIF} et le document physique (renseigné par catalogue général de la \acrshort{BNF}) n'est pas établie}
+\end{subfigure}
+
+\vspace{1cm}
+
+% <msDesc> SRU
+\begin{subfigure}[b]{\textwidth}\centering
+	\begin{tikzpicture}[node distance=0.25cm]
+
+		\node [elem] (fileDesc) {fileDesc};
+		\node [elem, right=of fileDesc] (sourceDesc) {sourceDesc};
+		\node [elem, right=of sourceDesc] (msDesc) {msDesc};
+		\node [elem, right=of msDesc] (msIdentifier) {msIdentifier};
+		\node [elem, right=of msIdentifier] (country) {country};
+		\node [attUnimarc, right=of country] (att) {@key};
+		\node [sudoc, below=of country] (settlement) {settlement};
+		\node [sudoc, below=of settlement] (repository) {repository};
+		\node [unimarc, below=of repository] (idno) {idno};
+		\node [elem, below=of idno] (altIdentifier) {altIdentifier};
+		\node [files, right=of altIdentifier] (idno2) {idno};
+		\node [elem, below=of altIdentifier] (objectDesc) {objectDesc};
+		\node [elem, left=of objectDesc] (physDesc) {physDesc};
+		\node [unimarc, right=of objectDesc] (p) {p};
+		
+		\draw [arrow] (fileDesc) -- (sourceDesc);
+		\draw [arrow] (sourceDesc) -- (msDesc);
+		\draw [arrow] (msDesc) -- (msIdentifier);
+		\draw [arrow] (msIdentifier) -- (country);
+		\draw [arrow, dashed] (country) -- (att);
+		\draw [arrow] (msIdentifier) |- (settlement);
+		\draw [arrow] (msIdentifier) |- (repository);
+		\draw [arrow] (msIdentifier) |- (idno);
+		\draw [arrow] (msIdentifier) |- (altIdentifier);
+		\draw [arrow] (altIdentifier) -- (idno2);
+		\draw [arrow] (msDesc) |- (physDesc);
+		\draw [arrow] (physDesc) -- (objectDesc);
+		\draw [arrow] (objectDesc) -- (p);
+
+	\end{tikzpicture}
+	
+\caption{Quand la relation entre le fac-similé numérique et le document physique est établie}
+\end{subfigure}
+
+\vspace{1cm}
+
+\caption{Les sources des données du \texttt{<msDesc>} du \texttt{<sourceDesc>}}
+\label{fig:dataMsDesc}
+\end{figure}
+%%%%%%%%%%%%%%%%%%
+\begin{figure}[htp]\centering
+\begin{tabularx}{\textwidth}
+{	| >{\arraybackslash}X 
+	| >{\arraybackslash}X 
+	| >{\arraybackslash}X |}
+\hline
+élément ou attribut \acrshort{TEI} & \textit{manifest} \acrshort{IIIF} & données \Gls{unimarc}\\
+\hline \hline
+\texttt{sourceDesc/} \texttt{msDesc/} \texttt{msIdentifier[@key]} & -- & \texttt{datafield[@tag="801"]/} \texttt{subfield[@code="a"]} \\ \hline
+\texttt{sourceDesc/} \texttt{msDesc/} \texttt{msIdentifie} \texttt{repository} & \texttt{"Repository"} & donnée du site \acrshort{SUDOC} en utilisant le numéro RCR du \texttt{datafield[@tag="930"]/} \texttt{subfield[@code="b"]} \\ \hline
+\texttt{sourceDesc/} \texttt{msDesc/} \texttt{msIdentifier} \texttt{idno} & \texttt{"Shelfmark"} & \texttt{datafield[@tag="930"]/} \texttt{subfield[@code="a"]} \\ \hline
+\texttt{sourceDesc/} \texttt{msDesc/} \texttt{physDesc/} \texttt{objectDesc/} \texttt{p} & -- & \texttt{datafield[@tag="200"]/} \texttt{subfield[@code="b"]} \\ \hline
+
+\end{tabularx}
+\caption{\textit{Mapping} des données du \texttt{<msDesc>} du \texttt{<sourceDesc>}}
+\label{tab:sourceDescMS}
+\end{figure}
+%%%%%%%%%%%%%%%%%%
+
+
 \subsection{Les sources des données du \texttt{<profileDesc>}}
-Le \texttt{<profileDesc>} le plus minimal, celui généré par l'application \texttt{alto2tei}, ne présente que de la donnée sur la langue utilisée dans le document source. Dans sa version actuelle, l'application ne supporte qu'une seule langue. Néanmoins, malgré la simplicité conceptuelle d'un tel simple \texttt{<profileDesc>}, son élément \texttt{<language>} compte sur deux sources de données. Le mot balisé dans l'élément \texttt{<language>} vient du \textit{manifest} \acrshort{IIIF} puisque la langue est l'une des données déterminée essentielle et recherchée lors du traitement du \textit{manifest}. La valeur de l'attribut \texttt{@ident}, par contre, est récupérée depuis le catalogue général de la \acrshort{BNF} parce qu'elle est une clef standardisée pour la langue utilisée.
+Selon notre modélisation, qui est justifiée dans le chapitre~\ref{chap:metadata}, le \texttt{<profileDesc>} est très minimal. Il ne présente que de la donnée sur la langue utilisée dans le document source. Dans sa version actuelle, l'application \texttt{alto2tei} ne supporte qu'une seule langue. Néanmoins, malgré la simplicité conceptuelle d'un tel \texttt{<profileDesc>}, son élément \texttt{<language>} compte sur deux sources de données. Le mot balisé dans l'élément \texttt{<language>} vient du \textit{manifest} \acrshort{IIIF} puisque la langue est l'une des données déterminée essentielle et recherchée lors du traitement du \textit{manifest}. La valeur de l'attribut \texttt{@ident}, par contre, est récupérée depuis le catalogue général de la \acrshort{BNF} parce qu'elle est une clef standardisée pour la langue utilisée. La Figure~\ref{fig:dataPS} visualise les deux sources de données pour le \texttt{<profileDesc>}. Le Tableau~\ref{tab:profileDesc} précise la localisation de ces deux données.
 
 \begin{figure}[htp]
 \centering
 % legend
-\begin{subfigure}[b]{0.3\textwidth}
+\begin{subfigure}[b]{0.3\textwidth}\centering
 \begin{tikzpicture}
 \matrix [draw] {
 	\node [iiif,label=right:manifest IIIF] {};\\
@@ -735,35 +1018,63 @@ Le \texttt{<profileDesc>} le plus minimal, celui généré par l'application \te
 	\node [config,label=right:fichier de config] {}; \\
 	\node [files,label=right:fichiers traités] {}; \\
 	\node [input,label=right:saisie] {}; \\
+	\node [elemDefault,label=right:par défaut] {}; \\
 };
 \end{tikzpicture}
 \end{subfigure}
 
 \vspace{1cm}
 
-% <profileDesc>
-\begin{subfigure}[b]{0.3\textwidth}
+% <profileDesc> IIIF
+\begin{subfigure}[b]{\textwidth}\centering
 \begin{tikzpicture}
+
+\node [elem] (fileDesc) {fileDesc};
+\node [elem, right=of fileDesc] (profileDesc) {profileDesc};
+\node [elem, right=of profileDesc] (langUsage) {langUsage};
+\node [iiif, right=of langUsage] (language) {language};
+\node [attUnimarc, right=of language] (att) {@ident};
+
+\draw [arrow] (fileDesc) -- (profileDesc);
+\draw [arrow] (profileDesc) -- (langUsage);
+\draw [arrow] (langUsage) -- (language);
+\draw [arrow, dashed] (language) -- (att);
 
 \end{tikzpicture}
 \end{subfigure}
 
-\caption{}
+\caption{Les sources des données du \texttt{<profileDesc>}}
 \label{fig:dataPS}
+\end{figure}
+
+
+\begin{figure}[htp]\centering
+\begin{tabularx}{\textwidth}
+{	| >{\arraybackslash}X 
+	| >{\arraybackslash}X 
+	| >{\arraybackslash}X |}
+\hline
+élément ou attribut \acrshort{TEI} & \textit{manifest} \acrshort{IIIF} & données \Gls{unimarc}\\
+\hline \hline
+\texttt{profileDesc/} \texttt{langUsage/} \texttt{language} & \texttt{"Language"} & -- \\ \hline
+\texttt{profileDesc/} \texttt{langUsage/} \texttt{language[@ident]} & -- & \texttt{datafield[@tag="101"/} \texttt{subfield[@code="a"]} \\ \hline
+\end{tabularx}
+\caption{\textit{Mapping} des données du \texttt{<profileDesc>}}
+\label{tab:profileDesc}
 \end{figure}
 
 \subsection{Les sources des données du \texttt{<encodingDesc>}}
 La description de l'encodage et de l'appareil qui a fait la transcription sont essentiels. Sans eux, la transcription présentée dans la ressource ne pourra pas être reproduite. Et sans pouvoir reproduire la transcription, les scientifiques ne peuvent pas la vérifier. Pouvoir reproduire des résultats scientifiques est fondamental à la recherche.
 
-Le \texttt{<encodingDesc>} contient deux descendants directs. Dans un premier temps, il contient des informations sur l'engin qui a mis en œuvre les modèles \acrshort{HTR} (\texttt{<application>}). L'application \texttt{alto2tei} actuelle supporte seulement l'engin \textit{Kraken}. L'élément \texttt{<appInfo>} est créé toujours pour les versions de \textit{Kraken}. Mais quand l'application \texttt{alto2tei} est démarré depuis la ligne de commande, un paramètre obligatoire déclare quelle version de \textit{Kraken} a été utilisé pour créer les fichiers \acrshort{ALTO}. L'application \texttt{alto2tei} tient ce paramètre et l'utilise pour renseigner sur la version de l'application \textit{Kraken} dans l'élément \texttt{<application>}.
+Le \texttt{<encodingDesc>} contient deux descendants directs. Dans un premier temps, il contient de l'information sur l'engin qui a mis en œuvre les modèles \acrshort{HTR} (\texttt{<application>}). Le pipeline \textit{Gallic(orpor)a} attend toujours l'engin \textit{Kraken} et la version actuelle de l'application \texttt{alto2tei} ne renseigne que sur les versions de cet engin~; la version est donnée dans l'élément \texttt{<appInfo>}. Quand l'application \texttt{alto2tei} est démarré depuis la ligne de commande, un paramètre obligatoire déclare quelle version de \textit{Kraken} a été utilisée pour créer les fichiers \acrshort{XML} \acrshort{ALTO} qu'elle va traiter. L'application \texttt{alto2tei} tient ce paramètre et l'utilise pour renseigner sur la version de l'application \textit{Kraken} dans l'élément \texttt{<application>}. Si l'application est intégrée dans le pipeline \textit{Gallic(orpor)a}, la version de \textit{Kraken} est récupérée depuis la liste de librairies installées pour appliquer les modèles \acrshort{HTR}.
 
-Dans un deuxième temps, le \texttt{<encodingDesc>} s'appuie sur les fichiers \acrshort{ALTO} que l'application \texttt{alto2tei} traite. L'application analyse les étiquettes de ligne et de zone que les modèles \acrshort{HTR} ont appliquées. Ensuite, elle compare les étiquette trouvées avec une liste des étiquettes du vocabulaire \textit{SegmOnto}. Pour chaque type d'étiquette utilisé dans les fichiers \acrshort{ALTO} qui appartient au vocabulaire \textit{SegmOnto}, l'application \textit{alto2tei} la déclare dans la bonne catégorie de l'élément \texttt{<taxonomy>} du \texttt{<classDecl>}. Un exemple d'une telle liste des étiquettes utilisés dans des fichiers \acrshort{ALTO} est visualisé dans la Figure~\ref{fig:classDecl}.
+Dans un deuxième temps, le \texttt{<encodingDesc>} s'appuie sur les fichiers \acrshort{XML} \acrshort{ALTO} que l'application \texttt{alto2tei} traite. L'application analyse les étiquettes de ligne et de zone que les modèles \acrshort{HTR} ont appliquées. Ensuite, elle compare les étiquettes trouvées avec une liste des étiquettes du vocabulaire \textit{SegmOnto}. Pour chaque type d'étiquette utilisé dans les fichiers \acrshort{XML} \acrshort{ALTO} qui appartient au vocabulaire \textit{SegmOnto}, l'application \texttt{alto2tei} la déclare dans la bonne catégorie de l'élément \texttt{<taxonomy>} du \texttt{<classDecl>}, voir la sous-figure~\ref{fig:classDecl}.
 
-En outre, puisque le projet \textit{Gallic(orpor)a} a choisi de s'appuyer sur le vocabulaire \textit{SegmOnto} (cf. Chap.~\ref{chap:segmonto}), certains éléments du \texttt{<classDecl>} sont encodés en dur. La taxonomie déclarée dans l'identifiant de l'élément \texttt{<taxonomy>} ainsi que le titre déclaré (\texttt{<title>}) est toujours \og{}SegmOnto\fg{}. De plus, le \textit{pointer} (\texttt{<ptr>}) qui indique l'URL où se trouvent des informations mises à jour sur le vocabulaire utilisé est toujours celui du projet \textit{SegmOnto}. Ces données ne sont pas personnalisables. En plus, bien que les descendants des catégories (\texttt{<category>}) des lignes et des zones soient informés par les fichiers \acrshort{ALTO}, les données encodées dans les éléments viennent plutôt d'une liste que l'application \texttt{alto2tei} maintient. Cette liste encodée en dur porte l'URL de toute zone et toute ligne sur le site web du projet \textit{SegmOnto}. L'application \texttt{alto2tei} récupère l'étiquette \textit{SegmOnto} utilisée dans des fichiers \acrshort{ALTO}. Elle nettoie cette donnée et la met dans l'élément \texttt{<title>}, puis elle la enrichit avec l'URL qu'elle tient dans sa liste et met cette dernière donnée dans l'élément \texttt{<ptr>}.
+En outre, puisque l'équipe du projet \textit{Gallic(orpor)a} a choisi de s'appuyer sur le vocabulaire \textit{SegmOnto} (cf. Chap.~\ref{chap:segmonto}), certains éléments du \texttt{<classDecl>} sont encodés en dur. La taxonomie déclarée dans l'identifiant de l'élément \texttt{<taxonomy>} ainsi que le titre attribué à la taxonomie (\texttt{<title>}) est toujours \og{}SegmOnto\fg{}. De plus, le \textit{pointer} (\texttt{<ptr>}) qui indique l'URL où se trouvent des informations mises à jour sur le vocabulaire utilisé est toujours celui du projet \textit{SegmOnto}. Ces données ne sont pas personnalisables. En plus, bien que les descendants des classes (\texttt{<category>}) des lignes et des zones soient informés par les fichiers \acrshort{ALTO}, les données encodées dans les éléments viennent plutôt d'une liste que l'application \texttt{alto2tei} maintient. Cette liste encodée en dur porte l'URL de toute zone et toute ligne sur le site web du projet \textit{SegmOnto}.
 
 \begin{figure}[htp]
 % legend
-\begin{subfigure}[b]{0.4\textwidth}
+\begin{subfigure}[b]{\textwidth}
 \centering
 \begin{tikzpicture}
 \matrix [draw] {
@@ -773,6 +1084,7 @@ En outre, puisque le projet \textit{Gallic(orpor)a} a choisi de s'appuyer sur le
 	\node [config,label=right:fichier de config] {}; \\
 	\node [files,label=right:fichiers traités] {}; \\
 	\node [input,label=right:saisie] {}; \\
+	\node [elemDefault,label=right:par défaut] {}; \\
 };
 \end{tikzpicture}
 \end{subfigure}
@@ -780,20 +1092,26 @@ En outre, puisque le projet \textit{Gallic(orpor)a} a choisi de s'appuyer sur le
 \vspace{1cm}
 
 % <appInfo>
-\begin{subfigure}[b]{\textwidth}
-\begin{tikzpicture}
+\begin{subfigure}[b]{\textwidth}\centering
+\begin{tikzpicture}[node distance=0.5cm]
 
-\node [elem] (encodingDesc) {encodingDesc};
+\node [elem] (fileDesc) {fileDesc};
+\node [elem, right=of fileDesc] (encodingDesc) {encodingDesc};
 \node [elem, right=of encodingDesc] (appInfo) {appInfo};
-\node [input, right=of appInfo] (application) {application};
-\node [elem, right=of application] (label) {label};
-\node [elem, below=of label] (ptr) {ptr};
+\node [elem, right=of appInfo] (application) {application};
+\node [attDefault, right=of application] (ident) {@ident};
+\node [attInput, below=of ident] (version) {@version};
+\node [empty, below=of version] (empty) {};
+\node [elemDefault, right=of empty] (label) {label};
+\node [elemDefault, below=of label] (ptr) {ptr};
 
+\draw [arrow] (fileDesc) -- (encodingDesc);
 \draw [arrow] (encodingDesc) -- (appInfo);
 \draw [arrow] (appInfo) -- (application);
-\draw [arrow] (application) -- (label);
-\draw [arrow]
-	(ptr) -| node[pos=0.25] {} (application);
+\draw [arrow, shorten <=0.5cm] (application) |- (label);
+\draw [arrow, shorten <=0.5cm] (application) |- (ptr);
+\draw [arrow, dashed] (application) -- (ident);
+\draw [arrow, dashed] (application) |- (version);
 
 \end{tikzpicture}
 \caption{La source de données du \texttt{<appInfo>}}
@@ -802,36 +1120,34 @@ En outre, puisque le projet \textit{Gallic(orpor)a} a choisi de s'appuyer sur le
 \vspace{1cm}
 
 % <classDecl>
-\begin{subfigure}[b]{\textwidth}
-\begin{tikzpicture}
+\begin{subfigure}[b]{\textwidth}\centering
+\begin{tikzpicture}[node distance=0.5]
 
-\node [elem] (encodingDesc) {encodingDesc};
+\node [elem] (fileDesc) {fileDesc};
+\node [elem, right=of fileDesc] (encodingDesc) {encodingDesc};
 \node [elem, right=of encodingDesc] (classDecl) {classDecl};
-\node [elem, right=of classDecl] (bibl) {bibl};
-\node [elem, right=of bibl] (titleBibl) {title};
-\node [elem, below=of titleBibl] (ptrBibl) {ptr};
+\node [elem, right=of classDecl] (taxonomy) {taxonomy};
+\node [attDefault, right=of taxonomy] (taxid) {@xml:id};
+\node [elemDefault, below=of taxid] (titleBibl) {title};
+\node [elem, left=of titleBibl] (bibl) {bibl};
+\node [elemDefault, below=of titleBibl] (ptrBibl) {ptr};
 \node [empty, below=of bibl] (emp) {};
 \node [elem, below=of emp] (category) {category};
 \node [files, right=of category] (catDesc) {catDesc};
 \node [files, right=of catDesc] (title) {title};
 \node [files, below=of title] (ptr) {ptr};
 
-\draw [arrow]
-	(encodingDesc) -- (classDecl);
-\draw [arrow]
-	(classDecl) -- (bibl);
-\draw [arrow]
-	(bibl) -- (titleBibl);
-\draw [arrow]
-	(ptrBibl) -| node[pos=0.25] {} (bibl);
-\draw [arrow]
-	(category) -| node[pos=0.25] {} (classDecl);
-\draw [arrow]
-	(ptr) -| node[pos=0.25] {} (catDesc);
-\draw [arrow]
-	(category) -- (catDesc);
-\draw [arrow]
-	(catDesc) -- (title);
+\draw [arrow] (fileDesc) -- (encodingDesc);
+\draw [arrow] (encodingDesc) -- (classDecl);
+\draw [arrow] (classDecl) |- (bibl);
+\draw [arrow] (classDecl) -- (taxonomy);
+\draw [arrow, dashed] (taxonomy) -- (taxid);
+\draw [arrow] (bibl) -- (titleBibl);
+\draw [arrow] (ptrBibl) -| (bibl);
+\draw [arrow] (category) -|  (classDecl);
+\draw [arrow] (ptr) -| (catDesc);
+\draw [arrow] (category) -- (catDesc);
+\draw [arrow] (catDesc) -- (title);
 
 \end{tikzpicture}
 \caption{La source de données du \texttt{<classDecl>}}
@@ -842,9 +1158,6 @@ En outre, puisque le projet \textit{Gallic(orpor)a} a choisi de s'appuyer sur le
 \label{fig:dataED}
 \end{figure}
 
-\section{Le \textit{mapping} des toutes données du \texttt{<teiHeader>}}
-
-Le \textit{mapping} complet des données du \texttt{<teiHeader>} est visualisé dans la Table~\ref{tab:mapping} ci-dessous. La table montre en détail la localisation de chaque donnée cherchée, dont les sources sont décrites dans les sections précédents de ce chapitre. Les données \Gls{unimarc} du catalogue général de la \acrshort{BNF} et les données \acrshort{HTML} du site \acrshort{SUDOC}, étant en format \acrshort{XML}, exigent plus de détail pour se localiser. Par exemple, l'élément ou l'attribut qui contient la donnée cherchée ne suffit pas puisqu'il en y a souvent plusieurs du même nom dans l'arbre \acrshort{XML}. La Table~\ref{tab:mapping} décrit donc la localisation des données en listant les éléments ou les composants qui précèdent la donnée cherchée. Pour les attributs d'un élément \acrshort{XML}, la table utilise le syntaxe \textit{XPath} par lequel l'attribut est déclaré avec l'arobase. Par exemple, l'attribut \texttt{@att} d'un élément \texttt{<element>}, qui descende de l'élément \texttt{<parent>}, serait représenté dans le format suivant~: \texttt{parent/element[@att]}. Les données en \acrshort{JSON} et \acrshort{YAML} du \textit{manifest} \acrshort{IIIF} et du fichier de configuration, respectivement, n'exigent pas une telle solution parce que les données du \textit{manifest} viennent toutes de la clef \textit{metadata} et le fichier de configuration ne répète pas des étiquettes.
 
 \end{document}
 \documentclass[../main.tex]{subfiles}

@@ -1,0 +1,36 @@
+% PREAMBULE
+
+% !BIB TS-program = biber
+% !TEX TS-program = xelatexmk
+% ITEX TS-program = latex
+
+% !TEX spellcheck = French
+
+\documentclass[class=article, crop=false]{standalone}
+\usepackage[subpreambles=true]{standalone}
+\usepackage{import}
+\usepackage{blindtext}
+\usepackage{fontspec}
+\usepackage[french]{babel}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{csquotes}
+\usepackage{url}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
+%			DOCUMENT
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+Ce qu'il faut retenir de cette expérience de la transformation d'\acrshort{ALTO} à \acrshort{TEI} est que la génération du \texttt{<teiHeader>} et celle du \texttt{<sourceDoc>} sont des étapes très différentes. La transformation des données du schéma \acrshort{ALTO} vers la \acrshort{TEI} est un défi qui intéresse de plus en plus d'équipes et les solutions sont assez généralisables. Une solution proposée pour les transcriptions en \acrshort{ALTO} d'un corpus des documents d'une bibliothèque à Vienne peut bien marcher pour un corpus des documents d'une bibliothèque à Rennes. Mais la génération du \texttt{<teiHeader>} compte beaucoup plus sur l'origine des documents transcrits. Un script qui sait rechercher des métadonnées depuis l'\acrshort{API} \acrshort{SRU} pour le catalogue général de la \acrlong{BNF} n'arriverait pas à récupérer des métadonnées pour un document provenant du fonds d'une bibliothèque à Vienne, dont la notice est encodée et repérable par de différents moyens. Pour cette raison, je conseille que les futurs projets qui reprennent la génération automatique d'un document \acrshort{TEI}, y compris son \texttt{<teiHeader>}, bien divise ces deux étapes. Une équipe peut s'occuper de l'interrogation des métadonnées depuis des sources externes et une autre peut se charger de la transformation des données du schéma \acrshort{ALTO} en \acrshort{TEI}. Les deux tâches n'ont rien à voir l'un à l'autre, et peuvent se faire indépendamment.
+
+En outre, puisque la génération automatique du \texttt{<teiHeader>} et celle du \texttt{<sourceDoc>} sont si distinctes, elles peuvent être conceptualisées et résolus par de divers scripts. Une application (ou bien un fichier XSLT) peut transformer les données du schéma \acrshort{ALTO}, et une autre application peut spécialiser dans la récupération et gestion des métadonnées depuis une suite de sources de données. Mon application \texttt{alto2tei} est conçu pour gérer les métadonnées des sources du portail Gallica et donc elle envoye certaines requêtes aux certaines \acrshort{API}s. Mais une autre application spécialisée pour la génération automatique du \texttt{<teiHeader>} peut être conçue pour s'adapter à de divers bibliothèques et sources de fac-similés numériques. Sinon, une architecture plus générique que celle que nous avons construite pour le pipeline \textit{Gallic(orpor)a} pourrait être conçue qui saisirait la syntaxe des requêtes ainsi que les \textit{endpoints} de divers \acrshort{API}s. Disposant de telles données d'entrée, une telle application générique pourrait se spécialiser aux plusieurs structures de données et aux plusieurs schémas, tel que Dublin Core ainsi que \Gls{unimarc}.
+
+Comme se voit dans l'appendice \ref{main.py}, mon application \texttt{alto2tei} rassemble trois tâches distinctes. Dans un premier temps, elle génère le \texttt{<teiHeader>} qui s'appuient sur les sources de données à la fois internes et externes. Dans un deuxième temps, elle génère le \texttt{<sourceDoc>} qui traite les fichiers \acrshort{XML} \acrshort{ALTO} produits par des modèles \acrshort{HTR}. Enfin, l'application parse le texte représenté dans l'élément \texttt{<sourceDoc>} ainsi construit à partir des fichiers \acrshort{XML} \acrshort{ALTO}. Les modules sur lesquelles l'application compte pourrait facilement conçus pour de divers défis. Si une équipe tentait à réaliser une application plus générique qui produit un \texttt{<teiHeader>} à partir des données \acrshort{XML} \Gls{unimarc} de peu importe laquelle bibliothèque, par exemple, peu importe quel pipeline qui cherche à traiter des documents dont la notice détaillée est encodée en \Gls{unimarc} pourrait s'en servir.
+
+L'une des autres conclusions à retenir de l'expérience du projet \textit{Gallic(orpor)a} est qu'un tel pipeline, l'un qui commence par des fac-similés numériques et termine par une ressource encodée en \acrshort{TEI}, est bien possible. De plus, l'entraînement des modèles à reconnaître la mise en page par le syntaxe du projet \textit{SegmOnto} rendre possible la génération automatique d'un \texttt{<body>} très détaillé et qui conforme bien aux normes de la \acrshort{TEI}. Le défi qui reste à surmonter et l'entraînement des modèles de segmentation. Le concept  a été prouvé qu'un tel syntaxe faciliterait la création d'une version du texte pré-éditorialisée. Mais la réalisation des modèles qui parviennent à bien taguer les zones et les lignes sur la page reste à être améliorer. En conclusion, l'expérience de la transformation d'\acrshort{ALTO} à \acrshort{TEI} selon notre modélisation a eu une bonne résultat, et un pipeline automatisé qui saisit des images et renvoie une ressource en \acrshort{TEI} est bien faisable. L'amélioration de la segmentation et l'ajout de l'analyse linguistique sont des enjeux qui restent pour de futurs projets qui reprennent les ambitions du projet \textit{Gallic(orpor)a}.
+
+\end{document}
+\documentclass[../main.tex]{subfiles}
